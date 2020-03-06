@@ -88,10 +88,10 @@ namespace CrossCuttingTests
             ISchedulingPetitionsRepository petRepository = new SchedulingPetitionsRepository();
             SchedulingPetitionsService petService = new SchedulingPetitionsService();
             IAuthenticationRepository authRepository = new AuthenticationRepository();
-            ISchedulingSaveRepository saveRepository = new SchedulingSaveRepository();
             AuthenticationService authService = new AuthenticationService();
             string token = authService.RefreshToken(authRepository, "3194198375", "CC79880800");
-            List<CitaCiudad> res = petService.GetCitasCiudad(petRepository, saveRepository, 50001, 172, token, "98fddusfh89udf-sf98df-9");
+            //int espacioCita, string tipoId, string numId, int centroMedico, int medico, int especialidad, string telefono, string correo, string celular, string token)
+            string res = petService.AsignarCita(petRepository, 10782924,"CC", "79880800", 55983, 2355, 172,"000", "diegop@colmedica.com", "3134846707",token);
             Assert.IsNotNull(res);
         }
 

@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Domain.DTOs
+{
+   public class TipoDocumento
+    {
+        public int Id { get; set; }
+        public string TipoDoc { get; set; }
+        public string LabelDocumento { get; set; }
+        public int Orden { get; set; }
+
+    }
+}

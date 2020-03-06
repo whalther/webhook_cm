@@ -53,6 +53,16 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
           <Property Name="id_understanding" Type="int" />
           <Property Name="id_intentList" Type="int" />
         </EntityType>
+        <EntityType Name="cmTipoDocumento">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tipo_doc" Type="varchar" MaxLength="20" />
+          <Property Name="doc_label" Type="varchar" MaxLength="80" />
+          <Property Name="estado" Type="int" />
+          <Property Name="orden" Type="int" />
+        </EntityType>
         <EntityType Name="intentCategory">
           <Key>
             <PropertyRef Name="id" />
@@ -111,25 +121,11 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
           <Property Name="tipoIdentificacion" Type="varchar" MaxLength="50" />
           <Property Name="idConv" Type="varchar" MaxLength="500" />
         </EntityType>
-        <EntityType Name="tempCitas">
+        <EntityType Name="tempCita">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="dia" Type="varchar" MaxLength="50" />
-          <Property Name="direccionCentroMedico" Type="varchar" MaxLength="500" />
-          <Property Name="fecha" Type="smalldatetime" />
-          <Property Name="fechaHoraInicio" Type="smalldatetime" />
-          <Property Name="horaFin" Type="varchar" MaxLength="50" />
-          <Property Name="horaInicio" Type="varchar" MaxLength="50" />
-          <Property Name="idCentroMedico" Type="int" />
-          <Property Name="idEspacioCita" Type="int" />
-          <Property Name="idMedico" Type="int" />
-          <Property Name="nombreCentroMedico" Type="varchar" MaxLength="500" />
-          <Property Name="nombreEspacioFisico" Type="varchar" MaxLength="500" />
-          <Property Name="nombreEspecialidad" Type="varchar" MaxLength="500" />
-          <Property Name="nombreMedico" Type="varchar" MaxLength="500" />
-          <Property Name="idConv" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="tempCiudades">
           <Key>
@@ -163,6 +159,20 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dia" Type="varchar" MaxLength="50" />
+          <Property Name="direccionCentroMedico" Type="varchar" MaxLength="500" />
+          <Property Name="fecha" Type="smalldatetime" />
+          <Property Name="fechaHoraInicio" Type="smalldatetime" />
+          <Property Name="horaFin" Type="varchar" MaxLength="50" />
+          <Property Name="horaInicio" Type="varchar" MaxLength="50" />
+          <Property Name="idCentroMedico" Type="int" />
+          <Property Name="idEspacioCita" Type="int" />
+          <Property Name="idMedico" Type="int" />
+          <Property Name="nombreCentroMedico" Type="varchar" MaxLength="500" />
+          <Property Name="nombreEspacioFisico" Type="varchar" MaxLength="500" />
+          <Property Name="nombreEspecialidad" Type="varchar" MaxLength="500" />
+          <Property Name="nombreMedico" Type="varchar" MaxLength="500" />
+          <Property Name="idConv" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="userVisits">
           <Key>
@@ -181,12 +191,13 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
         </EntityType>
         <EntityContainer Name="ColmedicaModelStoreContainer">
           <EntitySet Name="chatbotData" EntityType="Self.chatbotData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cmTipoDocumento" EntityType="Self.cmTipoDocumento" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="intentCategory" EntityType="Self.intentCategory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="intentList" EntityType="Self.intentList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="intentUnderstanding" EntityType="Self.intentUnderstanding" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="log_petitions" EntityType="Self.log_petitions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tempBeneficiarios" EntityType="Self.tempBeneficiarios" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="tempCitas" EntityType="Self.tempCitas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tempCita" EntityType="Self.tempCita" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tempCiudades" EntityType="Self.tempCiudades" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tempContratos" EntityType="Self.tempContratos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tempEspecialidades" EntityType="Self.tempEspecialidades" Schema="dbo" store:Type="Tables" />
@@ -301,26 +312,6 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
           <Property Name="tipoIdentificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="tempCitas">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="dia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="direccionCentroMedico" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="fecha" Type="DateTime" Precision="0" />
-          <Property Name="fechaHoraInicio" Type="DateTime" Precision="0" />
-          <Property Name="idCentroMedico" Type="Int32" />
-          <Property Name="idEspacioCita" Type="Int32" />
-          <Property Name="idMedico" Type="Int32" />
-          <Property Name="nombreCentroMedico" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="nombreEspacioFisico" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="nombreEspecialidad" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="nombreMedico" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="horaFin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="horaInicio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="tempCiudades">
           <Key>
             <PropertyRef Name="id" />
@@ -353,6 +344,20 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="direccionCentroMedico" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="fecha" Type="DateTime" Precision="0" />
+          <Property Name="fechaHoraInicio" Type="DateTime" Precision="0" />
+          <Property Name="horaFin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="horaInicio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="idCentroMedico" Type="Int32" />
+          <Property Name="idEspacioCita" Type="Int32" />
+          <Property Name="idMedico" Type="Int32" />
+          <Property Name="nombreCentroMedico" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="nombreEspacioFisico" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="nombreEspecialidad" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="nombreMedico" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="userVisits">
           <Key>
@@ -399,7 +404,6 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
           <EntitySet Name="intentUnderstanding" EntityType="Self.intentUnderstanding" />
           <EntitySet Name="log_petitions" EntityType="Self.log_petitions" />
           <EntitySet Name="tempBeneficiarios" EntityType="Self.tempBeneficiarios" />
-          <EntitySet Name="tempCitas" EntityType="Self.tempCitas" />
           <EntitySet Name="tempCiudades" EntityType="Self.tempCiudades" />
           <EntitySet Name="tempContratos" EntityType="Self.tempContratos" />
           <EntitySet Name="tempEspecialidades" EntityType="Self.tempEspecialidades" />
@@ -407,7 +411,25 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
           <EntitySet Name="userVisits" EntityType="Self.userVisits" />
           <EntitySet Name="whiteListIntent" EntityType="Self.whiteListIntent" />
           <EntitySet Name="chatbotDataNoTransactional" EntityType="Self.chatbotDataNoTransactional" />
+          <EntitySet Name="cmTipoDocumento" EntityType="ColmedicaModel.cmTipoDocumento" />
+          <EntitySet Name="tempCita" EntityType="ColmedicaModel.tempCita" />
         </EntityContainer>
+        <EntityType Name="cmTipoDocumento">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tipo_doc" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="doc_label" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="estado" Type="Int32" />
+          <Property Name="orden" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tempCita">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -501,27 +523,6 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tempCitas">
-            <EntityTypeMapping TypeName="ColmedicaModel.tempCitas">
-              <MappingFragment StoreEntitySet="tempCitas">
-                <ScalarProperty Name="horaInicio" ColumnName="horaInicio" />
-                <ScalarProperty Name="horaFin" ColumnName="horaFin" />
-                <ScalarProperty Name="idConv" ColumnName="idConv" />
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="dia" ColumnName="dia" />
-                <ScalarProperty Name="direccionCentroMedico" ColumnName="direccionCentroMedico" />
-                <ScalarProperty Name="fecha" ColumnName="fecha" />
-                <ScalarProperty Name="fechaHoraInicio" ColumnName="fechaHoraInicio" />
-                <ScalarProperty Name="idCentroMedico" ColumnName="idCentroMedico" />
-                <ScalarProperty Name="idEspacioCita" ColumnName="idEspacioCita" />
-                <ScalarProperty Name="idMedico" ColumnName="idMedico" />
-                <ScalarProperty Name="nombreCentroMedico" ColumnName="nombreCentroMedico" />
-                <ScalarProperty Name="nombreEspacioFisico" ColumnName="nombreEspacioFisico" />
-                <ScalarProperty Name="nombreEspecialidad" ColumnName="nombreEspecialidad" />
-                <ScalarProperty Name="nombreMedico" ColumnName="nombreMedico" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tempCiudades">
             <EntityTypeMapping TypeName="ColmedicaModel.tempCiudades">
               <MappingFragment StoreEntitySet="tempCiudades">
@@ -555,6 +556,20 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
           <EntitySetMapping Name="tempInfoAgendamiento">
             <EntityTypeMapping TypeName="ColmedicaModel.tempInfoAgendamiento">
               <MappingFragment StoreEntitySet="tempInfoAgendamiento">
+                <ScalarProperty Name="idConv" ColumnName="idConv" />
+                <ScalarProperty Name="nombreMedico" ColumnName="nombreMedico" />
+                <ScalarProperty Name="nombreEspecialidad" ColumnName="nombreEspecialidad" />
+                <ScalarProperty Name="nombreEspacioFisico" ColumnName="nombreEspacioFisico" />
+                <ScalarProperty Name="nombreCentroMedico" ColumnName="nombreCentroMedico" />
+                <ScalarProperty Name="idMedico" ColumnName="idMedico" />
+                <ScalarProperty Name="idEspacioCita" ColumnName="idEspacioCita" />
+                <ScalarProperty Name="idCentroMedico" ColumnName="idCentroMedico" />
+                <ScalarProperty Name="horaInicio" ColumnName="horaInicio" />
+                <ScalarProperty Name="horaFin" ColumnName="horaFin" />
+                <ScalarProperty Name="fechaHoraInicio" ColumnName="fechaHoraInicio" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="direccionCentroMedico" ColumnName="direccionCentroMedico" />
+                <ScalarProperty Name="dia" ColumnName="dia" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -597,6 +612,24 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
                 <ScalarProperty Name="browserClient" ColumnName="browserClient" />
                 <ScalarProperty Name="id_understanding" ColumnName="id_understanding" />
                 <ScalarProperty Name="id_intentList" ColumnName="id_intentList" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cmTipoDocumento">
+            <EntityTypeMapping TypeName="ColmedicaModel.cmTipoDocumento">
+              <MappingFragment StoreEntitySet="cmTipoDocumento">
+                <ScalarProperty Name="orden" ColumnName="orden" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="doc_label" ColumnName="doc_label" />
+                <ScalarProperty Name="tipo_doc" ColumnName="tipo_doc" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tempCita">
+            <EntityTypeMapping TypeName="ColmedicaModel.tempCita">
+              <MappingFragment StoreEntitySet="tempCita">
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

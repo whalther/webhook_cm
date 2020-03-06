@@ -41,10 +41,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthenticationApp.cs" />
+    <Compile Include="LocalQueriesApp.cs" />
     <Compile Include="LogApp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SchedulingPetitionsApp.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CrossCutting\CrossCutting.csproj">
+      <Project>{E0353356-13F2-4A26-ADB1-B49FCDE2F8E7}</Project>
+      <Name>CrossCutting</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataAccess\DataAccess.csproj">
       <Project>{FF08575A-D06D-4315-9B19-9574E4995C41}</Project>
       <Name>DataAccess</Name>

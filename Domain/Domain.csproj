@@ -53,12 +53,16 @@
     <Compile Include="DTOs\Replay.cs" />
     <Compile Include="DTOs\RequestDTO.cs" />
     <Compile Include="DTOs\ResponseDTO.cs" />
+    <Compile Include="DTOs\Resultado.cs" />
+    <Compile Include="DTOs\TipoDocumento.cs" />
     <Compile Include="DTOs\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IAuthenticationRepository.cs" />
+    <Compile Include="Repositories\ILocalQueriesRepository.cs" />
     <Compile Include="Repositories\ILogRepository.cs" />
     <Compile Include="Repositories\ISchedulingPetitionsRepository.cs" />
     <Compile Include="Repositories\ISchedulingSaveRepository.cs" />
+    <Compile Include="Services\LocalQueriesService.cs" />
     <Compile Include="Services\LogService.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
     <Compile Include="Services\SchedulingPetitionsService.cs" />

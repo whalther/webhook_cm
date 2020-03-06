@@ -15,5 +15,19 @@ namespace DataAccess.ColmedicaModel
     public partial class tempInfoAgendamiento
     {
         public int id { get; set; }
+        public string dia { get; set; }
+        public string direccionCentroMedico { get; set; }
+        public Nullable<System.DateTime> fecha { get; set; }
+        public Nullable<System.DateTime> fechaHoraInicio { get; set; }
+        public string horaFin { get; set; }
+        public string horaInicio { get; set; }
+        public Nullable<int> idCentroMedico { get; set; }
+        public Nullable<int> idEspacioCita { get; set; }
+        public Nullable<int> idMedico { get; set; }
+        public string nombreCentroMedico { get; set; }
+        public string nombreEspacioFisico { get; set; }
+        public string nombreEspecialidad { get; set; }
+        public string nombreMedico { get; set; }
+        public string idConv { get; set; }
     }
 }

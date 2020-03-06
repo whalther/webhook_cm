@@ -122,7 +122,7 @@ namespace DataAccess.Repositories
                 {
                     foreach (CitaCiudad cita in citas)
                     {
-                        tempCitas cit = new tempCitas()
+                        tempInfoAgendamiento cit = new tempInfoAgendamiento()
                         {
                             dia = cita.Dia,
                             direccionCentroMedico = cita.DireccionCentroMedico,
@@ -139,7 +139,7 @@ namespace DataAccess.Repositories
                             nombreMedico = cita.NombreMedico,
                             idConv = idConv
                         };
-                        contexto.tempCitas.Add(cit);
+                        contexto.tempInfoAgendamiento.Add(cit);
                     }
                     contexto.SaveChanges();
                     return true;

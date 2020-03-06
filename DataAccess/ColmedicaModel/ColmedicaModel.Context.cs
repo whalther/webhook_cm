@@ -31,7 +31,6 @@ namespace DataAccess.ColmedicaModel
         public virtual DbSet<intentUnderstanding> intentUnderstanding { get; set; }
         public virtual DbSet<log_petitions> log_petitions { get; set; }
         public virtual DbSet<tempBeneficiarios> tempBeneficiarios { get; set; }
-        public virtual DbSet<tempCitas> tempCitas { get; set; }
         public virtual DbSet<tempCiudades> tempCiudades { get; set; }
         public virtual DbSet<tempContratos> tempContratos { get; set; }
         public virtual DbSet<tempEspecialidades> tempEspecialidades { get; set; }
@@ -39,5 +38,7 @@ namespace DataAccess.ColmedicaModel
         public virtual DbSet<userVisits> userVisits { get; set; }
         public virtual DbSet<whiteListIntent> whiteListIntent { get; set; }
         public virtual DbSet<chatbotDataNoTransactional> chatbotDataNoTransactional { get; set; }
+        public virtual DbSet<cmTipoDocumento> cmTipoDocumento { get; set; }
+        public virtual DbSet<tempCita> tempCita { get; set; }
     }
 }

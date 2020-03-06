@@ -13,11 +13,11 @@ namespace Domain.Services
 {
    public class SchedulingPetitionsService
     {
-        public Usuario ValidarUsuario(ISchedulingPetitionsRepository petitionsRepository, string idetificacion, string token) {
+        public Usuario ValidarUsuario(ISchedulingPetitionsRepository petitionsRepository, string identificacion, string token) {
             Cifrador cf = new Cifrador();
             string iv = cf.generarIv();
             Dictionary<string, string> param = new Dictionary<string, string>() {
-                {"numID",idetificacion }
+                {"numID",identificacion }
             };
             string paramCifrado = cf.Cifrar(JsonConvert.SerializeObject(param),iv);
             Dictionary<string, string> hd = new Dictionary<string, string>() {
@@ -43,13 +43,13 @@ namespace Domain.Services
                 return u;
             }
         }
-        public List<BeneficiarioContratante> GetBeneficiariosContratante(ISchedulingPetitionsRepository petitionsRepository,ISchedulingSaveRepository saveRepository,  string idetificacion, string token, string idConv)
+        public List<BeneficiarioContratante> GetBeneficiariosContratante(ISchedulingPetitionsRepository petitionsRepository,ISchedulingSaveRepository saveRepository,  string identificacion, string token, string idConv)
         {
             Cifrador cf = new Cifrador();
             string iv = cf.generarIv();
             
             Dictionary<string, string> param = new Dictionary<string, string>() {
-                {"numID",idetificacion }
+                {"numID",identificacion }
             };
             string paramCifrado = cf.Cifrar(JsonConvert.SerializeObject(param), iv);
             Dictionary<string, string> hd = new Dictionary<string, string>() {
@@ -85,13 +85,13 @@ namespace Domain.Services
             }
         }
 
-        public List<Ciudad> GetCiudades(ISchedulingPetitionsRepository petitionsRepository, ISchedulingSaveRepository saveRepository, string idetificacion, string tipoId, string token, string idConv)
+        public List<Ciudad> GetCiudades(ISchedulingPetitionsRepository petitionsRepository, ISchedulingSaveRepository saveRepository, string identificacion, string tipoId, string token, string idConv)
         {
             Cifrador cf = new Cifrador();
             string iv = cf.generarIv();
             Dictionary<string, string> param= new Dictionary<string, string>() {
                 {"tipIdeBeneficiario",tipoId },
-                {"numIdeBeneficiario",idetificacion}
+                {"numIdeBeneficiario",identificacion}
             };
             string paramCifrado = cf.Cifrar(JsonConvert.SerializeObject(param), iv);
             Dictionary<string, string> hd = new Dictionary<string, string>() {
@@ -128,13 +128,13 @@ namespace Domain.Services
 
         }
 
-        public List<Especialidad> GetEspecialidadesCiudad(ISchedulingPetitionsRepository petitionsRepository, ISchedulingSaveRepository saveRepository, string idetificacion, string tipoId, int ciudad, string token, string idConv)
+        public List<Especialidad> GetEspecialidadesCiudad(ISchedulingPetitionsRepository petitionsRepository, ISchedulingSaveRepository saveRepository, string identificacion, string tipoId, int ciudad, string token, string idConv)
         {
             Cifrador cf = new Cifrador();
             string iv = cf.generarIv();
             Dictionary<string, string> param = new Dictionary<string, string>() {
                 {"tipIdeBeneficiario",tipoId },
-                {"numIdeBeneficiario",idetificacion},
+                {"numIdeBeneficiario",identificacion},
                 {"ciudad", ciudad.ToString() }
             };
             string paramCifrado = cf.Cifrar(JsonConvert.SerializeObject(param), iv);
