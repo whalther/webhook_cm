@@ -66,7 +66,7 @@ namespace CrossCutting.Repositories
                     return "error_desconocido";
             }
         }
-        public string GetEspecialidadesCiudad(Dictionary<string, string> headers, Dictionary<string, string> parametros)
+        public string ProcesarEspecialidadesCiudad(Dictionary<string, string> headers, Dictionary<string, string> parametros)
         {
             string url = ConfigurationManager.AppSettings["baseUrlApi"];
             RestClient rc = new RestClient();
@@ -84,7 +84,7 @@ namespace CrossCutting.Repositories
                     return "error_desconocido";
             }
         }
-        public string GetCitasCiudad(Dictionary<string, string> headers, Dictionary<string, string> parametros)
+        public string ProcesarCitas(Dictionary<string, string> headers, Dictionary<string, string> parametros)
         {
             string url = ConfigurationManager.AppSettings["baseUrlApi"];
             RestClient rc = new RestClient();

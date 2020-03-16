@@ -12,12 +12,12 @@ namespace DataAccess.ColmedicaModel
     using System;
     using System.Collections.Generic;
     
-    public partial class log_petitions
+    public partial class logErrorPeticion
     {
         public int id { get; set; }
-        public string path { get; set; }
-        public string requestContent { get; set; }
-        public Nullable<System.DateTime> date { get; set; }
-        public string ip { get; set; }
+        public string tipo { get; set; }
+        public string @params { get; set; }
+        public Nullable<System.DateTime> fecha { get; set; }
+        public string metodo { get; set; }
     }
 }

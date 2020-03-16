@@ -1,5 +1,6 @@
 ﻿using Application;
 using Domain.DTOs;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,41 +12,63 @@ using System.Web.Http;
 namespace Webhook.Controllers
 {
     [RoutePrefix("api/authentication")]
+    [RequestFilter]
     public class AuthenticationController : ApiController
     {
+        Utilities utilidad = new Utilities();
         [HttpPost]
         [Route("getToken")]
-        public IHttpActionResult GetToken()
+        public IHttpActionResult GetToken([FromBody]dynamic request)
         {
             AuthenticationApp app = new AuthenticationApp();
             Replay respuesta = new Replay();
-           // var request = HttpContext.Current.Request.Params;
-            //string Nombre = request["Nombre"],
-            string numeroCelular = "3194198375";
-            string identificacion = "CC79880800";
-            string idConv = "98fddusfh89udf-sf98df-9"; 
-            respuesta.Status = "OK";
+            string[] sessionId = request["sessionId"].ToString().Split('*');
+            string idConv = sessionId[0];
+            string numeroCelular = utilidad.GetNumero(sessionId[1]);
+            string identificacion = request["tipoDoc"]+ request["numDoc"];
+            string resp = app.GetToken(numeroCelular, identificacion);
             respuesta.IdConv = idConv;
-            respuesta.Token = app.GetToken(numeroCelular, identificacion);
+
+            if (resp != "error_credenciales" && resp != "error_parametros" && resp != "error_desconocido")
+            {
+                respuesta.Status = "OK";
+            }
+            else {
+                LogApp log = new LogApp();
+                Dictionary<string, string> param = new Dictionary<string, string>() {
+                {"numeroCelular",numeroCelular },
+                {"identificacion",identificacion},
+                {"idConv", idConv }
+              };
+                log.GuardarErrorLogPeticion(resp, JsonConvert.SerializeObject(param),"GetToken");
+                respuesta.Status = "error";
+            }
+            respuesta.Token = resp;
             respuesta.Info.Add("data", "");
             return Json(respuesta);
         }
         [HttpPost]
         [Route("validarOtp")]
-        public IHttpActionResult ValidarOtp()
+        public IHttpActionResult ValidarOtp([FromBody]dynamic request)
         {
             AuthenticationApp app = new AuthenticationApp();
             Replay respuesta = new Replay();
-           // var request = HttpContext.Current.Request.Params;
-            //string Nombre = request["Nombre"],
-            string token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c3VhcmlvIjoiTkk5MDA4MDE0NTkiLCJjbGllbnRlIjoiQ0M3OTg4MDgwMCIsImV4cCI6MTU4MzQyMDQ3My4wfQ.XXZ3yt0VuHkVFTbcUhee-j02Ll4Su8Jy6e6ALXbJG9Y";
-            string otp = "355694";
-            string idConv = "98fddusfh89udf-sf98df-9";
-            string numeroCelular = "3194198375";
-            string identificacion = "CC79880800";
-            respuesta.Status = "OK";
+            string[] sessionId = request["sessionId"].ToString().Split('*');
+            string idConv = sessionId[0];
+            string numeroCelular = utilidad.GetNumero(sessionId[1]);
+            string token = request["token"];
+            string otp = request["otp"];
+            string identificacion = request["tipoDoc"] + request["numDoc"];
             respuesta.IdConv = idConv;
-            Resultado res = app.ValidarOtp(token, otp, identificacion, numeroCelular);
+            Resultado res = app.ValidarOtp(token, otp, identificacion, numeroCelular,idConv);
+            if (res.Result.ToString() != "error_credenciales" && res.Result.ToString() != "error_parametros" && res.Result.ToString() != "error_desconocido")
+            {
+                respuesta.Status = "OK";
+            }
+            else
+            {
+                respuesta.Status = "error";
+            }
             respuesta.Token = res.Token;
             respuesta.Info.Add("data", res.Result);
             return Json(respuesta);

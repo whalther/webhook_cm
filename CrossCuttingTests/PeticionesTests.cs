@@ -44,7 +44,7 @@ namespace CrossCuttingTests
             Assert.IsNotNull(res);
 
         }
-        [TestMethod]
+      /*  [TestMethod]
         public void GetCiudadesUsuario()
         {
             ISchedulingPetitionsRepository petRepository = new SchedulingPetitionsRepository();
@@ -55,7 +55,7 @@ namespace CrossCuttingTests
             string token = authService.RefreshToken(authRepository, "3194198375", "CC79880800");
             List<Ciudad> res = petService.GetCiudades(petRepository,saveRepository, "79880800","CC", token, "98fddusfh89udf-sf98df-9");
             Assert.IsNotNull(res);
-        }
+        }*/
 
         [TestMethod]
         public void GetEspecialidadesCiudad()
@@ -66,7 +66,7 @@ namespace CrossCuttingTests
             ISchedulingSaveRepository saveRepository = new SchedulingSaveRepository();
             AuthenticationService authService = new AuthenticationService();
             string token = authService.RefreshToken(authRepository, "3194198375", "CC79880800");
-            List<Especialidad> res = petService.GetEspecialidadesCiudad(petRepository, saveRepository, "1123440768", "TI", 50001, token, "98fddusfh89udf-sf98df-9");
+            string res = petService.ProcesarEspecialidadesCiudad(petRepository, saveRepository, "1123440768", "TI", 50001, token, "98fddusfh89udf-sf98df-9");
             Assert.IsNotNull(res);
         }
         [TestMethod]
@@ -78,7 +78,7 @@ namespace CrossCuttingTests
             ISchedulingSaveRepository saveRepository = new SchedulingSaveRepository();
             AuthenticationService authService = new AuthenticationService();
             string token = authService.RefreshToken(authRepository, "3194198375", "CC79880800");
-            List<CitaCiudad> res = petService.GetCitasCiudad(petRepository, saveRepository, 50001, 172, token, "98fddusfh89udf-sf98df-9");
+            string res = petService.ProcesarCitas(petRepository, saveRepository, 50001, 172, token, "98fddusfh89udf-sf98df-9");
             Assert.IsNotNull(res);
         }
 
@@ -91,7 +91,7 @@ namespace CrossCuttingTests
             AuthenticationService authService = new AuthenticationService();
             string token = authService.RefreshToken(authRepository, "3194198375", "CC79880800");
             //int espacioCita, string tipoId, string numId, int centroMedico, int medico, int especialidad, string telefono, string correo, string celular, string token)
-            string res = petService.AsignarCita(petRepository, 10782924,"CC", "79880800", 55983, 2355, 172,"000", "diegop@colmedica.com", "3134846707",token);
+            string res = petService.AsignarCita(petRepository, 10782925,"CC", "79880800", 55983, 2355, 172,"000", "", "3134846707",token);
             Assert.IsNotNull(res);
         }
 

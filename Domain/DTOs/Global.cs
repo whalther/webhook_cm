@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs
 {
-    public class Ciudad
+    public class Global
     {
-        public int? Cantidad { get; set; }
-        public int CiuCod { get; set; }
-        public string CiuNombre { get; set; }
+        public int Id { get; set; }
+        public string Nombre { get; set; }
     }
 }

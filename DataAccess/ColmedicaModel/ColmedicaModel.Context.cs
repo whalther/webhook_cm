@@ -29,9 +29,6 @@ namespace DataAccess.ColmedicaModel
         public virtual DbSet<intentCategory> intentCategory { get; set; }
         public virtual DbSet<intentList> intentList { get; set; }
         public virtual DbSet<intentUnderstanding> intentUnderstanding { get; set; }
-        public virtual DbSet<log_petitions> log_petitions { get; set; }
-        public virtual DbSet<tempBeneficiarios> tempBeneficiarios { get; set; }
-        public virtual DbSet<tempCiudades> tempCiudades { get; set; }
         public virtual DbSet<tempContratos> tempContratos { get; set; }
         public virtual DbSet<tempEspecialidades> tempEspecialidades { get; set; }
         public virtual DbSet<tempInfoAgendamiento> tempInfoAgendamiento { get; set; }
@@ -40,5 +37,9 @@ namespace DataAccess.ColmedicaModel
         public virtual DbSet<chatbotDataNoTransactional> chatbotDataNoTransactional { get; set; }
         public virtual DbSet<cmTipoDocumento> cmTipoDocumento { get; set; }
         public virtual DbSet<tempCita> tempCita { get; set; }
+        public virtual DbSet<logErrorPeticion> logErrorPeticion { get; set; }
+        public virtual DbSet<log_petitions> log_petitions { get; set; }
+        public virtual DbSet<tempBeneficiarios> tempBeneficiarios { get; set; }
+        public virtual DbSet<tempCiudades> tempCiudades { get; set; }
     }
 }

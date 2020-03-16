@@ -46,9 +46,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DTOs\BeneficiarioContratante.cs" />
-    <Compile Include="DTOs\CitaCiudad.cs" />
+    <Compile Include="DTOs\Cita.cs" />
     <Compile Include="DTOs\Ciudad.cs" />
+    <Compile Include="DTOs\Contrato.cs" />
     <Compile Include="DTOs\Especialidad.cs" />
+    <Compile Include="DTOs\Global.cs" />
     <Compile Include="DTOs\LogPeticion.cs" />
     <Compile Include="DTOs\Replay.cs" />
     <Compile Include="DTOs\RequestDTO.cs" />

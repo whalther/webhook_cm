@@ -10,5 +10,6 @@ namespace Domain.Repositories
    public interface ILogRepository
     {
         Boolean GuardarLogPeticion(LogPeticion logPeticion);
+        Boolean GuardarErrorLogPeticion(string tipo, string param, string metodo);
     }
 }

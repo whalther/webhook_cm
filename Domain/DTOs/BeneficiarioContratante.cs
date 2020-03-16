@@ -8,7 +8,7 @@ namespace Domain.DTOs
 {
     public class BeneficiarioContratante
     {
-        public string CiudadResidencia { get; set; }
+        public int CiudadResidencia { get; set; }
         public string Colectivo { get; set; }
         public string DescripcionPlan { get; set; }
         public int Edad { get; set; }

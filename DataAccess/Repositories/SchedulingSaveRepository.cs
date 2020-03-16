@@ -39,11 +39,12 @@ namespace DataAccess.Repositories
                         contexto.tempBeneficiarios.Add(ben);
                     }
 
-                    dynamic contratos = beneficiarios.Select(o =>  o.DescripcionPlan ).Distinct().ToList();
-                    foreach (string contrato in contratos) {
+                    dynamic contratos = beneficiarios.Select(o =>  new {o.DescripcionPlan,o.NumeroContrato }).Distinct().ToList();
+                    foreach (dynamic contrato in contratos) {
                         tempContratos c = new tempContratos()
                         {
-                          nombre = contrato,
+                          idContrato = contrato.NumeroContrato,
+                          nombre = contrato.DescripcionPlan,
                           idConv = idConv
                         };
 
@@ -60,7 +61,7 @@ namespace DataAccess.Repositories
             }
         }
        
-       public Boolean SaveCiudades(List<Ciudad> ciudades, string idConv)
+       public Boolean SaveCiudades(List<Ciudad> ciudades, string idConv, int idUsuario)
         {
             using (ColmedicaContext contexto = new ColmedicaContext())
             {
@@ -73,7 +74,8 @@ namespace DataAccess.Repositories
                            cantidad = ciudad.Cantidad,
                            ciuCod = ciudad.CiuCod,
                            ciuNombre = ciudad.CiuNombre,
-                           idConv = idConv
+                           idConv = idConv,
+                           idUsuario = idUsuario
                         };
                         contexto.tempCiudades.Add(ciu);
                     }
@@ -114,13 +116,13 @@ namespace DataAccess.Repositories
                 }
             }
         }
-       public Boolean SaveCitasCiudad(List<CitaCiudad> citas, string idConv) 
+       public Boolean SaveCitasCiudad(List<Cita> citas, string idConv) 
         {
             using (ColmedicaContext contexto = new ColmedicaContext())
             {
                 try
                 {
-                    foreach (CitaCiudad cita in citas)
+                    foreach (Cita cita in citas)
                     {
                         tempInfoAgendamiento cit = new tempInfoAgendamiento()
                         {

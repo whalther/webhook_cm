@@ -18,12 +18,41 @@ namespace DataAccess.Repositories
                     log_petitions log = new log_petitions()
                     {
                         date = DateTime.Now,
-                        action = logPeticion.Action,
-                        parameters = logPeticion.Parameters
-                        
+                        ip = logPeticion.Ip,
+                        path = logPeticion.Path,
+                        requestContent = logPeticion.ContenidoPeticion
+
                     };
 
                     contexto.log_petitions.Add(log);
+                    contexto.SaveChanges();
+                    return true;
+                }
+                catch (Exception E)
+                {
+                    Trace.WriteLine(E.Message);
+                    return false;
+                }
+            }
+
+        }
+
+        public Boolean GuardarErrorLogPeticion(string tipo,string param,string metodo)
+        {
+            using (ColmedicaContext contexto = new ColmedicaContext())
+            {
+                try
+                {
+
+                    logErrorPeticion log = new logErrorPeticion()
+                    {
+                        tipo = tipo,
+                        @params = param,
+                        fecha = DateTime.Now,
+                        metodo = metodo
+                    };
+
+                    contexto.logErrorPeticion.Add(log);
                     contexto.SaveChanges();
                     return true;
                 }

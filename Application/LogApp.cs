@@ -10,9 +10,14 @@ namespace Application
     {
         public bool GuardarLogPeticion(LogPeticion logPeticion)
         {
-
             ILogRepository logRepository = new LogRepository();
             return new LogService().GuardarLogPeticion(logRepository, logPeticion);
+
+        }
+        public bool GuardarErrorLogPeticion(string tipo, string param,string metodo)
+        {
+            ILogRepository logRepository = new LogRepository();
+            return new LogService().GuardarErrorLogPeticion(logRepository,tipo,param,metodo);
 
         }
     }

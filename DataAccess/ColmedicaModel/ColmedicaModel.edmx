@@ -11,7 +11,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="user_name" Type="varchar" MaxLength="50" />
-          <Property Name="request_response" Type="varchar" MaxLength="300" />
+          <Property Name="request_response" Type="text" />
           <Property Name="session_id_client" Type="varchar" MaxLength="120" />
           <Property Name="score" Type="nchar" MaxLength="10" />
           <Property Name="intentName" Type="varchar" MaxLength="150" />
@@ -36,7 +36,7 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
           </Key>
           <Property Name="id" Type="int" Nullable="false" />
           <Property Name="user_name" Type="varchar" MaxLength="50" />
-          <Property Name="request_response" Type="nchar" MaxLength="300" />
+          <Property Name="request_response" Type="text" />
           <Property Name="session_id_client" Type="varchar" MaxLength="120" />
           <Property Name="score" Type="nchar" MaxLength="10" />
           <Property Name="intentName" Type="varchar" MaxLength="150" />
@@ -98,16 +98,27 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="action" Type="text" />
-          <Property Name="parameters" Type="text" />
+          <Property Name="path" Type="text" />
+          <Property Name="requestContent" Type="text" />
           <Property Name="date" Type="datetime" />
+          <Property Name="ip" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="logErrorPeticion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tipo" Type="varchar" MaxLength="50" />
+          <Property Name="params" Type="text" />
+          <Property Name="fecha" Type="smalldatetime" />
+          <Property Name="metodo" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="tempBeneficiarios">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ciudadResidencia" Type="varchar" MaxLength="500" />
+          <Property Name="ciudadResidencia" Type="int" />
           <Property Name="colectivo" Type="int" />
           <Property Name="descripcionPlan" Type="varchar" MaxLength="500" />
           <Property Name="idUsuario" Type="int" />
@@ -136,12 +147,14 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
           <Property Name="ciuCod" Type="int" />
           <Property Name="ciuNombre" Type="varchar" MaxLength="150" />
           <Property Name="idConv" Type="varchar" MaxLength="500" />
+          <Property Name="idUsuario" Type="int" />
         </EntityType>
         <EntityType Name="tempContratos">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idContrato" Type="int" />
           <Property Name="nombre" Type="varchar" MaxLength="500" />
           <Property Name="idConv" Type="varchar" MaxLength="500" />
         </EntityType>
@@ -196,6 +209,7 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
           <EntitySet Name="intentList" EntityType="Self.intentList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="intentUnderstanding" EntityType="Self.intentUnderstanding" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="log_petitions" EntityType="Self.log_petitions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="logErrorPeticion" EntityType="Self.logErrorPeticion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tempBeneficiarios" EntityType="Self.tempBeneficiarios" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tempCita" EntityType="Self.tempCita" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tempCiudades" EntityType="Self.tempCiudades" Schema="dbo" store:Type="Tables" />
@@ -237,7 +251,7 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="user_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="request_response" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="request_response" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="session_id_client" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
           <Property Name="score" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="intentName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
@@ -284,44 +298,6 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
           <Property Name="status" Type="Int32" />
           <Property Name="createdAt" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="log_petitions">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="action" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="parameters" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="date" Type="DateTime" Precision="3" />
-        </EntityType>
-        <EntityType Name="tempBeneficiarios">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ciudadResidencia" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="colectivo" Type="Int32" />
-          <Property Name="descripcionPlan" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="idUsuario" Type="Int32" />
-          <Property Name="nombre" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="numeroContrato" Type="Int32" />
-          <Property Name="numeroIdentificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="parentesco" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="sexo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="telefonoCelular" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="telefonoResidencia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="tipoIdentificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="tempCiudades">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="cantidad" Type="Int32" />
-          <Property Name="ciuCod" Type="Int32" />
-          <Property Name="ciuNombre" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="tempContratos">
           <Key>
             <PropertyRef Name="id" />
@@ -329,6 +305,7 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="nombre" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="idContrato" Type="Int32" />
         </EntityType>
         <EntityType Name="tempEspecialidades">
           <Key>
@@ -380,7 +357,7 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" />
           <Property Name="user_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="request_response" Type="String" MaxLength="300" FixedLength="true" Unicode="true" />
+          <Property Name="request_response" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="session_id_client" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
           <Property Name="score" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="intentName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
@@ -402,9 +379,6 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
           <EntitySet Name="intentCategory" EntityType="Self.intentCategory" />
           <EntitySet Name="intentList" EntityType="Self.intentList" />
           <EntitySet Name="intentUnderstanding" EntityType="Self.intentUnderstanding" />
-          <EntitySet Name="log_petitions" EntityType="Self.log_petitions" />
-          <EntitySet Name="tempBeneficiarios" EntityType="Self.tempBeneficiarios" />
-          <EntitySet Name="tempCiudades" EntityType="Self.tempCiudades" />
           <EntitySet Name="tempContratos" EntityType="Self.tempContratos" />
           <EntitySet Name="tempEspecialidades" EntityType="Self.tempEspecialidades" />
           <EntitySet Name="tempInfoAgendamiento" EntityType="Self.tempInfoAgendamiento" />
@@ -413,6 +387,10 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
           <EntitySet Name="chatbotDataNoTransactional" EntityType="Self.chatbotDataNoTransactional" />
           <EntitySet Name="cmTipoDocumento" EntityType="ColmedicaModel.cmTipoDocumento" />
           <EntitySet Name="tempCita" EntityType="ColmedicaModel.tempCita" />
+          <EntitySet Name="logErrorPeticion" EntityType="ColmedicaModel.logErrorPeticion" />
+          <EntitySet Name="log_petitions" EntityType="ColmedicaModel.log_petitions" />
+          <EntitySet Name="tempBeneficiarios" EntityType="ColmedicaModel.tempBeneficiarios" />
+          <EntitySet Name="tempCiudades" EntityType="ColmedicaModel.tempCiudades" />
         </EntityContainer>
         <EntityType Name="cmTipoDocumento">
           <Key>
@@ -429,6 +407,56 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="logErrorPeticion">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tipo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="params" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="fecha" Type="DateTime" Precision="0" />
+          <Property Name="metodo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="log_petitions">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="path" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="requestContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="date" Type="DateTime" Precision="3" />
+          <Property Name="ip" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tempBeneficiarios">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ciudadResidencia" Type="Int32" />
+          <Property Name="colectivo" Type="Int32" />
+          <Property Name="descripcionPlan" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="idUsuario" Type="Int32" />
+          <Property Name="nombre" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="numeroContrato" Type="Int32" />
+          <Property Name="numeroIdentificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="parentesco" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sexo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="telefonoCelular" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="telefonoResidencia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tipoIdentificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tempCiudades">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cantidad" Type="Int32" />
+          <Property Name="ciuCod" Type="Int32" />
+          <Property Name="ciuNombre" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="idUsuario" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -493,50 +521,10 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="log_petitions">
-            <EntityTypeMapping TypeName="ColmedicaModel.log_petitions">
-              <MappingFragment StoreEntitySet="log_petitions">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="action" ColumnName="action" />
-                <ScalarProperty Name="parameters" ColumnName="parameters" />
-                <ScalarProperty Name="date" ColumnName="date" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tempBeneficiarios">
-            <EntityTypeMapping TypeName="ColmedicaModel.tempBeneficiarios">
-              <MappingFragment StoreEntitySet="tempBeneficiarios">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="ciudadResidencia" ColumnName="ciudadResidencia" />
-                <ScalarProperty Name="colectivo" ColumnName="colectivo" />
-                <ScalarProperty Name="descripcionPlan" ColumnName="descripcionPlan" />
-                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
-                <ScalarProperty Name="nombre" ColumnName="nombre" />
-                <ScalarProperty Name="numeroContrato" ColumnName="numeroContrato" />
-                <ScalarProperty Name="numeroIdentificacion" ColumnName="numeroIdentificacion" />
-                <ScalarProperty Name="parentesco" ColumnName="parentesco" />
-                <ScalarProperty Name="sexo" ColumnName="sexo" />
-                <ScalarProperty Name="telefonoCelular" ColumnName="telefonoCelular" />
-                <ScalarProperty Name="telefonoResidencia" ColumnName="telefonoResidencia" />
-                <ScalarProperty Name="tipoIdentificacion" ColumnName="tipoIdentificacion" />
-                <ScalarProperty Name="idConv" ColumnName="idConv" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tempCiudades">
-            <EntityTypeMapping TypeName="ColmedicaModel.tempCiudades">
-              <MappingFragment StoreEntitySet="tempCiudades">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
-                <ScalarProperty Name="ciuCod" ColumnName="ciuCod" />
-                <ScalarProperty Name="ciuNombre" ColumnName="ciuNombre" />
-                <ScalarProperty Name="idConv" ColumnName="idConv" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tempContratos">
             <EntityTypeMapping TypeName="ColmedicaModel.tempContratos">
               <MappingFragment StoreEntitySet="tempContratos">
+                <ScalarProperty Name="idContrato" ColumnName="idContrato" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
                 <ScalarProperty Name="idConv" ColumnName="idConv" />
@@ -629,6 +617,60 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
           <EntitySetMapping Name="tempCita">
             <EntityTypeMapping TypeName="ColmedicaModel.tempCita">
               <MappingFragment StoreEntitySet="tempCita">
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="logErrorPeticion">
+            <EntityTypeMapping TypeName="ColmedicaModel.logErrorPeticion">
+              <MappingFragment StoreEntitySet="logErrorPeticion">
+                <ScalarProperty Name="metodo" ColumnName="metodo" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="params" ColumnName="params" />
+                <ScalarProperty Name="tipo" ColumnName="tipo" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="log_petitions">
+            <EntityTypeMapping TypeName="ColmedicaModel.log_petitions">
+              <MappingFragment StoreEntitySet="log_petitions">
+                <ScalarProperty Name="ip" ColumnName="ip" />
+                <ScalarProperty Name="date" ColumnName="date" />
+                <ScalarProperty Name="requestContent" ColumnName="requestContent" />
+                <ScalarProperty Name="path" ColumnName="path" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tempBeneficiarios">
+            <EntityTypeMapping TypeName="ColmedicaModel.tempBeneficiarios">
+              <MappingFragment StoreEntitySet="tempBeneficiarios">
+                <ScalarProperty Name="idConv" ColumnName="idConv" />
+                <ScalarProperty Name="tipoIdentificacion" ColumnName="tipoIdentificacion" />
+                <ScalarProperty Name="telefonoResidencia" ColumnName="telefonoResidencia" />
+                <ScalarProperty Name="telefonoCelular" ColumnName="telefonoCelular" />
+                <ScalarProperty Name="sexo" ColumnName="sexo" />
+                <ScalarProperty Name="parentesco" ColumnName="parentesco" />
+                <ScalarProperty Name="numeroIdentificacion" ColumnName="numeroIdentificacion" />
+                <ScalarProperty Name="numeroContrato" ColumnName="numeroContrato" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="descripcionPlan" ColumnName="descripcionPlan" />
+                <ScalarProperty Name="colectivo" ColumnName="colectivo" />
+                <ScalarProperty Name="ciudadResidencia" ColumnName="ciudadResidencia" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tempCiudades">
+            <EntityTypeMapping TypeName="ColmedicaModel.tempCiudades">
+              <MappingFragment StoreEntitySet="tempCiudades">
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="idConv" ColumnName="idConv" />
+                <ScalarProperty Name="ciuNombre" ColumnName="ciuNombre" />
+                <ScalarProperty Name="ciuCod" ColumnName="ciuCod" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

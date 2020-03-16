@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs
 {
-   public class CitaCiudad
+   public class Cita
     {
         public string Dia { get; set; }
         public string DireccionCentroMedico { get; set; }

@@ -9,5 +9,9 @@ namespace Domain.Services
         {
             return logRepository.GuardarLogPeticion(logPeticion);
         }
+        public bool GuardarErrorLogPeticion(ILogRepository logRepository, string tipo, string param,string metodo)
+        {
+            return logRepository.GuardarErrorLogPeticion(tipo,param,metodo);
+        }
     }
 }

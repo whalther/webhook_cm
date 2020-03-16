@@ -30,11 +30,7 @@ namespace Webhook.Controllers
                  int lastIndex = sessionString.Length - 1;
                  string action = request.queryResult.action;
                 LogApp logApp = new LogApp();
-                logApp.GuardarLogPeticion(new LogPeticion()
-                {
-                    Action = action,
-                    Parameters = JsonConvert.SerializeObject(request.queryResult.parameters)
-                }) ;
+                
                 switch (action)
                  {
                      case "1":

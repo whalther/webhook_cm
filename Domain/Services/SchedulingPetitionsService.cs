@@ -34,7 +34,7 @@ namespace Domain.Services
                 string ivE = resultado.Substring(0, 16);
                 string content = resultado.Substring(16);
                 string textoPlano = cf.Descifrar(content, ivE);
-                Usuario jsonResp = JsonConvert.DeserializeObject<Usuario>(textoPlano);
+                Usuario jsonResp = JsonConvert.DeserializeObject<Usuario>(textoPlano.ToString());
                 return jsonResp;
             }
             else
@@ -85,7 +85,7 @@ namespace Domain.Services
             }
         }
 
-        public List<Ciudad> GetCiudades(ISchedulingPetitionsRepository petitionsRepository, ISchedulingSaveRepository saveRepository, string identificacion, string tipoId, string token, string idConv)
+       /* public List<Ciudad> GetCiudades(ISchedulingPetitionsRepository petitionsRepository, ISchedulingSaveRepository saveRepository, string identificacion, string tipoId, string token, string idConv)
         {
             Cifrador cf = new Cifrador();
             string iv = cf.generarIv();
@@ -109,7 +109,7 @@ namespace Domain.Services
                 string content = resultado.Substring(16);
                 string textoPlano = cf.Descifrar(content, ivE);
                 List<Ciudad> jsonResp = JsonConvert.DeserializeObject<List<Ciudad>>(textoPlano);
-                bool save = saveRepository.SaveCiudades(jsonResp, idConv);
+                bool save = saveRepository.SaveCiudades(jsonResp, idConv, identificacion);
                 if (save)
                 {
                     return jsonResp;
@@ -127,8 +127,8 @@ namespace Domain.Services
             }
 
         }
-
-        public List<Especialidad> GetEspecialidadesCiudad(ISchedulingPetitionsRepository petitionsRepository, ISchedulingSaveRepository saveRepository, string identificacion, string tipoId, int ciudad, string token, string idConv)
+        */
+        public string ProcesarEspecialidadesCiudad(ISchedulingPetitionsRepository petitionsRepository, ISchedulingSaveRepository saveRepository, string identificacion, string tipoId, int ciudad, string token, string idConv)
         {
             Cifrador cf = new Cifrador();
             string iv = cf.generarIv();
@@ -145,7 +145,7 @@ namespace Domain.Services
                 {"mensaje",paramCifrado},
                 {"iv",iv}
             };
-            string resultado = petitionsRepository.GetEspecialidadesCiudad(hd, parametros);
+            string resultado = petitionsRepository.ProcesarEspecialidadesCiudad(hd, parametros);
 
             if (resultado != "error_parametros" && resultado != "error_desconocido" && resultado != "error_token")
             {
@@ -156,22 +156,20 @@ namespace Domain.Services
                 bool save = saveRepository.SaveEspecialidadesCiudad(jsonResp, idConv);
                 if (save)
                 {
-                    return jsonResp;
+                    return "ok";
                 }
                 else
                 {
-                    List<Especialidad> e = new List<Especialidad>() { new Especialidad() { Nombre = "error_bd" } };
-                    return e;
+                    return "error_bd";
                 }
             }
             else
             {
-                List<Especialidad> e = new List<Especialidad>() { new Especialidad { Nombre = resultado } };
-                return e;
+                return resultado;
             }
 
         }
-        public List<CitaCiudad> GetCitasCiudad(ISchedulingPetitionsRepository petitionsRepository, ISchedulingSaveRepository saveRepository, int ciudad, int especialidad, string token, string idConv)
+        public string ProcesarCitas(ISchedulingPetitionsRepository petitionsRepository, ISchedulingSaveRepository saveRepository, int ciudad, int especialidad, string token, string idConv)
         {
             Cifrador cf = new Cifrador();
             string iv = cf.generarIv();
@@ -187,30 +185,28 @@ namespace Domain.Services
                 {"mensaje",paramCifrado},
                 {"iv",iv}
             };
-            string resultado = petitionsRepository.GetCitasCiudad(hd, parametros);
+            string resultado = petitionsRepository.ProcesarCitas(hd, parametros);
 
             if (resultado != "error_parametros" && resultado != "error_desconocido" && resultado != "error_token")
             {
                 string ivE = resultado.Substring(0, 16);
                 string content = resultado.Substring(16);
                 string textoPlano = cf.Descifrar(content, ivE);
-                List<CitaCiudad> jsonResp = JsonConvert.DeserializeObject<List<CitaCiudad>>(textoPlano);
+                List<Cita> jsonResp = JsonConvert.DeserializeObject<List<Cita>>(textoPlano);
                 
                 bool save = saveRepository.SaveCitasCiudad(jsonResp, idConv);
                 if (save)
                 {
-                    return jsonResp;
+                    return "ok";
                 }
                 else
                 {
-                    List<CitaCiudad> c = new List<CitaCiudad>() { new CitaCiudad() {  Dia = "error_bd" } };
-                    return c;
+                    return "error_bd";
                 }
             }
             else
             {
-                List<CitaCiudad> c = new List<CitaCiudad>() { new CitaCiudad { Dia = resultado } };
-                return c;
+                return resultado;
             }
         }
 
@@ -244,13 +240,45 @@ namespace Domain.Services
                 string ivE = resultado.Substring(0, 16);
                 string content = resultado.Substring(16);
                 string textoPlano = cf.Descifrar(content, ivE);
-               // Usuario jsonResp = JsonConvert.DeserializeObject<Usuario>(textoPlano);
                 return textoPlano;
             }
             else
             {
                 return resultado;
             }
+        }
+
+        public string ProcesarCiudadesBeneficiarioBd(ISchedulingPetitionsRepository petitionsRepository, ISchedulingSaveRepository saveRepository, string numDoc, string tipoDoc, string token, string idConv,int idUsuario) {
+            Cifrador cf = new Cifrador();
+            string iv = cf.generarIv();
+            Dictionary<string, string> param = new Dictionary<string, string>() {
+                {"tipIdeBeneficiario",tipoDoc },
+                {"numIdeBeneficiario",numDoc}
+            };
+            string paramCifrado = cf.Cifrar(JsonConvert.SerializeObject(param), iv);
+            Dictionary<string, string> hd = new Dictionary<string, string>() {
+                {"token",token }
+            };
+            Dictionary<string, string> parametros = new Dictionary<string, string>() {
+                {"mensaje",paramCifrado},
+                {"iv",iv}
+            };
+            string resultado = petitionsRepository.GetCiudadesUsuario(hd, parametros);
+
+            if (resultado != "error_parametros" && resultado != "error_desconocido" && resultado != "error_token")
+            {
+                string ivE = resultado.Substring(0, 16);
+                string content = resultado.Substring(16);
+                string textoPlano = cf.Descifrar(content, ivE);
+                List<Ciudad> jsonResp = JsonConvert.DeserializeObject<List<Ciudad>>(textoPlano);
+                saveRepository.SaveCiudades(jsonResp, idConv, idUsuario);
+                return "ok";
+            }
+            else
+            {
+                return resultado;
+            }
+
         }
 
     }

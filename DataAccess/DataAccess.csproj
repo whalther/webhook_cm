@@ -91,6 +91,9 @@
     <Compile Include="ColmedicaModel\intentUnderstanding.cs">
       <DependentUpon>ColmedicaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ColmedicaModel\logErrorPeticion.cs">
+      <DependentUpon>ColmedicaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ColmedicaModel\log_petitions.cs">
       <DependentUpon>ColmedicaModel.tt</DependentUpon>
     </Compile>

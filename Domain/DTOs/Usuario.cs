@@ -8,7 +8,7 @@ namespace Domain.DTOs
 {
    public class Usuario
     {
-        public int IdMensaje { get; set; }
+        public int? IdMensaje { get; set; }
         public string Mensaje { get; set; }
         public string TipoIdentificacion { get; set; }
         public string Identificacion { get; set; }
@@ -18,7 +18,7 @@ namespace Domain.DTOs
         public string Direccion { get; set; }
         public string Telefono { get; set; }
         public string Sexo { get; set; }
-        public int Ciudad { get; set; }
+        public int? Ciudad { get; set; }
         public string DireccionCasa { get; set; }
 
     }
