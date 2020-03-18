@@ -12,6 +12,8 @@ namespace DataAccess.ColmedicaModel
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class ColmedicaContext : DbContext
     {
@@ -34,12 +36,37 @@ namespace DataAccess.ColmedicaModel
         public virtual DbSet<tempInfoAgendamiento> tempInfoAgendamiento { get; set; }
         public virtual DbSet<userVisits> userVisits { get; set; }
         public virtual DbSet<whiteListIntent> whiteListIntent { get; set; }
-        public virtual DbSet<chatbotDataNoTransactional> chatbotDataNoTransactional { get; set; }
         public virtual DbSet<cmTipoDocumento> cmTipoDocumento { get; set; }
         public virtual DbSet<tempCita> tempCita { get; set; }
         public virtual DbSet<logErrorPeticion> logErrorPeticion { get; set; }
         public virtual DbSet<log_petitions> log_petitions { get; set; }
         public virtual DbSet<tempBeneficiarios> tempBeneficiarios { get; set; }
         public virtual DbSet<tempCiudades> tempCiudades { get; set; }
+    
+        public virtual int updateCita(string idConversacion, string campo, string valor)
+        {
+            var idConversacionParameter = idConversacion != null ?
+                new ObjectParameter("idConversacion", idConversacion) :
+                new ObjectParameter("idConversacion", typeof(string));
+    
+            var campoParameter = campo != null ?
+                new ObjectParameter("campo", campo) :
+                new ObjectParameter("campo", typeof(string));
+    
+            var valorParameter = valor != null ?
+                new ObjectParameter("valor", valor) :
+                new ObjectParameter("valor", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("updateCita", idConversacionParameter, campoParameter, valorParameter);
+        }
+    
+        public virtual int cleanTablesConversation(string idConversacion)
+        {
+            var idConversacionParameter = idConversacion != null ?
+                new ObjectParameter("idConversacion", idConversacion) :
+                new ObjectParameter("idConversacion", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("cleanTablesConversation", idConversacionParameter);
+        }
     }
 }

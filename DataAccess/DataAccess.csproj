@@ -61,9 +61,6 @@
     <Compile Include="ColmedicaModel\chatbotData.cs">
       <DependentUpon>ColmedicaModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="ColmedicaModel\chatbotDataNoTransactional.cs">
-      <DependentUpon>ColmedicaModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="ColmedicaModel\cmTipoDocumento.cs">
       <DependentUpon>ColmedicaModel.tt</DependentUpon>
     </Compile>

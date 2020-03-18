@@ -357,5 +357,114 @@ namespace DataAccess.Repositories
                 return new List<Cita>();
             }
         }
+        public Boolean UpdateCitaBd(string idConv,string campo, string valor) {
+            try
+            {
+                using (ColmedicaContext contexto = new ColmedicaContext())
+                {
+                    if (campo == "documento")
+                    {
+                        string[] doc = valor.Split('*');
+                        string tipoDoc = doc[0];
+                        string numDoc = doc[1];
+                        dynamic resultado = (from tb in contexto.tempBeneficiarios
+                                             where (tb.idConv == idConv && tb.tipoIdentificacion == tipoDoc && tb.numeroIdentificacion == numDoc)
+                                             select new { tb.telefonoResidencia,tb.telefonoCelular }
+                                             ).FirstOrDefault();
+                        contexto.updateCita(idConv,"tipoIdBeneficiario",tipoDoc);
+                        contexto.updateCita(idConv, "numIdBeneficiario", numDoc);
+                        contexto.updateCita(idConv, "telefono", resultado.telefonoResidencia);
+                        contexto.updateCita(idConv, "celular", resultado.telefonoCelular);
+                    }
+                    else 
+                    {
+                        contexto.updateCita(idConv, campo, valor);
+                    }
+                    
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+                return false;
+            }
+
+        }
+        public Boolean LimpiarTablas(string idConv)
+        {
+            try
+            {
+                using (ColmedicaContext contexto = new ColmedicaContext())
+                {
+                        contexto.cleanTablesConversation(idConv);
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+                return false;
+            }
+        }
+        public dynamic GetInfoCita(string idConv)
+        {
+            dynamic resultado;
+            try
+            {
+                using (ColmedicaContext contexto = new ColmedicaContext())
+                {
+                    resultado = (from tct in contexto.tempCita
+                                 join tb in contexto.tempBeneficiarios on new { x1 = tct.tipoIdBeneficiario, x2 = tct.numIdBeneficiario } equals new { x1 = tb.tipoIdentificacion, x2 = tb.numeroIdentificacion }
+                                 join tciu in contexto.tempCiudades on tb.ciudadResidencia equals tciu.ciuCod
+                                 join tia in contexto.tempInfoAgendamiento on tct.numEspacioCita equals tia.idEspacioCita
+                                 where (tct.idConv == idConv)
+                                 select new 
+                                 {
+                                     tb.nombre,
+                                     tb.tipoIdentificacion,
+                                     tb.numeroIdentificacion,
+                                     tciu.ciuNombre,
+                                     tia.direccionCentroMedico,
+                                     tia.fecha,
+                                     tia.nombreEspecialidad,
+                                     tia.horaInicio,
+                                     tia.horaFin,
+                                     tia.nombreEspacioFisico,
+                                     tia.nombreMedico
+                                 }
+                                 ).FirstOrDefault();
+                   
+                }
+                return resultado;
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+                return new { };
+            }
+
+        }
+        public dynamic GetInfoAsignarCita(string idConv)
+        {
+            dynamic resultado;
+            try
+            {
+                using (ColmedicaContext contexto = new ColmedicaContext())
+                {
+                    resultado = (from tct in contexto.tempCita
+                                 where tct.idConv == idConv
+                                 select tct
+                                 ).FirstOrDefault();
+
+                }
+                return resultado;
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+                return new { };
+            }
+        }
     }
 }

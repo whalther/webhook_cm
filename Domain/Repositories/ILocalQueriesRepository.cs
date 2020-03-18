@@ -20,5 +20,9 @@ namespace Domain.Repositories
         List<Cita> GetCitasProximas(string fecha, string idConv);
         List<Cita> GetCitasMedico(int idMedico, string idConv);
         List<Cita> GetCitasCentroMedico(int idCentroMedico, string idConv);
+        Boolean UpdateCitaBd(string idConv, string campo, string valor);
+        Boolean LimpiarTablas(string idConv);
+        dynamic GetInfoCita(string idConv);
+        dynamic GetInfoAsignarCita(string idConv);
     }
 }

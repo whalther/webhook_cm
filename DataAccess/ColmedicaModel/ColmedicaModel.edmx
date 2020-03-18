@@ -12,7 +12,7 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="user_name" Type="varchar" MaxLength="50" />
           <Property Name="request_response" Type="text" />
-          <Property Name="session_id_client" Type="varchar" MaxLength="120" />
+          <Property Name="session_id_client" Type="varchar(max)" />
           <Property Name="score" Type="nchar" MaxLength="10" />
           <Property Name="intentName" Type="varchar" MaxLength="150" />
           <Property Name="action_bot" Type="varchar" MaxLength="150" />
@@ -30,29 +30,6 @@
         </EntityType>
         <!--Errores durante la generación:
 advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTransactional' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
-        <EntityType Name="chatbotDataNoTransactional">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="user_name" Type="varchar" MaxLength="50" />
-          <Property Name="request_response" Type="text" />
-          <Property Name="session_id_client" Type="varchar" MaxLength="120" />
-          <Property Name="score" Type="nchar" MaxLength="10" />
-          <Property Name="intentName" Type="varchar" MaxLength="150" />
-          <Property Name="action_bot" Type="varchar" MaxLength="150" />
-          <Property Name="date_transaction" Type="datetime" />
-          <Property Name="language" Type="nchar" MaxLength="10" />
-          <Property Name="json_dialogflow" Type="text" />
-          <Property Name="contextLife" Type="nchar" MaxLength="10" />
-          <Property Name="ipAddress" Type="varchar" MaxLength="50" />
-          <Property Name="deviceFamily" Type="varchar" MaxLength="50" />
-          <Property Name="osClient" Type="varchar" MaxLength="20" />
-          <Property Name="osVersion" Type="varchar" MaxLength="50" />
-          <Property Name="browserClient" Type="varchar" MaxLength="30" />
-          <Property Name="id_understanding" Type="int" />
-          <Property Name="id_intentList" Type="int" />
-        </EntityType>
         <EntityType Name="cmTipoDocumento">
           <Key>
             <PropertyRef Name="id" />
@@ -137,6 +114,15 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="numEspacioCita" Type="int" />
+          <Property Name="tipoIdBeneficiario" Type="varchar" MaxLength="10" />
+          <Property Name="numIdBeneficiario" Type="varchar" MaxLength="50" />
+          <Property Name="idMedico" Type="int" />
+          <Property Name="centroMedico" Type="int" />
+          <Property Name="especialidad" Type="int" />
+          <Property Name="telefono" Type="varchar" MaxLength="50" />
+          <Property Name="celular" Type="varchar" MaxLength="50" />
+          <Property Name="idConv" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="tempCiudades">
           <Key>
@@ -202,6 +188,14 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
+        <Function Name="cleanTablesConversation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idConversacion" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="updateCita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idConversacion" Type="varchar" Mode="In" />
+          <Parameter Name="campo" Type="varchar" Mode="In" />
+          <Parameter Name="valor" Type="varchar" Mode="In" />
+        </Function>
         <EntityContainer Name="ColmedicaModelStoreContainer">
           <EntitySet Name="chatbotData" EntityType="Self.chatbotData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="cmTipoDocumento" EntityType="Self.cmTipoDocumento" Schema="dbo" store:Type="Tables" />
@@ -218,28 +212,6 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
           <EntitySet Name="tempInfoAgendamiento" EntityType="Self.tempInfoAgendamiento" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="userVisits" EntityType="Self.userVisits" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="whiteListIntent" EntityType="Self.whiteListIntent" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="chatbotDataNoTransactional" EntityType="Self.chatbotDataNoTransactional" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [chatbotDataNoTransactional].[id] AS [id], 
-    [chatbotDataNoTransactional].[user_name] AS [user_name], 
-    [chatbotDataNoTransactional].[request_response] AS [request_response], 
-    [chatbotDataNoTransactional].[session_id_client] AS [session_id_client], 
-    [chatbotDataNoTransactional].[score] AS [score], 
-    [chatbotDataNoTransactional].[intentName] AS [intentName], 
-    [chatbotDataNoTransactional].[action_bot] AS [action_bot], 
-    [chatbotDataNoTransactional].[date_transaction] AS [date_transaction], 
-    [chatbotDataNoTransactional].[language] AS [language], 
-    [chatbotDataNoTransactional].[json_dialogflow] AS [json_dialogflow], 
-    [chatbotDataNoTransactional].[contextLife] AS [contextLife], 
-    [chatbotDataNoTransactional].[ipAddress] AS [ipAddress], 
-    [chatbotDataNoTransactional].[deviceFamily] AS [deviceFamily], 
-    [chatbotDataNoTransactional].[osClient] AS [osClient], 
-    [chatbotDataNoTransactional].[osVersion] AS [osVersion], 
-    [chatbotDataNoTransactional].[browserClient] AS [browserClient], 
-    [chatbotDataNoTransactional].[id_understanding] AS [id_understanding], 
-    [chatbotDataNoTransactional].[id_intentList] AS [id_intentList]
-    FROM [dbo].[chatbotDataNoTransactional] AS [chatbotDataNoTransactional]</DefiningQuery>
-          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -252,7 +224,7 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="user_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="request_response" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="session_id_client" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="session_id_client" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="score" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
           <Property Name="intentName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="action_bot" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
@@ -351,29 +323,6 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
-        <EntityType Name="chatbotDataNoTransactional">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="user_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="request_response" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="session_id_client" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
-          <Property Name="score" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="intentName" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="action_bot" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="date_transaction" Type="DateTime" Precision="3" />
-          <Property Name="language" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="json_dialogflow" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="contextLife" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="ipAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="deviceFamily" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="osClient" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="osVersion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="browserClient" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="id_understanding" Type="Int32" />
-          <Property Name="id_intentList" Type="Int32" />
-        </EntityType>
         <EntityContainer Name="ColmedicaContext" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="chatbotData" EntityType="Self.chatbotData" />
           <EntitySet Name="intentCategory" EntityType="Self.intentCategory" />
@@ -384,13 +333,20 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
           <EntitySet Name="tempInfoAgendamiento" EntityType="Self.tempInfoAgendamiento" />
           <EntitySet Name="userVisits" EntityType="Self.userVisits" />
           <EntitySet Name="whiteListIntent" EntityType="Self.whiteListIntent" />
-          <EntitySet Name="chatbotDataNoTransactional" EntityType="Self.chatbotDataNoTransactional" />
           <EntitySet Name="cmTipoDocumento" EntityType="ColmedicaModel.cmTipoDocumento" />
           <EntitySet Name="tempCita" EntityType="ColmedicaModel.tempCita" />
           <EntitySet Name="logErrorPeticion" EntityType="ColmedicaModel.logErrorPeticion" />
           <EntitySet Name="log_petitions" EntityType="ColmedicaModel.log_petitions" />
           <EntitySet Name="tempBeneficiarios" EntityType="ColmedicaModel.tempBeneficiarios" />
           <EntitySet Name="tempCiudades" EntityType="ColmedicaModel.tempCiudades" />
+          <FunctionImport Name="updateCita">
+            <Parameter Name="idConversacion" Mode="In" Type="String" />
+            <Parameter Name="campo" Mode="In" Type="String" />
+            <Parameter Name="valor" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="cleanTablesConversation">
+            <Parameter Name="idConversacion" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="cmTipoDocumento">
           <Key>
@@ -407,6 +363,15 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="numEspacioCita" Type="Int32" />
+          <Property Name="tipoIdBeneficiario" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="numIdBeneficiario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="centroMedico" Type="Int32" />
+          <Property Name="especialidad" Type="Int32" />
+          <Property Name="telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="celular" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="idMedico" Type="Int32" />
         </EntityType>
         <EntityType Name="logErrorPeticion">
           <Key>
@@ -579,30 +544,6 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="chatbotDataNoTransactional">
-            <EntityTypeMapping TypeName="ColmedicaModel.chatbotDataNoTransactional">
-              <MappingFragment StoreEntitySet="chatbotDataNoTransactional">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="user_name" ColumnName="user_name" />
-                <ScalarProperty Name="request_response" ColumnName="request_response" />
-                <ScalarProperty Name="session_id_client" ColumnName="session_id_client" />
-                <ScalarProperty Name="score" ColumnName="score" />
-                <ScalarProperty Name="intentName" ColumnName="intentName" />
-                <ScalarProperty Name="action_bot" ColumnName="action_bot" />
-                <ScalarProperty Name="date_transaction" ColumnName="date_transaction" />
-                <ScalarProperty Name="language" ColumnName="language" />
-                <ScalarProperty Name="json_dialogflow" ColumnName="json_dialogflow" />
-                <ScalarProperty Name="contextLife" ColumnName="contextLife" />
-                <ScalarProperty Name="ipAddress" ColumnName="ipAddress" />
-                <ScalarProperty Name="deviceFamily" ColumnName="deviceFamily" />
-                <ScalarProperty Name="osClient" ColumnName="osClient" />
-                <ScalarProperty Name="osVersion" ColumnName="osVersion" />
-                <ScalarProperty Name="browserClient" ColumnName="browserClient" />
-                <ScalarProperty Name="id_understanding" ColumnName="id_understanding" />
-                <ScalarProperty Name="id_intentList" ColumnName="id_intentList" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="cmTipoDocumento">
             <EntityTypeMapping TypeName="ColmedicaModel.cmTipoDocumento">
               <MappingFragment StoreEntitySet="cmTipoDocumento">
@@ -617,6 +558,15 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
           <EntitySetMapping Name="tempCita">
             <EntityTypeMapping TypeName="ColmedicaModel.tempCita">
               <MappingFragment StoreEntitySet="tempCita">
+                <ScalarProperty Name="idMedico" ColumnName="idMedico" />
+                <ScalarProperty Name="idConv" ColumnName="idConv" />
+                <ScalarProperty Name="celular" ColumnName="celular" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="especialidad" ColumnName="especialidad" />
+                <ScalarProperty Name="centroMedico" ColumnName="centroMedico" />
+                <ScalarProperty Name="numIdBeneficiario" ColumnName="numIdBeneficiario" />
+                <ScalarProperty Name="tipoIdBeneficiario" ColumnName="tipoIdBeneficiario" />
+                <ScalarProperty Name="numEspacioCita" ColumnName="numEspacioCita" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -675,6 +625,8 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="updateCita" FunctionName="ColmedicaModel.Store.updateCita" />
+          <FunctionImportMapping FunctionImportName="cleanTablesConversation" FunctionName="ColmedicaModel.Store.cleanTablesConversation" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -15,5 +15,14 @@ namespace DataAccess.ColmedicaModel
     public partial class tempCita
     {
         public int id { get; set; }
+        public Nullable<int> numEspacioCita { get; set; }
+        public string tipoIdBeneficiario { get; set; }
+        public string numIdBeneficiario { get; set; }
+        public Nullable<int> centroMedico { get; set; }
+        public Nullable<int> especialidad { get; set; }
+        public string telefono { get; set; }
+        public string celular { get; set; }
+        public string idConv { get; set; }
+        public Nullable<int> idMedico { get; set; }
     }
 }

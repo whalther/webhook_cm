@@ -1,10 +1,13 @@
 ﻿using Application;
 using Domain.DTOs;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web.Helpers;
 using System.Web.Http;
 
 namespace Webhook.Controllers
@@ -168,6 +171,144 @@ namespace Webhook.Controllers
                 Info = new Dictionary<string, object> { { "data", app.GetCitasCentroMedico(idCentroMedico, sessionId[0]) } },
                 IdConv = sessionId[0]
             };
+            return Json(respuesta);
+        }
+        [HttpPost]
+        [Route("updateEspacioCita")]
+        public IHttpActionResult UpdateEspacioCitaBd([FromBody]dynamic request)
+        {
+            LocalQueriesApp app = new LocalQueriesApp();
+            string[] sessionId = request["sessionId"].ToString().Split('*');
+            string idConv = sessionId[0];
+            string espacioCita = request["espacioCita"];
+            Boolean res = app.UpdateCitaBd(idConv,"numEspacioCita",espacioCita);
+            Replay respuesta = new Replay()
+            {
+                IdConv = idConv,
+                Status = res == true ? "OK" : "error"
+            };
+            return Json(respuesta);
+        }
+        [HttpPost]
+        [Route("updateDocumentoCita")]
+        public IHttpActionResult UpdateDocumentoCitaBd([FromBody]dynamic request)
+        {
+            LocalQueriesApp app = new LocalQueriesApp();
+            string[] sessionId = request["sessionId"].ToString().Split('*');
+            string idConv = sessionId[0];
+            string documento = request["tipoDoc"]+"*"+request["numDoc"];
+            Boolean res = app.UpdateCitaBd(idConv, "documento", documento);
+            Replay respuesta = new Replay()
+            {
+                IdConv = idConv,
+                Status = res == true ? "OK" : "error"
+            };
+            return Json(respuesta);
+        }
+        [HttpPost]
+        [Route("updateMedicoCita")]
+        public IHttpActionResult UpdateMedicoCitaBd([FromBody]dynamic request)
+        {
+            LocalQueriesApp app = new LocalQueriesApp();
+            string[] sessionId = request["sessionId"].ToString().Split('*');
+            string idConv = sessionId[0];
+            string idMedico = request["idMedico"];
+            Boolean res = app.UpdateCitaBd(idConv, "idMedico", idMedico);
+            Replay respuesta = new Replay()
+            {
+                IdConv = idConv,
+                Status = res == true ? "OK" : "error"
+            };
+            return Json(respuesta);
+        }
+        [HttpPost]
+        [Route("updateCentroMedicoCita")]
+        public IHttpActionResult UpdateCentroMedicoCitaBd([FromBody]dynamic request)
+        {
+            LocalQueriesApp app = new LocalQueriesApp();
+            string[] sessionId = request["sessionId"].ToString().Split('*');
+            string idConv = sessionId[0];
+            string idCentroMedico = request["idCentroMedico"];
+            Boolean res = app.UpdateCitaBd(idConv, "centroMedico", idCentroMedico);
+            Replay respuesta = new Replay()
+            {
+                IdConv = idConv,
+                Status = res == true ? "OK" : "error"
+            };
+            return Json(respuesta);
+        }
+        [HttpPost]
+        [Route("updateEspecialidadCita")]
+        public IHttpActionResult UpdateEspecialidadCita([FromBody]dynamic request)
+        {
+            LocalQueriesApp app = new LocalQueriesApp();
+            string[] sessionId = request["sessionId"].ToString().Split('*');
+            string idConv = sessionId[0];
+            string especialidad = request["especialidad"];
+            Boolean res = app.UpdateCitaBd(idConv, "especialidad", especialidad);
+            Replay respuesta = new Replay()
+            {
+                IdConv = idConv,
+                Status = res == true ? "OK" : "error"
+            };
+            return Json(respuesta);
+        }
+        [HttpPost]
+        [Route("limpiarTablas")]
+        public IHttpActionResult LimpiarTablas([FromBody]dynamic request)
+        {
+            LocalQueriesApp app = new LocalQueriesApp();
+            string[] sessionId = request["sessionId"].ToString().Split('*');
+            string idConv = sessionId[0];
+            Boolean res = app.LimpiarTablas(idConv);
+            Replay respuesta = new Replay() {
+                IdConv = idConv,
+                Status = res == true ? "OK" : "error"
+            };
+            return Json(respuesta);
+        }
+        [HttpPost]
+        [Route("getInfoCita")]
+        public IHttpActionResult GetInfoCita([FromBody]dynamic request)
+        {
+            LocalQueriesApp app = new LocalQueriesApp();
+            string[] sessionId = request["sessionId"].ToString().Split('*');
+            string idConv = sessionId[0];
+            dynamic res = app.GetInfoCita(idConv);
+            Replay respuesta = new Replay()
+            {
+                IdConv = idConv,
+                Status = res !="" ? "OK" : "error",
+                Info = new Dictionary<string, object> { { "data", res } }
+            };
+            return Json(respuesta);
+        }
+        [HttpPost]
+        [Route("asignarCita")]
+        public IHttpActionResult AsignarCita([FromBody]dynamic request)
+        {
+            LocalQueriesApp app = new LocalQueriesApp();
+            Utilities utilidad = new Utilities();
+            string[] sessionId = request["sessionId"].ToString().Split('*');
+            string idConv = sessionId[0];
+            string numeroCelular = utilidad.GetNumero(sessionId[1]);
+            string tipoDoc = request["tipoDoc"];
+            string numDoc = request["numDoc"];
+            string token = request["token"];
+            dynamic res = app.AsignarCita(idConv,numDoc,tipoDoc,numeroCelular,token);
+            Replay respuesta = new Replay() {
+            IdConv = idConv
+            };
+            if (res != "error_parametros" && res != "error_desconocido")
+            {
+                respuesta.Status = "OK";
+                respuesta.Info.Add("data", JToken.Parse(res));
+            }
+            else
+            {
+                respuesta.Status = "error";
+                respuesta.Info.Add("data", res);
+            }
             return Json(respuesta);
         }
     }

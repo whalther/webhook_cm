@@ -54,5 +54,21 @@ namespace Domain.Services
         {
             return repo.GetCitasCentroMedico(idCentroMedico, idConv);
         }
+        public Boolean UpdateCitaBd(ILocalQueriesRepository repo, string idConv,string campo, string valor)
+        {
+            return repo.UpdateCitaBd(idConv,campo,valor);
+        }
+        public Boolean LimpiarTablas(ILocalQueriesRepository repo, string idConv)
+        {
+            return repo.LimpiarTablas(idConv);
+        }
+        public dynamic GetInfoCita(ILocalQueriesRepository repo, string idConv)
+        {
+            return repo.GetInfoCita(idConv);
+        }
+        public dynamic GetInfoAsignarCita(ILocalQueriesRepository repo, string idConv)
+        {
+            return repo.GetInfoAsignarCita(idConv);
+        }
     }
 }
