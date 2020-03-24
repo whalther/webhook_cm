@@ -12,7 +12,7 @@ using System.Web.Http;
 
 namespace Webhook
 {
-    public class RequestFilter : AuthorizeAttribute
+    public class RequestFilterAttribute : AuthorizeAttribute
     {
         public override void OnAuthorization(
               System.Web.Http.Controllers.HttpActionContext actionContext)

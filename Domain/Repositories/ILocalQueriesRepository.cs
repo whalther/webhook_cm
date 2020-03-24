@@ -15,8 +15,8 @@ namespace Domain.Repositories
         Ciudad GetCiudadBeneficiario(int idUsuario, string idConv);
         List<Ciudad> GetCiudadesBeneficiario(int idUsuario, string idConv);
         List<Especialidad> GetEspecialidades(string idConv);
-        List<Global> GetMedicos(string idConv);
-        List<Global> GetCentroMedicos(string idConv);
+        List<GlobalResp> GetMedicos(string idConv);
+        List<GlobalResp> GetCentroMedicos(string idConv);
         List<Cita> GetCitasProximas(string fecha, string idConv);
         List<Cita> GetCitasMedico(int idMedico, string idConv);
         List<Cita> GetCitasCentroMedico(int idCentroMedico, string idConv);

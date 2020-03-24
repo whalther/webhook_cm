@@ -16,13 +16,13 @@ namespace Domain.Services
         {
             Cifrador cf = new Cifrador();
             string usuarioPwd = ConfigurationManager.AppSettings.Get("usuarioBot") +":"+ ConfigurationManager.AppSettings.Get("pwdBot");
-            string iv = cf.generarIv();
+            string iv = cf.GenerarIv();
             string usuarioPwdCifrado = cf.Cifrar(usuarioPwd,iv);
             Dictionary<string, string> param = new Dictionary<string, string>() {
                 {"numeroCelular",numeroCelular },
                 {"identificacion",documento}
             };
-            string iv2 = cf.generarIv();
+            string iv2 = cf.GenerarIv();
             string paramCifrado = cf.Cifrar(JsonConvert.SerializeObject(param), iv2);
             Dictionary<string, string> hd = new Dictionary<string, string>() {
                 {"Authorization",usuarioPwdCifrado },
@@ -40,13 +40,13 @@ namespace Domain.Services
         {
             Cifrador cf = new Cifrador();
             string usuarioPwd = ConfigurationManager.AppSettings.Get("usuarioBot") + ":" + ConfigurationManager.AppSettings.Get("pwdBot");
-            string iv = cf.generarIv();
+            string iv = cf.GenerarIv();
             string usuarioPwdCifrado = cf.Cifrar(usuarioPwd, iv);
             Dictionary<string, string> param = new Dictionary<string, string>() {
                 {"numeroCelular",numeroCelular },
                 {"identificacion",documento}
             };
-            string iv2 = cf.generarIv();
+            string iv2 = cf.GenerarIv();
             string paramCifrado = cf.Cifrar(JsonConvert.SerializeObject(param), iv2);
             Dictionary<string, string> hd = new Dictionary<string, string>() {
                 {"Authorization",usuarioPwdCifrado },
@@ -66,7 +66,7 @@ namespace Domain.Services
             Dictionary<string, string> param = new Dictionary<string, string>() {
                 {"otp",otp}
             };
-            string iv2 = cf.generarIv();
+            string iv2 = cf.GenerarIv();
             string paramCifrado = cf.Cifrar(JsonConvert.SerializeObject(param), iv2);
             Dictionary<string, string> hd = new Dictionary<string, string>() {
                 {"token",token}

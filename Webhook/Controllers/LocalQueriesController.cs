@@ -16,6 +16,16 @@ namespace Webhook.Controllers
     public class LocalQueriesController : ApiController
     {
         [HttpPost]
+        [Route("levantarApp")]
+        public IHttpActionResult LevantarApp()
+        {
+            Replay respuesta = new Replay()
+            {
+                Status = "OK",
+            };
+            return Json(respuesta);
+        }
+        [HttpPost]
         [Route("getTiposDocumento")]
         public IHttpActionResult GetTiposDocumento()
         {

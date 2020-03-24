@@ -14,7 +14,7 @@ namespace Webhook.Controllers
     [RequestFilter]
     public class SchedulingPetitionsController : ApiController
     {
-        Utilities utilidad = new Utilities();
+        readonly Utilities utilidad = new Utilities();
         [HttpPost]
         [Route("validarUsuario")]
         public IHttpActionResult ValidarUsuario([FromBody]dynamic request)
@@ -44,96 +44,6 @@ namespace Webhook.Controllers
 
             return Json(respuesta);
         }
-
-        [HttpPost]
-        [Route("getBeneficiariosContratante")]
-        public IHttpActionResult GetBeneficiariosContratante([FromBody]dynamic request)
-        {
-            SchedulingPetitionsApp app = new SchedulingPetitionsApp();
-            Replay respuesta = new Replay();
-
-            string[] sessionId = request["sessionId"].ToString().Split('*');
-            string numeroCelular = utilidad.GetNumero(sessionId[1]);
-            string identificacion = request["tipoDoc"] + request["numDoc"];
-            string idConv = sessionId[0];
-            string token = request["token"];
-            respuesta.IdConv = idConv;
-            Resultado res = app.GetBeneficiariosContratante(identificacion,token,idConv,numeroCelular);
-            respuesta.Token = res.Token;
-            List<BeneficiarioContratante> benes = (List<BeneficiarioContratante>)res.Result;
-            if (benes[0].Parentesco != "error_parametros" && benes[0].Parentesco != "error_desconocido")
-            {
-                respuesta.Status = "OK";
-                respuesta.Info.Add("data", benes);
-            }
-            else
-            {
-                respuesta.Status = "error";
-                respuesta.Info.Add("data", benes[0].Parentesco);
-            }
-            return Json(respuesta);
-        }
-       /* [HttpPost]
-        [Route("getCiudades")]
-        public IHttpActionResult GetCiudades([FromBody]dynamic request)
-        {
-            SchedulingPetitionsApp app = new SchedulingPetitionsApp();
-            Replay respuesta = new Replay();
-            string[] sessionId = request["sessionId"].ToString().Split('*');
-            string numeroCelular = sessionId[1].Substring(2);
-            string identificacion = request["numDoc"];
-            string tipoDoc = request["tipoDoc"];
-            string idConv = sessionId[0];
-            string token = request["token"];
-
-            respuesta.IdConv = idConv;
-            Resultado res = app.GetCiudades(identificacion,tipoDoc, token,idConv, numeroCelular);
-            respuesta.Token = res.Token;
-            List<Ciudad> cius = (List<Ciudad>)res.Result;
-            if (cius[0].CiuNombre != "error_parametros" && cius[0].CiuNombre != "error_desconocido")
-            {
-                respuesta.Status = "OK";
-                respuesta.Info.Add("data", cius);
-            }
-            else
-            {
-                respuesta.Status = "error";
-                respuesta.Info.Add("data", cius[0].CiuNombre);
-            }
-            return Json(respuesta);
-        }*/
-       /* [HttpPost]
-        [Route("getEspecialidadesCiudad")]
-       public IHttpActionResult GetEspecialidadesCiudades([FromBody]dynamic request)
-        {
-            SchedulingPetitionsApp app = new SchedulingPetitionsApp();
-            Replay respuesta = new Replay();
-            string[] sessionId = request["sessionId"].ToString().Split('*');
-            string numeroCelular = sessionId[1].Substring(2);
-            string identificacion = request["numDoc"];
-            string tipoDoc = request["tipoDoc"];
-            string idConv = sessionId[0];
-            string token = request["token"];
-            string identificacionChat = request["identificacionChat"];
-            int ciudad = (int)request["ciudad"];
-
-            respuesta.IdConv = idConv;
-            Resultado res = app.ProcesarEspecialidadesCiudad(identificacion, tipoDoc,ciudad, token, idConv,identificacionChat, numeroCelular);
-            respuesta.Token = res.Token;
-            List<Especialidad> espes = (List<Especialidad>)res.Result;
-            if (espes[0].Nombre != "error_parametros" && espes[0].Nombre != "error_desconocido")
-            {
-                respuesta.Status = "OK";
-                respuesta.Info.Add("data", espes);
-            }
-            else
-            {
-                respuesta.Status = "error";
-                respuesta.Info.Add("data", espes[0].Nombre);
-            }
-            return Json(respuesta);
-        }*/
-        
         [HttpPost]
         [Route("procesarBeneficiariosCiudades")]
         public void ProcesarBeneficiariosCiudades([FromBody]dynamic request)

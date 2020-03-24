@@ -34,11 +34,11 @@ namespace Domain.Services
         {
             return repo.GetEspecialidades( idConv);
         }
-        public List<Global> GetMedicos(ILocalQueriesRepository repo, string idConv) 
+        public List<GlobalResp> GetMedicos(ILocalQueriesRepository repo, string idConv) 
         {
             return repo.GetMedicos(idConv);
         }
-        public List<Global> GetCentroMedicos(ILocalQueriesRepository repo, string idConv) 
+        public List<GlobalResp> GetCentroMedicos(ILocalQueriesRepository repo, string idConv) 
         {
             return repo.GetCentroMedicos(idConv);
         }

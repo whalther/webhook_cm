@@ -50,13 +50,13 @@ namespace Application
             LocalQueriesService serv = new LocalQueriesService();
             return serv.GetEspecialidades(repo,idConv);
         }
-        public List<Global> GetMedicos(string idConv)
+        public List<GlobalResp> GetMedicos(string idConv)
         {
             ILocalQueriesRepository repo = new LocalQueriesRepository();
             LocalQueriesService serv = new LocalQueriesService();
             return serv.GetMedicos(repo, idConv);
         }
-        public List<Global> GetCentrosMedicos(string idConv)
+        public List<GlobalResp> GetCentrosMedicos(string idConv)
         {
             ILocalQueriesRepository repo = new LocalQueriesRepository();
             LocalQueriesService serv = new LocalQueriesService();

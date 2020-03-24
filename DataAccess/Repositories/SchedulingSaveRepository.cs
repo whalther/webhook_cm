@@ -23,7 +23,7 @@ namespace DataAccess.Repositories
                         tempBeneficiarios ben = new tempBeneficiarios()
                         {
                             ciudadResidencia = beneficiario.CiudadResidencia,
-                            colectivo = beneficiario.Colectivo==""?0:Int32.Parse(beneficiario.Colectivo),
+                            colectivo = beneficiario.Colectivo.Length==0?0:Int32.Parse(beneficiario.Colectivo),
                             descripcionPlan = beneficiario.DescripcionPlan,
                             idUsuario = beneficiario.IdUsuario,
                             nombre = beneficiario.Nombre,
@@ -57,6 +57,7 @@ namespace DataAccess.Repositories
                 {
                     Trace.WriteLine(E.Message);
                     return false;
+                    throw;
                 }
             }
         }
@@ -87,6 +88,7 @@ namespace DataAccess.Repositories
                 {
                     Trace.WriteLine(E.Message);
                     return false;
+                    throw;
                 }
             }
         }
@@ -113,6 +115,7 @@ namespace DataAccess.Repositories
                 {
                     Trace.WriteLine(E.Message);
                     return false;
+                    throw;
                 }
             }
         }
@@ -150,6 +153,7 @@ namespace DataAccess.Repositories
                 {
                     Trace.WriteLine(E.Message);
                     return false;
+                    throw;
                 }
             }
         }

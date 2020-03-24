@@ -24,7 +24,8 @@ namespace Domain.Tests.Mocks
                 return "exito";
             }
             catch {
-                return "";
+                return "error_desconocido";
+                throw;
             }
         }
 

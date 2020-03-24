@@ -31,9 +31,11 @@ namespace DataAccess.Repositories
                 }
                 return resultado;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Trace.WriteLine(e.Message);
                 return new List<TipoDocumento>();
+                throw;
             }
         }
         public List<Contrato> GetContratos(string idConv)
@@ -54,9 +56,11 @@ namespace DataAccess.Repositories
                 }
                 return resultado;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Trace.WriteLine(e.Message);
                 return new List<Contrato>();
+                throw;
             }
         }
         public List<BeneficiarioContratante> GetBeneficiariosContrato(int contrato,string idConv)
@@ -86,9 +90,11 @@ namespace DataAccess.Repositories
                 }
                 return resultado;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Trace.WriteLine(e.Message);
                 return new List<BeneficiarioContratante>();
+                throw;
             }
         }
         public Ciudad GetCiudadBeneficiario(int idUsuario, string idConv)
@@ -111,9 +117,11 @@ namespace DataAccess.Repositories
                 }
                 return resultado;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Trace.WriteLine(e.Message);
                 return new Ciudad();
+                throw;
             }
         }
         public List<Ciudad> GetCiudadesBeneficiario(int idUsuario, string idConv)
@@ -136,9 +144,11 @@ namespace DataAccess.Repositories
                 }
                 return resultado;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Trace.WriteLine(e.Message);
                 return new List<Ciudad>();
+                throw;
             }
         }
         public List<Especialidad> GetEspecialidades(string idConv)
@@ -162,14 +172,16 @@ namespace DataAccess.Repositories
                 }
                 return resultado;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Trace.WriteLine(e.Message);
                 return new List<Especialidad>();
+                throw;
             }
         }
-        public List<Global> GetMedicos(string idConv)
+        public List<GlobalResp> GetMedicos(string idConv)
         {
-            List<Global> resultado = null;
+            List<GlobalResp> resultado = null;
             try
             {
 
@@ -178,7 +190,7 @@ namespace DataAccess.Repositories
 
                     resultado = (from tia in contexto.tempInfoAgendamiento
                                  where tia.idConv == idConv
-                                 select new Global()
+                                 select new GlobalResp()
                                  {
                                      Id = (int) tia.idMedico,
                                      Nombre = tia.nombreMedico
@@ -187,14 +199,16 @@ namespace DataAccess.Repositories
                 }
                 return resultado;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return new List<Global>();
+                Trace.WriteLine(e.Message);
+                return new List<GlobalResp>();
+                throw;
             }
         }
-        public List<Global> GetCentroMedicos(string idConv)
+        public List<GlobalResp> GetCentroMedicos(string idConv)
         {
-            List<Global> resultado = null;
+            List<GlobalResp> resultado = null;
             try
             {
 
@@ -203,7 +217,7 @@ namespace DataAccess.Repositories
 
                     resultado = (from tia in contexto.tempInfoAgendamiento
                                  where tia.idConv == idConv
-                                 select new Global()
+                                 select new GlobalResp()
                                  {
                                      Id = (int)tia.idCentroMedico,
                                      Nombre = tia.nombreCentroMedico
@@ -212,9 +226,11 @@ namespace DataAccess.Repositories
                 }
                 return resultado;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return new List<Global>();
+                Trace.WriteLine(e.Message);
+                return new List<GlobalResp>();
+                throw;
             }
         }
         public List<Cita> GetCitasProximas(string fecha, string idConv)
@@ -225,7 +241,7 @@ namespace DataAccess.Repositories
 
                 using (ColmedicaContext contexto = new ColmedicaContext())
                 {
-                    if (fecha == "")
+                    if (fecha.Length==0 || fecha == null)
                     {
                         resultado = (from tia in contexto.tempInfoAgendamiento
                                      orderby tia.fecha
@@ -249,7 +265,7 @@ namespace DataAccess.Repositories
                                      ).Take(10).ToList();
                     }
                     else {
-                       DateTime nFecha = DateTime.Parse(fecha);
+                        DateTime nFecha = DateTime.Parse(fecha);
                         resultado = (from tia in contexto.tempInfoAgendamiento
                                      orderby tia.fecha
                                      where (tia.idConv == idConv && tia.fecha >= nFecha)
@@ -279,6 +295,7 @@ namespace DataAccess.Repositories
             {
                 Trace.WriteLine(e.Message);
                 return new List<Cita>();
+                throw;
             }
         }
         public List<Cita> GetCitasMedico(int idMedico, string idConv)
@@ -317,6 +334,7 @@ namespace DataAccess.Repositories
             {
                 Trace.WriteLine(e.Message);
                 return new List<Cita>();
+                throw;
             }
         }
         public List<Cita> GetCitasCentroMedico(int idCentroMedico, string idConv)
@@ -355,6 +373,7 @@ namespace DataAccess.Repositories
             {
                 Trace.WriteLine(e.Message);
                 return new List<Cita>();
+                throw;
             }
         }
         public Boolean UpdateCitaBd(string idConv,string campo, string valor) {
@@ -388,6 +407,7 @@ namespace DataAccess.Repositories
             {
                 Trace.WriteLine(e.Message);
                 return false;
+                throw;
             }
 
         }
@@ -405,6 +425,7 @@ namespace DataAccess.Repositories
             {
                 Trace.WriteLine(e.Message);
                 return false;
+                throw;
             }
         }
         public dynamic GetInfoCita(string idConv)
@@ -442,6 +463,7 @@ namespace DataAccess.Repositories
             {
                 Trace.WriteLine(e.Message);
                 return new { };
+                throw;
             }
 
         }
@@ -464,6 +486,7 @@ namespace DataAccess.Repositories
             {
                 Trace.WriteLine(e.Message);
                 return new { };
+                throw;
             }
         }
     }

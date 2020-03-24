@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs
 {
-    public class Global
+    public class GlobalResp
     {
         public int Id { get; set; }
         public string Nombre { get; set; }

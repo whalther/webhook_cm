@@ -32,6 +32,7 @@ namespace DataAccess.Repositories
                 {
                     Trace.WriteLine(E.Message);
                     return false;
+                    throw;
                 }
             }
 
@@ -60,6 +61,7 @@ namespace DataAccess.Repositories
                 {
                     Trace.WriteLine(E.Message);
                     return false;
+                    throw;
                 }
 
 

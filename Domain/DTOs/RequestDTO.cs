@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs
 {
-    public class Text
+    public class Texto
     {
-        public List<string> text { get; set; }
+        public List<string> texto { get; set; }
     }
 
     public class Intent

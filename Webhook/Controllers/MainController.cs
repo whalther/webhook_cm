@@ -59,7 +59,8 @@ namespace Webhook.Controllers
              }
              catch (Exception ex)
              {
-                 return new JsonResult { Data = new ResponseDTO() { FulfillmentText = ex.Message, Source = "ERROR" } };                
+                 return new JsonResult { Data = new ResponseDTO() { FulfillmentText = ex.Message, Source = "ERROR" } };
+                throw;
              }
         }
 

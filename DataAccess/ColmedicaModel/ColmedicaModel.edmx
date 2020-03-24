@@ -28,8 +28,6 @@
           <Property Name="appChannel" Type="varchar" MaxLength="50" />
           <Property Name="customerId" Type="varchar" MaxLength="150" />
         </EntityType>
-        <!--Errores durante la generación:
-advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTransactional' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
         <EntityType Name="cmTipoDocumento">
           <Key>
             <PropertyRef Name="id" />
@@ -345,7 +343,7 @@ advertencia 6002: La tabla o vista 'db-colmedicachatbot-dev.dbo.chatbotDataNoTra
             <Parameter Name="valor" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="cleanTablesConversation">
-            <Parameter Name="idConversacion" Mode="In" Type="String" />
+          <Parameter Name="idConversacion" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="cmTipoDocumento">

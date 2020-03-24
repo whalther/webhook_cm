@@ -5,7 +5,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="18e946ab9f5d4910ae340d9c6677c2e7" Name="Diagram1" ZoomLevel="95">
-        <EntityTypeShape EntityType="ColmedicaModel.chatbotData" Width="1.5" PointX="0.875" PointY="0.75" IsExpanded="false" />
+        <EntityTypeShape EntityType="ColmedicaModel.chatbotData" Width="1.375" PointX="0.875" PointY="0.75" IsExpanded="false" />
         <EntityTypeShape EntityType="ColmedicaModel.intentCategory" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="false" />
         <EntityTypeShape EntityType="ColmedicaModel.intentList" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="false" />
         <EntityTypeShape EntityType="ColmedicaModel.intentUnderstanding" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="false" />
