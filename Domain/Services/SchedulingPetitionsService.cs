@@ -236,6 +236,13 @@ namespace Domain.Services
             }
 
         }
-
+        public Boolean LimpiarTablasFlujo(ISchedulingSaveRepository repo, int proceso, string idConv, string tabla) 
+        {
+            return repo.LimpiarTablasFlujo(proceso,idConv,tabla);
+        }
+        public void DummyPetition(ISchedulingPetitionsRepository repo)
+        {
+             repo.DummyPetition();
+        }
     }
 }

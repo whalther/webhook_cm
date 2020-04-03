@@ -19,5 +19,6 @@ namespace DataAccess.ColmedicaModel
         public string @params { get; set; }
         public Nullable<System.DateTime> fecha { get; set; }
         public string metodo { get; set; }
+        public string origen { get; set; }
     }
 }

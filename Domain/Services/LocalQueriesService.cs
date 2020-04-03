@@ -18,7 +18,7 @@ namespace Domain.Services
         {
             return repo.GetContratos(idConv);
         }
-        public List<BeneficiarioContratante> GetBeneficiatiosContrato(ILocalQueriesRepository repo,int contrato, string idConv)
+        public ResultBeneficiarios GetBeneficiatiosContrato(ILocalQueriesRepository repo,int contrato, string idConv)
         {
             return repo.GetBeneficiariosContrato(contrato,idConv);
         }
@@ -69,6 +69,10 @@ namespace Domain.Services
         public dynamic GetInfoAsignarCita(ILocalQueriesRepository repo, string idConv)
         {
             return repo.GetInfoAsignarCita(idConv);
+        }
+        public Boolean QueryDummy(ILocalQueriesRepository repo)
+        {
+            return repo.QueryDummy();
         }
     }
 }

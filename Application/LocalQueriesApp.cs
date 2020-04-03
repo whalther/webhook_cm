@@ -26,7 +26,7 @@ namespace Application
             LocalQueriesService serv = new LocalQueriesService();
             return serv.GetContratos(repo,idConv);
         }
-        public List<BeneficiarioContratante> GetBeneficiariosContrato(int idContrato,string idConv)
+        public ResultBeneficiarios GetBeneficiariosContrato(int idContrato,string idConv)
         {
             ILocalQueriesRepository repo = new LocalQueriesRepository();
             LocalQueriesService serv = new LocalQueriesService();
@@ -98,7 +98,7 @@ namespace Application
             LocalQueriesService serv = new LocalQueriesService();
             return serv.GetInfoCita(repo, idConv);
         }
-        public string AsignarCita(string idConv,string numDoc, string tipoDoc,string numeroCelular,string token)
+        public void AsignarCita(string idConv,string numDoc, string tipoDoc,string numeroCelular,string token)
         {
             ILocalQueriesRepository repo = new LocalQueriesRepository();
             ISchedulingPetitionsRepository sRepo = new SchedulingPetitionsRepository();
@@ -107,10 +107,9 @@ namespace Application
             AuthenticationApp aApp = new AuthenticationApp();
             string identificacion = tipoDoc + numDoc;
             dynamic infoCita = serv.GetInfoAsignarCita(repo,idConv);
-            string telefono = infoCita.telefono;
-            if (telefono == null) { telefono = ""; }
-            string celular = infoCita.celular;
-            if (celular == null) { celular = ""; };
+            string telefono = String.IsNullOrEmpty(infoCita.telefono) ?"": infoCita.telefono;
+            string celular = String.IsNullOrEmpty(infoCita.celular)?"": infoCita.celular;
+           
             string resultadoAsig = sServ.AsignarCita(sRepo,infoCita.numEspacioCita,infoCita.tipoIdBeneficiario,infoCita.numIdBeneficiario,infoCita.centroMedico,infoCita.idMedico,infoCita.especialidad,telefono,"",celular,token);
             if (resultadoAsig == "error_token")
             {
@@ -125,21 +124,32 @@ namespace Application
                 string nToken = aApp.RefreshToken(numeroCelular, identificacion);
                 if (nToken != "error_credenciales" & nToken != "error_parametros" & nToken != "error_desconocido")
                 {
-                    return sServ.AsignarCita(sRepo, infoCita.numEspacioCita, infoCita.tipoIdBeneficiario, infoCita.numIdBeneficiario, infoCita.centroMedico, infoCita.idMedico, infoCita.especialidad, telefono, "", celular, nToken);
+                    string res = sServ.AsignarCita(sRepo, infoCita.numEspacioCita, infoCita.tipoIdBeneficiario, infoCita.numIdBeneficiario, infoCita.centroMedico, infoCita.idMedico, infoCita.especialidad, telefono, "", celular, nToken);
+                    serv.UpdateCitaBd(repo, idConv, "agendamiento", res);
 
                 }
                 else
                 {
-                    log.GuardarErrorLogPeticion(nToken, JsonConvert.SerializeObject(param), "AsignarCita");
-                    return nToken;
+                 //   log.GuardarErrorLogPeticion(nToken, JsonConvert.SerializeObject(param), "AsignarCita");
+                    serv.UpdateCitaBd(repo, idConv, "agendamiento", nToken);
                 }
-                
             }
             else
             {
-                return resultadoAsig;
+                serv.UpdateCitaBd(repo,idConv,"agendamiento", resultadoAsig);
             } 
         }
-
+        public Boolean QueryDummy()
+        {
+            ILocalQueriesRepository repo = new LocalQueriesRepository();
+            LocalQueriesService serv = new LocalQueriesService();
+            return serv.QueryDummy(repo);
+        }
+        public dynamic GetInfoCitaAgendada(string idConv)
+        {
+            ILocalQueriesRepository repo = new LocalQueriesRepository();
+            LocalQueriesService serv = new LocalQueriesService();
+            return serv.GetInfoAsignarCita(repo,idConv);
+        }
     }
 }

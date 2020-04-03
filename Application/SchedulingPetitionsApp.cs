@@ -10,13 +10,12 @@ namespace Application
 {
     public class SchedulingPetitionsApp
     {
-        public Resultado ValidarUsuario(string identificacion,string numeroCelular, string token, string idConv)
+        public Resultado ValidarUsuario(string identificacion,string numeroCelular, string identificacionBene, string token, string idConv)
         {
             ISchedulingPetitionsRepository petitionsRepository = new SchedulingPetitionsRepository();
             SchedulingPetitionsService serv = new SchedulingPetitionsService();
             AuthenticationApp aApp = new AuthenticationApp();
-
-            Usuario us = serv.ValidarUsuario(petitionsRepository,identificacion, token);
+            Usuario us = serv.ValidarUsuario(petitionsRepository, identificacionBene, token);
             Resultado res = new Resultado();
             if (us.Mensaje == "error_token")
             {
@@ -31,7 +30,7 @@ namespace Application
                 string nToken = aApp.RefreshToken(numeroCelular, identificacion);
                 if (nToken != "error_credenciales" & nToken != "error_parametros" & nToken != "error_desconocido")
                 {
-                    Usuario nUs = serv.ValidarUsuario(petitionsRepository, identificacion, nToken);
+                    Usuario nUs = serv.ValidarUsuario(petitionsRepository, identificacionBene, nToken);
                     res.Result = nUs;
                 }
                 else {
@@ -48,89 +47,13 @@ namespace Application
             }
             return res;
         }
-        public Resultado GetBeneficiariosContratante(string identificacion, string token, string idConv, string numeroCelular)
-        {
-            ISchedulingPetitionsRepository petitionsRepository = new SchedulingPetitionsRepository();
-            ISchedulingSaveRepository saveRepository = new SchedulingSaveRepository();
-            SchedulingPetitionsService serv = new SchedulingPetitionsService();
-            AuthenticationApp aApp = new AuthenticationApp();
-
-            List<BeneficiarioContratante> bens = serv.GetBeneficiariosContratante(petitionsRepository, saveRepository,identificacion, token,idConv);
-            Resultado res = new Resultado();
-            if (bens[0].Parentesco == "error_token")
-            {
-                LogApp log = new LogApp();
-                Dictionary<string, string> param = new Dictionary<string, string>() {
-                {"numeroCelular",numeroCelular },
-                {"identificacion",identificacion},
-                {"idConv", idConv }
-              };
-                log.GuardarErrorLogPeticion(bens[0].Parentesco, JsonConvert.SerializeObject(param), "GetBeneficiariosContratante");
-
-                string nToken = aApp.RefreshToken(numeroCelular, identificacion);
-                if (nToken != "error_credenciales" & nToken != "error_parametros" & nToken != "error_desconocido")
-                {
-                    res.Result = serv.GetBeneficiariosContratante(petitionsRepository, saveRepository, identificacion, nToken, idConv);
-                }
-                else
-                {
-                    log.GuardarErrorLogPeticion(nToken, JsonConvert.SerializeObject(param), "GetBeneficiariosContratante");
-                    res.Result = new List<BeneficiarioContratante>() { new BeneficiarioContratante() { Parentesco = nToken } };
-                }
-                
-                res.Token = nToken;
-            }
-            else
-            {
-                res.Result = bens;
-                res.Token = token;
-            }
-            return res;
-        }
-       /* public Resultado GetCiudades(string identificacion, string tipoId, string token, string idConv, string numeroCelular)
-        {
-            ISchedulingPetitionsRepository petitionsRepository = new SchedulingPetitionsRepository();
-            ISchedulingSaveRepository saveRepository = new SchedulingSaveRepository();
-            SchedulingPetitionsService serv = new SchedulingPetitionsService();
-            AuthenticationApp aApp = new AuthenticationApp();
-            List<Ciudad> cius = serv.GetCiudades(petitionsRepository, saveRepository, identificacion,tipoId, token, idConv);
-            Resultado res = new Resultado();
-            if (cius[0].CiuNombre == "error_token")
-            {
-                LogApp log = new LogApp();
-                Dictionary<string, string> param = new Dictionary<string, string>() {
-                {"numeroCelular",numeroCelular },
-                {"identificacion",tipoId+identificacion},
-                {"idConv", idConv }
-              };
-                log.GuardarErrorLogPeticion(cius[0].CiuNombre, JsonConvert.SerializeObject(param), "GetCiudades");
-
-                string nIdentificacion = tipoId + identificacion;
-                string nToken = aApp.RefreshToken(numeroCelular, nIdentificacion);
-                if (nToken != "error_credenciales" & nToken != "error_parametros" & nToken != "error_desconocido")
-                {
-                    res.Result = serv.GetCiudades(petitionsRepository, saveRepository, identificacion, tipoId, nToken, idConv);
-                }
-                else
-                {
-                    log.GuardarErrorLogPeticion(nToken, JsonConvert.SerializeObject(param), "GetCiudades");
-                    res.Result = new List<Ciudad>() { new Ciudad() {  CiuNombre = nToken } };
-                }
-                res.Token = nToken;
-            }
-            else
-            {
-                res.Result = cius;
-                res.Token = token;
-            }
-            return res;
-        }*/
         public Resultado ProcesarEspecialidadesCiudad(string identificacion, string tipoId, int ciudad, string token, string idConv,string identificacionChat, string numeroCelular)
         {
             ISchedulingPetitionsRepository petitionsRepository = new SchedulingPetitionsRepository();
             ISchedulingSaveRepository saveRepository = new SchedulingSaveRepository();
             SchedulingPetitionsService serv = new SchedulingPetitionsService();
             AuthenticationApp aApp = new AuthenticationApp();
+            serv.LimpiarTablasFlujo(saveRepository, 0, idConv, "tempEspecialidades");
             string espe = serv.ProcesarEspecialidadesCiudad(petitionsRepository, saveRepository, identificacion, tipoId,ciudad, token, idConv);
             Resultado res = new Resultado();
             if (espe == "error_token")
@@ -169,6 +92,7 @@ namespace Application
             ISchedulingSaveRepository saveRepository = new SchedulingSaveRepository();
             SchedulingPetitionsService serv = new SchedulingPetitionsService();
             AuthenticationApp aApp = new AuthenticationApp();
+            serv.LimpiarTablasFlujo(saveRepository, 0, idConv, "tempInfoAgendamiento");
             string cc = serv.ProcesarCitas(petitionsRepository, saveRepository, ciudad, especialidad, token, idConv);
             Resultado res = new Resultado();
             if (cc == "error_token")
@@ -248,6 +172,7 @@ namespace Application
             ISchedulingSaveRepository saveRepository = new SchedulingSaveRepository();
             SchedulingPetitionsService serv = new SchedulingPetitionsService();
             AuthenticationApp aApp = new AuthenticationApp();
+            serv.LimpiarTablasFlujo(saveRepository, 1, idConv, "");
             List<BeneficiarioContratante> bens = serv.GetBeneficiariosContratante(petitionsRepository, saveRepository, identificacion, token, idConv);
             
             if (bens[0].Parentesco == "error_token")
@@ -282,7 +207,11 @@ namespace Application
                     }
                 }
             }
-            
+        }
+        public void DummyPetition() {
+            ISchedulingPetitionsRepository petitionsRepository = new SchedulingPetitionsRepository();
+            SchedulingPetitionsService serv = new SchedulingPetitionsService();
+            serv.DummyPetition(petitionsRepository);
         }
     }
 }

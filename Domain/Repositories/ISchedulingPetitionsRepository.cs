@@ -17,7 +17,7 @@ namespace Domain.Repositories
         string AsignarCita(Dictionary<string, string> headers, Dictionary<string, string> parametros);
         string GetCitasBeneficiario(Dictionary<string, string> headers, Dictionary<string, string> parametros);
         string CancelarCitaBeneficiario(Dictionary<string, string> headers, Dictionary<string, string> parametros);
-        
+        void DummyPetition();
 
     }
 }

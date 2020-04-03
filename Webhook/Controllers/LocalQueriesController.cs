@@ -19,6 +19,10 @@ namespace Webhook.Controllers
         [Route("levantarApp")]
         public IHttpActionResult LevantarApp()
         {
+            LocalQueriesApp app = new LocalQueriesApp();
+            SchedulingPetitionsApp appS = new SchedulingPetitionsApp();
+            app.QueryDummy();
+            appS.DummyPetition();
             Replay respuesta = new Replay()
             {
                 Status = "OK",
@@ -30,10 +34,11 @@ namespace Webhook.Controllers
         public IHttpActionResult GetTiposDocumento()
         {
             LocalQueriesApp app = new LocalQueriesApp();
+            List<TipoDocumento> tps = app.GetTiposDocumento();
             Replay respuesta = new Replay()
             {
-                Status = "OK",
-                Info = new Dictionary<string, object> { { "data", app.GetTiposDocumento() } },
+                Status = tps.Count > 0 ? "OK" : "empty",
+                Info = new Dictionary<string, object> { { "data", tps } },
             };
             return Json(respuesta);
         }
@@ -43,9 +48,10 @@ namespace Webhook.Controllers
         {
             LocalQueriesApp app = new LocalQueriesApp();
             string[] sessionId = request["sessionId"].ToString().Split('*');
+            List<Contrato> ct = app.GetContratos(sessionId[0]);
             Replay respuesta = new Replay() {
-                Status = "OK",
-                Info = new Dictionary<string, object> { { "data", app.GetContratos(sessionId[0]) } },
+                Status = ct.Count > 0 ? "OK" : "empty",
+                Info = new Dictionary<string, object> { { "data", ct } },
                 IdConv = sessionId[0]
             };
            
@@ -58,10 +64,11 @@ namespace Webhook.Controllers
             LocalQueriesApp app = new LocalQueriesApp();
             string[] sessionId = request["sessionId"].ToString().Split('*');
             int idContrato = request["idContrato"];
+            ResultBeneficiarios bens = app.GetBeneficiariosContrato(idContrato, sessionId[0]);
             Replay respuesta = new Replay()
             {
-                Status = "OK",
-                Info = new Dictionary<string, object> { { "data", app.GetBeneficiariosContrato(idContrato, sessionId[0]) } },
+                Status = bens.Beneficiarios.Count > 0 ? "OK" : "empty",
+                Info = new Dictionary<string, object> { { "data", bens } },
                 IdConv = sessionId[0]
             };
             return Json(respuesta);
@@ -73,10 +80,11 @@ namespace Webhook.Controllers
             LocalQueriesApp app = new LocalQueriesApp();
             string[] sessionId = request["sessionId"].ToString().Split('*');
             int idUsuario = request["idUsuario"];
+            Ciudad ciu = app.GetCiudadBeneficiario(idUsuario, sessionId[0]);
             Replay respuesta = new Replay()
             {
-                Status = "OK",
-                Info = new Dictionary<string, object> { { "data", app.GetCiudadBeneficiario(idUsuario, sessionId[0]) } },
+                Status = !(ciu is null) ? "OK" : "empty",
+                Info = new Dictionary<string, object> { { "data", ciu } },
                 IdConv = sessionId[0]
             };
             return Json(respuesta);
@@ -88,10 +96,11 @@ namespace Webhook.Controllers
             LocalQueriesApp app = new LocalQueriesApp();
             string[] sessionId = request["sessionId"].ToString().Split('*');
             int idUsuario = request["idUsuario"];
+            List<Ciudad> cius = app.GetCiudadesBeneficiario(idUsuario, sessionId[0]);
             Replay respuesta = new Replay()
             {
-                Status = "OK",
-                Info = new Dictionary<string, object> { { "data", app.GetCiudadesBeneficiario(idUsuario, sessionId[0]) } },
+                Status = !(cius is null) ? "OK" : "empty",
+                Info = new Dictionary<string, object> { { "data", cius } },
                 IdConv = sessionId[0]
             };
             return Json(respuesta);
@@ -102,10 +111,11 @@ namespace Webhook.Controllers
         {
             LocalQueriesApp app = new LocalQueriesApp();
             string[] sessionId = request["sessionId"].ToString().Split('*');
+            List<Especialidad> espes = app.GetEspecialidades(sessionId[0]);
             Replay respuesta = new Replay()
             {
-                Status = "OK",
-                Info = new Dictionary<string, object> { { "data", app.GetEspecialidades(sessionId[0]) } },
+                Status = espes.Count > 0 ? "OK" : "empty",
+                Info = new Dictionary<string, object> { { "data", espes } },
                 IdConv = sessionId[0]
             };
             return Json(respuesta);
@@ -116,10 +126,11 @@ namespace Webhook.Controllers
         {
             LocalQueriesApp app = new LocalQueriesApp();
             string[] sessionId = request["sessionId"].ToString().Split('*');
+            List<GlobalResp> meds = app.GetMedicos(sessionId[0]);
             Replay respuesta = new Replay()
             {
-                Status = "OK",
-                Info = new Dictionary<string, object> { { "data", app.GetMedicos(sessionId[0]) } },
+                Status = meds.Count > 0 ? "OK" : "empty",
+                Info = new Dictionary<string, object> { { "data", meds } },
                 IdConv = sessionId[0]
             };
             return Json(respuesta);
@@ -130,10 +141,11 @@ namespace Webhook.Controllers
         {
             LocalQueriesApp app = new LocalQueriesApp();
             string[] sessionId = request["sessionId"].ToString().Split('*');
+            List<GlobalResp> cms = app.GetCentrosMedicos(sessionId[0]);
             Replay respuesta = new Replay()
             {
-                Status = "OK",
-                Info = new Dictionary<string, object> { { "data", app.GetCentrosMedicos(sessionId[0]) } },
+                Status = cms.Count > 0 ? "OK" : "empty",
+                Info = new Dictionary<string, object> { { "data", cms } },
                 IdConv = sessionId[0]
             };
             return Json(respuesta);
@@ -145,10 +157,11 @@ namespace Webhook.Controllers
             LocalQueriesApp app = new LocalQueriesApp();
             string[] sessionId = request["sessionId"].ToString().Split('*');
             string fecha = request["fecha"];
+            List<Cita> citas = app.GetCitasProximas(fecha, sessionId[0]);
             Replay respuesta = new Replay()
             {
-                Status = "OK",
-                Info = new Dictionary<string, object> { { "data", app.GetCitasProximas(fecha,sessionId[0]) } },
+                Status = citas.Count > 0 ? "OK" : "empty",
+                Info = new Dictionary<string, object> { { "data", citas } },
                 IdConv = sessionId[0]
             };
             return Json(respuesta);
@@ -160,10 +173,11 @@ namespace Webhook.Controllers
             LocalQueriesApp app = new LocalQueriesApp();
             string[] sessionId = request["sessionId"].ToString().Split('*');
             int idMedico = (int) request["idMedico"];
+            List<Cita> citas = app.GetCitasMedico(idMedico, sessionId[0]);
             Replay respuesta = new Replay()
             {
-                Status = "OK",
-                Info = new Dictionary<string, object> { { "data", app.GetCitasMedico(idMedico, sessionId[0]) } },
+                Status = citas.Count > 0 ? "OK" : "empty",
+                Info = new Dictionary<string, object> { { "data", citas } },
                 IdConv = sessionId[0]
             };
             return Json(respuesta);
@@ -175,10 +189,11 @@ namespace Webhook.Controllers
             LocalQueriesApp app = new LocalQueriesApp();
             string[] sessionId = request["sessionId"].ToString().Split('*');
             int idCentroMedico = (int)request["idCentroMedico"];
+            List<Cita> citas = app.GetCitasCentroMedico(idCentroMedico, sessionId[0]);
             Replay respuesta = new Replay()
             {
-                Status = "OK",
-                Info = new Dictionary<string, object> { { "data", app.GetCitasCentroMedico(idCentroMedico, sessionId[0]) } },
+                Status = citas.Count > 0 ? "OK" : "empty",
+                Info = new Dictionary<string, object> { { "data", citas } },
                 IdConv = sessionId[0]
             };
             return Json(respuesta);
@@ -191,7 +206,7 @@ namespace Webhook.Controllers
             string[] sessionId = request["sessionId"].ToString().Split('*');
             string idConv = sessionId[0];
             string espacioCita = request["espacioCita"];
-            Boolean res = app.UpdateCitaBd(idConv,"numEspacioCita",espacioCita);
+            Boolean res = app.UpdateCitaBd(idConv,"cita",espacioCita);
             Replay respuesta = new Replay()
             {
                 IdConv = idConv,
@@ -208,38 +223,6 @@ namespace Webhook.Controllers
             string idConv = sessionId[0];
             string documento = request["tipoDoc"]+"*"+request["numDoc"];
             Boolean res = app.UpdateCitaBd(idConv, "documento", documento);
-            Replay respuesta = new Replay()
-            {
-                IdConv = idConv,
-                Status = res == true ? "OK" : "error"
-            };
-            return Json(respuesta);
-        }
-        [HttpPost]
-        [Route("updateMedicoCita")]
-        public IHttpActionResult UpdateMedicoCitaBd([FromBody]dynamic request)
-        {
-            LocalQueriesApp app = new LocalQueriesApp();
-            string[] sessionId = request["sessionId"].ToString().Split('*');
-            string idConv = sessionId[0];
-            string idMedico = request["idMedico"];
-            Boolean res = app.UpdateCitaBd(idConv, "idMedico", idMedico);
-            Replay respuesta = new Replay()
-            {
-                IdConv = idConv,
-                Status = res == true ? "OK" : "error"
-            };
-            return Json(respuesta);
-        }
-        [HttpPost]
-        [Route("updateCentroMedicoCita")]
-        public IHttpActionResult UpdateCentroMedicoCitaBd([FromBody]dynamic request)
-        {
-            LocalQueriesApp app = new LocalQueriesApp();
-            string[] sessionId = request["sessionId"].ToString().Split('*');
-            string idConv = sessionId[0];
-            string idCentroMedico = request["idCentroMedico"];
-            Boolean res = app.UpdateCitaBd(idConv, "centroMedico", idCentroMedico);
             Replay respuesta = new Replay()
             {
                 IdConv = idConv,
@@ -295,7 +278,7 @@ namespace Webhook.Controllers
         }
         [HttpPost]
         [Route("asignarCita")]
-        public IHttpActionResult AsignarCita([FromBody]dynamic request)
+        public void AsignarCita([FromBody]dynamic request)
         {
             LocalQueriesApp app = new LocalQueriesApp();
             Utilities utilidad = new Utilities();
@@ -305,20 +288,55 @@ namespace Webhook.Controllers
             string tipoDoc = request["tipoDoc"];
             string numDoc = request["numDoc"];
             string token = request["token"];
-            dynamic res = app.AsignarCita(idConv,numDoc,tipoDoc,numeroCelular,token);
-            Replay respuesta = new Replay() {
-            IdConv = idConv
-            };
-            if (res != "error_parametros" && res != "error_desconocido")
+            app.AsignarCita(idConv,numDoc,tipoDoc,numeroCelular,token);
+        }
+        [HttpPost]
+        [Route("getInfoCitaAgendada")]
+        public IHttpActionResult GetInfoCitaAgendada([FromBody]dynamic request)
+        {
+            LocalQueriesApp app = new LocalQueriesApp();
+            string[] sessionId = request["sessionId"].ToString().Split('*');
+            string idConv = sessionId[0];
+            dynamic res = (dynamic)app.GetInfoCitaAgendada(idConv);
+            string resultCita = "";
+            string status;
+            string statusCita = "processing";
+            dynamic resultEncode;
+            if (res.estado == 0)
             {
-                respuesta.Status = "OK";
-                respuesta.Info.Add("data", JToken.Parse(res));
+                status = "processing";
+            }
+            else if (res.estado == 1)
+            {
+                status = "completed";
+                resultCita = res.result;
+                if (resultCita.Substring(0, 5) == "error")
+                {
+                    statusCita = resultCita;
+                }
+                else
+                {
+                    statusCita = "ok";
+
+                }
+            }
+            else { status = "error"; }
+            
+            if (resultCita.Length > 10 && resultCita.Substring(0, 1) == "{")
+            {
+                resultEncode = JToken.Parse(resultCita);
+                statusCita = resultEncode.Mensaje.ToString().Length != 0 ? "error_agendamiento" : statusCita;
             }
             else
             {
-                respuesta.Status = "error";
-                respuesta.Info.Add("data", res);
+                resultEncode = resultCita;
             }
+            Replay respuesta = new Replay()
+            {
+                IdConv = idConv,
+                Status = status,
+                Info = new Dictionary<string, object> { { "data", resultEncode },{ "statusCita",statusCita } }
+            };
             return Json(respuesta);
         }
     }

@@ -68,5 +68,22 @@ namespace DataAccess.ColmedicaModel
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("cleanTablesConversation", idConversacionParameter);
         }
+    
+        public virtual int cleanTablesFlujo(Nullable<int> proceso, string idConversacion, string tabla)
+        {
+            var procesoParameter = proceso.HasValue ?
+                new ObjectParameter("proceso", proceso) :
+                new ObjectParameter("proceso", typeof(int));
+    
+            var idConversacionParameter = idConversacion != null ?
+                new ObjectParameter("idConversacion", idConversacion) :
+                new ObjectParameter("idConversacion", typeof(string));
+    
+            var tablaParameter = tabla != null ?
+                new ObjectParameter("tabla", tabla) :
+                new ObjectParameter("tabla", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("cleanTablesFlujo", procesoParameter, idConversacionParameter, tablaParameter);
+        }
     }
 }

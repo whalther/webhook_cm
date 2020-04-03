@@ -63,14 +63,14 @@ namespace DataAccess.Repositories
                 throw;
             }
         }
-        public List<BeneficiarioContratante> GetBeneficiariosContrato(int contrato,string idConv)
+        public ResultBeneficiarios GetBeneficiariosContrato(int contrato,string idConv)
         {
-            List<BeneficiarioContratante> resultado = null;
+            ResultBeneficiarios resultado = new ResultBeneficiarios();
             try
             {
                 using (ColmedicaContext contexto = new ColmedicaContext())
                 {
-                    resultado = (from tb in contexto.tempBeneficiarios
+                    resultado.Beneficiarios = (from tb in contexto.tempBeneficiarios
                                  where (tb.idConv == idConv && tb.numeroContrato==contrato)
                                  select new BeneficiarioContratante() {
                                     CiudadResidencia = (int)tb.ciudadResidencia,
@@ -87,13 +87,31 @@ namespace DataAccess.Repositories
                                     TipoIdentificacion = tb.tipoIdentificacion
                                  }
                                  ).ToList();
+                    resultado.Cotizante = (from tb in contexto.tempBeneficiarios
+                                               where (tb.idConv == idConv && tb.parentesco=="Cotizante")
+                                               select new BeneficiarioContratante()
+                                               {
+                                                   CiudadResidencia = (int)tb.ciudadResidencia,
+                                                   Colectivo = tb.colectivo.ToString(),
+                                                   DescripcionPlan = tb.descripcionPlan,
+                                                   IdUsuario = (int)tb.idUsuario,
+                                                   Nombre = tb.nombre,
+                                                   NumeroContrato = (int)tb.numeroContrato,
+                                                   NumeroIdentificacion = tb.numeroIdentificacion,
+                                                   Parentesco = tb.parentesco,
+                                                   Sexo = tb.sexo,
+                                                   TelefonoCelular = tb.telefonoCelular,
+                                                   TelefonoResidencia = tb.telefonoResidencia,
+                                                   TipoIdentificacion = tb.tipoIdentificacion
+                                               }
+                                 ).FirstOrDefault();
                 }
                 return resultado;
             }
             catch (Exception e)
             {
                 Trace.WriteLine(e.Message);
-                return new List<BeneficiarioContratante>();
+                return new ResultBeneficiarios();
                 throw;
             }
         }
@@ -241,7 +259,7 @@ namespace DataAccess.Repositories
 
                 using (ColmedicaContext contexto = new ColmedicaContext())
                 {
-                    if (fecha.Length==0 || fecha == null)
+                    if (String.IsNullOrEmpty(fecha))
                     {
                         resultado = (from tia in contexto.tempInfoAgendamiento
                                      orderby tia.fecha
@@ -388,14 +406,32 @@ namespace DataAccess.Repositories
                         string numDoc = doc[1];
                         dynamic resultado = (from tb in contexto.tempBeneficiarios
                                              where (tb.idConv == idConv && tb.tipoIdentificacion == tipoDoc && tb.numeroIdentificacion == numDoc)
-                                             select new { tb.telefonoResidencia,tb.telefonoCelular }
+                                             select new { tb.telefonoResidencia, tb.telefonoCelular }
                                              ).FirstOrDefault();
-                        contexto.updateCita(idConv,"tipoIdBeneficiario",tipoDoc);
+                        contexto.updateCita(idConv, "tipoIdBeneficiario", tipoDoc);
                         contexto.updateCita(idConv, "numIdBeneficiario", numDoc);
                         contexto.updateCita(idConv, "telefono", resultado.telefonoResidencia);
                         contexto.updateCita(idConv, "celular", resultado.telefonoCelular);
+                        contexto.updateCita(idConv, "estado", "0");
                     }
-                    else 
+                    else if (campo == "cita")
+                    {
+                        int nValor = int.Parse(valor);
+                        dynamic resultado = (from tia in contexto.tempInfoAgendamiento
+                                             where (tia.idConv == idConv && tia.idEspacioCita == nValor)
+                                             select new { tia.idMedico, tia.idCentroMedico }
+                                                 ).FirstOrDefault();
+                      
+                        contexto.updateCita(idConv, "numEspacioCita", valor);
+                        contexto.updateCita(idConv, "idMedico", resultado.idMedico.ToString());
+                        contexto.updateCita(idConv, "centroMedico", resultado.idCentroMedico.ToString());
+                    }
+                    else if (campo == "agendamiento")
+                    {
+                        contexto.updateCita(idConv, "estado", "1");
+                        contexto.updateCita(idConv, "result", valor);
+                    }
+                    else
                     {
                         contexto.updateCita(idConv, campo, valor);
                     }
@@ -486,6 +522,24 @@ namespace DataAccess.Repositories
             {
                 Trace.WriteLine(e.Message);
                 return new { };
+                throw;
+            }
+        }
+        public Boolean QueryDummy()
+        {
+            try
+            {
+                using (ColmedicaContext contexto = new ColmedicaContext())
+                {
+                    contexto.Database.SqlQuery<string>("SELECT @@VERSION as V").FirstOrDefault();
+
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+                return false;
                 throw;
             }
         }

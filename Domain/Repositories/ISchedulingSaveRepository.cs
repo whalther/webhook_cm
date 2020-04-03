@@ -13,5 +13,6 @@ namespace Domain.Repositories
         Boolean SaveCiudades(List<Ciudad> ciudades, string idConv, int idUsuario);
         Boolean SaveEspecialidadesCiudad(List<Especialidad> especialidades, string idConv);
         Boolean SaveCitasCiudad(List<Cita> citas, string idConv);
+        Boolean LimpiarTablasFlujo(int proceso, string idConv, string tabla);
     }
 }

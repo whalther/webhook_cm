@@ -24,5 +24,7 @@ namespace DataAccess.ColmedicaModel
         public string celular { get; set; }
         public string idConv { get; set; }
         public Nullable<int> idMedico { get; set; }
+        public Nullable<int> estado { get; set; }
+        public string result { get; set; }
     }
 }

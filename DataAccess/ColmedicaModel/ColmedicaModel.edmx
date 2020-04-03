@@ -87,6 +87,7 @@
           <Property Name="params" Type="text" />
           <Property Name="fecha" Type="smalldatetime" />
           <Property Name="metodo" Type="varchar" MaxLength="50" />
+          <Property Name="origen" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="tempBeneficiarios">
           <Key>
@@ -121,6 +122,8 @@
           <Property Name="telefono" Type="varchar" MaxLength="50" />
           <Property Name="celular" Type="varchar" MaxLength="50" />
           <Property Name="idConv" Type="varchar" MaxLength="500" />
+          <Property Name="estado" Type="int" />
+          <Property Name="result" Type="text" />
         </EntityType>
         <EntityType Name="tempCiudades">
           <Key>
@@ -188,6 +191,11 @@
         </EntityType>
         <Function Name="cleanTablesConversation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idConversacion" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="cleanTablesFlujo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="proceso" Type="int" Mode="In" />
+          <Parameter Name="idConversacion" Type="varchar" Mode="In" />
+          <Parameter Name="tabla" Type="varchar" Mode="In" />
         </Function>
         <Function Name="updateCita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idConversacion" Type="varchar" Mode="In" />
@@ -345,6 +353,11 @@
           <FunctionImport Name="cleanTablesConversation">
           <Parameter Name="idConversacion" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="cleanTablesFlujo">
+            <Parameter Name="proceso" Mode="In" Type="Int32" />
+            <Parameter Name="idConversacion" Mode="In" Type="String" />
+            <Parameter Name="tabla" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="cmTipoDocumento">
           <Key>
@@ -370,6 +383,8 @@
           <Property Name="celular" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="idMedico" Type="Int32" />
+          <Property Name="estado" Type="Int32" />
+          <Property Name="result" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="logErrorPeticion">
           <Key>
@@ -380,6 +395,7 @@
           <Property Name="params" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="fecha" Type="DateTime" Precision="0" />
           <Property Name="metodo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="origen" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="log_petitions">
           <Key>
@@ -556,6 +572,8 @@
           <EntitySetMapping Name="tempCita">
             <EntityTypeMapping TypeName="ColmedicaModel.tempCita">
               <MappingFragment StoreEntitySet="tempCita">
+                <ScalarProperty Name="result" ColumnName="result" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
                 <ScalarProperty Name="idMedico" ColumnName="idMedico" />
                 <ScalarProperty Name="idConv" ColumnName="idConv" />
                 <ScalarProperty Name="celular" ColumnName="celular" />
@@ -572,6 +590,7 @@
           <EntitySetMapping Name="logErrorPeticion">
             <EntityTypeMapping TypeName="ColmedicaModel.logErrorPeticion">
               <MappingFragment StoreEntitySet="logErrorPeticion">
+                <ScalarProperty Name="origen" ColumnName="origen" />
                 <ScalarProperty Name="metodo" ColumnName="metodo" />
                 <ScalarProperty Name="fecha" ColumnName="fecha" />
                 <ScalarProperty Name="params" ColumnName="params" />
@@ -625,6 +644,7 @@
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="updateCita" FunctionName="ColmedicaModel.Store.updateCita" />
           <FunctionImportMapping FunctionImportName="cleanTablesConversation" FunctionName="ColmedicaModel.Store.cleanTablesConversation" />
+          <FunctionImportMapping FunctionImportName="cleanTablesFlujo" FunctionName="ColmedicaModel.Store.cleanTablesFlujo" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

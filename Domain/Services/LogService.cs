@@ -1,5 +1,6 @@
 ﻿using Domain.DTOs;
 using Domain.Repositories;
+using System.Threading.Tasks;
 
 namespace Domain.Services
 {
@@ -9,9 +10,9 @@ namespace Domain.Services
         {
             return logRepository.GuardarLogPeticion(logPeticion);
         }
-        public bool GuardarErrorLogPeticion(ILogRepository logRepository, string tipo, string param,string metodo)
+        public async Task GuardarErrorLogPeticion(ILogRepository logRepository, string tipo, string param,string metodo)
         {
-            return logRepository.GuardarErrorLogPeticion(tipo,param,metodo);
+           await logRepository.GuardarErrorLogPeticion(tipo,param,metodo).ConfigureAwait(false);
         }
     }
 }

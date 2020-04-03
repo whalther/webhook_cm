@@ -67,6 +67,13 @@ namespace Webhook.Controllers
             }
             else
             {
+                LogApp log = new LogApp();
+                Dictionary<string, string> param = new Dictionary<string, string>() {
+                {"numeroCelular",numeroCelular },
+                {"identificacion",identificacion},
+                {"idConv", idConv }
+              };
+                log.GuardarErrorLogPeticion(res.Result.ToString(), JsonConvert.SerializeObject(param), "ValidarOtp");
                 respuesta.Status = "error";
             }
             respuesta.Token = res.Token;

@@ -157,5 +157,21 @@ namespace DataAccess.Repositories
                 }
             }
         }
+        public Boolean LimpiarTablasFlujo(int proceso, string idConv, string tabla) {
+            try
+            {
+                using (ColmedicaContext contexto = new ColmedicaContext())
+                {
+                    contexto.cleanTablesFlujo(proceso,idConv,tabla);
+                }
+                return true;
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+                return false;
+                throw;
+            }
+        }
     }
 }

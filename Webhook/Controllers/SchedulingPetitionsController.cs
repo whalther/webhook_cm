@@ -24,11 +24,12 @@ namespace Webhook.Controllers
             string[] sessionId = request["sessionId"].ToString().Split('*');
             string numeroCelular = utilidad.GetNumero(sessionId[1]);
             string identificacion = request["tipoDoc"] + request["numDoc"];
+            string identificacionBeneficiario = request["tipoDocBeneficiario"]+ request["numDocBeneficiario"];
             string idConv = sessionId[0];
             string token = request["token"];
 
             respuesta.IdConv = idConv;
-            Resultado res = app.ValidarUsuario(identificacion, numeroCelular, token, idConv);
+            Resultado res = app.ValidarUsuario(identificacion,identificacionBeneficiario, numeroCelular, token, idConv);
             respuesta.Token = res.Token;
             Usuario usuario = (Usuario)res.Result;
             if (usuario.Mensaje != "error_parametros" && usuario.Mensaje != "error_desconocido")

@@ -63,6 +63,7 @@
     <Compile Include="DTOs\RequestDTO.cs" />
     <Compile Include="DTOs\ResponseDTO.cs" />
     <Compile Include="DTOs\Resultado.cs" />
+    <Compile Include="DTOs\ResultBeneficiarios.cs" />
     <Compile Include="DTOs\TipoDocumento.cs" />
     <Compile Include="DTOs\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

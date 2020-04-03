@@ -14,11 +14,10 @@ namespace Application
             return new LogService().GuardarLogPeticion(logRepository, logPeticion);
 
         }
-        public bool GuardarErrorLogPeticion(string tipo, string param,string metodo)
+        public async void GuardarErrorLogPeticion(string tipo, string param,string metodo)
         {
             ILogRepository logRepository = new LogRepository();
-            return new LogService().GuardarErrorLogPeticion(logRepository,tipo,param,metodo);
-
+            await new LogService().GuardarErrorLogPeticion(logRepository,tipo,param,metodo).ConfigureAwait(false);
         }
     }
 }

@@ -120,6 +120,12 @@ namespace CrossCutting.Repositories
                     return "error_desconocido";
             }
         }
+        public void DummyPetition()
+        {
+            string url = ConfigurationManager.AppSettings["baseUrlApi"];
+            RestClient rc = new RestClient();
+            var resp = rc.HacerPeticion(url, "VerificaUsuario", null, "POST", null, true);
+        }
         public string GetCitasBeneficiario(Dictionary<string, string> headers, Dictionary<string, string> parametros)
         {
             return "";
