@@ -1,13 +1,8 @@
 ﻿using Application;
 using Domain.DTOs;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Helpers;
 using System.Web.Http;
 
 namespace Webhook.Controllers
@@ -210,7 +205,7 @@ namespace Webhook.Controllers
             Replay respuesta = new Replay()
             {
                 IdConv = idConv,
-                Status = res == true ? "OK" : "error"
+                Status = res ? "OK" : "error"
             };
             return Json(respuesta);
         }
@@ -226,7 +221,7 @@ namespace Webhook.Controllers
             Replay respuesta = new Replay()
             {
                 IdConv = idConv,
-                Status = res == true ? "OK" : "error"
+                Status = res ? "OK" : "error"
             };
             return Json(respuesta);
         }
@@ -242,7 +237,7 @@ namespace Webhook.Controllers
             Replay respuesta = new Replay()
             {
                 IdConv = idConv,
-                Status = res == true ? "OK" : "error"
+                Status = res ? "OK" : "error"
             };
             return Json(respuesta);
         }
@@ -256,7 +251,7 @@ namespace Webhook.Controllers
             Boolean res = app.LimpiarTablas(idConv);
             Replay respuesta = new Replay() {
                 IdConv = idConv,
-                Status = res == true ? "OK" : "error"
+                Status = res ? "OK" : "error"
             };
             return Json(respuesta);
         }
@@ -297,7 +292,7 @@ namespace Webhook.Controllers
             LocalQueriesApp app = new LocalQueriesApp();
             string[] sessionId = request["sessionId"].ToString().Split('*');
             string idConv = sessionId[0];
-            dynamic res = (dynamic)app.GetInfoCitaAgendada(idConv);
+            dynamic res = app.GetInfoCitaAgendada(idConv);
             string resultCita = "";
             string status;
             string statusCita = "processing";

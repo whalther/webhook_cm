@@ -2,7 +2,7 @@
 using Domain.DTOs;
 using Domain.Repositories;
 using Domain.Services;
-
+using System.Threading.Tasks;
 
 namespace Application
 {
@@ -14,7 +14,7 @@ namespace Application
             return new LogService().GuardarLogPeticion(logRepository, logPeticion);
 
         }
-        public async void GuardarErrorLogPeticion(string tipo, string param,string metodo)
+        public async Task GuardarErrorLogPeticion(string tipo, string param,string metodo)
         {
             ILogRepository logRepository = new LogRepository();
             await new LogService().GuardarErrorLogPeticion(logRepository,tipo,param,metodo).ConfigureAwait(false);

@@ -1,0 +1,15 @@
+{
+  "ServerUri": "https://sonarcloud.io/",
+  "Organization": {
+    "Key": "onelink",
+    "Name": "Onelink"
+  },
+  "ProjectKey": "chabot_colmedica_webhook",
+  "ProjectName": "chabot_colmedica_webhook",
+  "Profiles": {
+    "CSharp": {
+      "ProfileKey": "AW2DBvj-LvGW4v6QsVxP",
+      "ProfileTimestamp": "2020-03-17T14:17:33Z"
+    }
+  }
+}

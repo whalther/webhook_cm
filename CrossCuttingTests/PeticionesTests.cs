@@ -1,16 +1,9 @@
-﻿using System;
-using System.Security.Cryptography;
-using System.Text;
-using CrossCutting;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using Domain.Utilities;
-using System.Configuration;
 using Domain.Repositories;
 using CrossCutting.Repositories;
 using Domain.Services;
 using Domain.DTOs;
-using Newtonsoft.Json;
 using DataAccess.Repositories;
 
 namespace CrossCuttingTests
@@ -44,19 +37,7 @@ namespace CrossCuttingTests
             Assert.IsNotNull(res);
 
         }
-      /*  [TestMethod]
-        public void GetCiudadesUsuario()
-        {
-            ISchedulingPetitionsRepository petRepository = new SchedulingPetitionsRepository();
-            SchedulingPetitionsService petService = new SchedulingPetitionsService();
-            IAuthenticationRepository authRepository = new AuthenticationRepository();
-            ISchedulingSaveRepository saveRepository = new SchedulingSaveRepository();
-            AuthenticationService authService = new AuthenticationService();
-            string token = authService.RefreshToken(authRepository, "3194198375", "CC79880800");
-            List<Ciudad> res = petService.GetCiudades(petRepository,saveRepository, "79880800","CC", token, "98fddusfh89udf-sf98df-9");
-            Assert.IsNotNull(res);
-        }*/
-
+    
         [TestMethod]
         public void GetEspecialidadesCiudad()
         {
@@ -90,9 +71,21 @@ namespace CrossCuttingTests
             IAuthenticationRepository authRepository = new AuthenticationRepository();
             AuthenticationService authService = new AuthenticationService();
             string token = authService.RefreshToken(authRepository, "3194198375", "CC79880800");
-            //int espacioCita, string tipoId, string numId, int centroMedico, int medico, int especialidad, string telefono, string correo, string celular, string token)
-            string res = petService.AsignarCita(petRepository, 10782925,"CC", "79880800", 55983, 2355, 172,"000", "", "3134846707",token);
+            Dictionary<string, string> values = new Dictionary<string, string>() {
+                {"espacioCita","10782925"},
+                {"tipoId","CC"},
+                {"numId","79880800"},
+                {"centroMedico","55983"},
+                {"medico","2355"},
+                {"especialidad","172"},
+                {"telefono","000"},
+                {"correo",""},
+                {"celular","3134846707"},
+                {"token",token}
+            };
+            string res = petService.AsignarCita(petRepository, values);
             Assert.IsNotNull(res);
+           
         }
 
 

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using System.Collections.Generic;
 namespace Domain.DTOs
 {
     public class Texto
@@ -26,7 +21,7 @@ namespace Domain.DTOs
         public Intent intent { get; set; }
     }
 
-    public class RequestDTO
+    public class RequestDto
     {
         public string responseId { get; set; }
         public QueryResult queryResult { get; set; }

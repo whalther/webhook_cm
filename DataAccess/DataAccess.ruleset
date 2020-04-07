@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="SonarQube - chabot_colmedica_webhook Sonar way" ToolsVersion="16.0">
+  <Include Path="..\.sonarlint\chabot_colmedica_webhookcsharp.ruleset" Action="Default" />
+</RuleSet>

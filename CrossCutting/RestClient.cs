@@ -34,14 +34,15 @@ namespace CrossCutting
                 }
             }
 
-            if (peticionBody == false) {
+            if (peticionBody) {
+                request.AddJsonBody(parametros);
+            }
+            else {
                 foreach (var p in parametros)
                 {
                     request.AddParameter(p.Key, p.Value);
                 }
-            }
-            else if (peticionBody == true) {
-                request.AddJsonBody(parametros);
+                
             }
             
             return client.Execute(request);

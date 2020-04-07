@@ -4,10 +4,6 @@ using Domain.Utilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Services
 {
@@ -166,24 +162,24 @@ namespace Domain.Services
             }
         }
 
-        public string AsignarCita(ISchedulingPetitionsRepository petitionsRepository, int espacioCita, string tipoId, string numId, int centroMedico,int medico, int especialidad, string telefono, string correo, string celular, string token)
+        public string AsignarCita(ISchedulingPetitionsRepository petitionsRepository, Dictionary<string,string> values)
         {
             Cifrador cf = new Cifrador();
             string iv = cf.GenerarIv();
             Dictionary<string, string> param = new Dictionary<string, string>() {
-                {"numEspacioCita", espacioCita.ToString() },
-                { "tipoIdBeneficiario",tipoId},
-                {"numIdBeneficiario",numId},
-                {"centroMedico",centroMedico.ToString() }, 
-                {"IdMedico", medico.ToString()},
-                {"especialidad",especialidad.ToString() }, 
-                {"telefono",telefono }, 
-                {"correo",correo }, 
-                {"celular",celular}
+                {"numEspacioCita", values["espacioCita"].ToString() },
+                { "tipoIdBeneficiario",values["tipoId"].ToString()},
+                {"numIdBeneficiario",values["numId"].ToString()},
+                {"centroMedico",values["centroMedico"].ToString() }, 
+                {"IdMedico", values["medico"].ToString()},
+                {"especialidad",values["especialidad"].ToString()}, 
+                {"telefono",values["telefono"].ToString() }, 
+                {"correo",values["correo"].ToString() }, 
+                {"celular",values["celular"].ToString()}
                     };
             string paramCifrado = cf.Cifrar(JsonConvert.SerializeObject(param), iv);
             Dictionary<string, string> hd = new Dictionary<string, string>() {
-                {"token",token }
+                {"token",values["token"].ToString() }
             };
             Dictionary<string, string> parametros = new Dictionary<string, string>() {
                 {"mensaje",paramCifrado},

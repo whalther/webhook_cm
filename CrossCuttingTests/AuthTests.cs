@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using CrossCutting.Repositories;
+﻿using CrossCutting.Repositories;
 using Domain.Repositories;
 using Domain.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace CrossCuttingTests
 {

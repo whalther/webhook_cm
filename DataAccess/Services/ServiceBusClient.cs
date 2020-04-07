@@ -1,8 +1,6 @@
 ﻿using Microsoft.Azure.ServiceBus;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,13 +18,8 @@ namespace DataAccess.Services
         {
             try
             {
-                //Client = new QueueClient(ServiceBusConnectionString, QueueName);
-                // Create a new message to send to the topic.
                 var bytesMessage = new Message(Encoding.UTF8.GetBytes(Message));
-
-                // Send the message to the topic.
                 await Client.SendAsync(bytesMessage).ConfigureAwait(false);
-
                 await Client.CloseAsync().ConfigureAwait(false);
                 return true;
             }

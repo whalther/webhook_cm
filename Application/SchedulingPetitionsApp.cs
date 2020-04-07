@@ -28,7 +28,7 @@ namespace Application
                 log.GuardarErrorLogPeticion(us.Mensaje, JsonConvert.SerializeObject(param), "ValidarUsuario");
 
                 string nToken = aApp.RefreshToken(numeroCelular, identificacion);
-                if (nToken != "error_credenciales" & nToken != "error_parametros" & nToken != "error_desconocido")
+                if (nToken != "error_credenciales" && nToken != "error_parametros" && nToken != "error_desconocido")
                 {
                     Usuario nUs = serv.ValidarUsuario(petitionsRepository, identificacionBene, nToken);
                     res.Result = nUs;
@@ -68,7 +68,7 @@ namespace Application
               };
                 log.GuardarErrorLogPeticion(espe, JsonConvert.SerializeObject(param), "GetEspecialidadesCiudad");
                 string nToken = aApp.RefreshToken(numeroCelular, identificacionChat);
-                if (nToken != "error_credenciales" & nToken != "error_parametros" & nToken != "error_desconocido")
+                if (nToken != "error_credenciales" && nToken != "error_parametros" && nToken != "error_desconocido")
                 {
                     res.Result = serv.ProcesarEspecialidadesCiudad(petitionsRepository, saveRepository, identificacion, tipoId, ciudad, nToken, idConv);
                 }
@@ -107,7 +107,7 @@ namespace Application
               };
                 log.GuardarErrorLogPeticion(cc, JsonConvert.SerializeObject(param), "GetCitasCiudad");
                 string nToken = aApp.RefreshToken(numeroCelular, identificacion);
-                if (nToken != "error_credenciales" & nToken != "error_parametros" & nToken != "error_desconocido")
+                if (nToken != "error_credenciales" && nToken != "error_parametros" && nToken != "error_desconocido")
                 {
                     res.Result = serv.ProcesarCitas(petitionsRepository, saveRepository, ciudad, especialidad, nToken, idConv);
                 }
@@ -124,82 +124,27 @@ namespace Application
             }
             return res;
         }
-        public Resultado AsignarCita(int espacioCita, string tipoId, string numId, int centroMedico, int medico, int especialidad, string telefono, string correo, string celular, string token, string numeroCelularConv,string identificacion)
-        {
-            ISchedulingPetitionsRepository petitionsRepository = new SchedulingPetitionsRepository();
-            SchedulingPetitionsService serv = new SchedulingPetitionsService();
-            AuthenticationApp aApp = new AuthenticationApp();
-            string result = serv.AsignarCita(petitionsRepository, espacioCita, tipoId, numId, centroMedico, medico, especialidad, telefono, correo, celular, token);
-            Resultado res = new Resultado();
-            if (result == "error_token")
-            {
-                LogApp log = new LogApp();
-                Dictionary<string, string> param = new Dictionary<string, string>() {
-                {"espacioCita",espacioCita.ToString() },
-                {"tipoId",tipoId},
-                {"numId",numId},
-                {"centroMedico",centroMedico.ToString()},
-                {"medico", medico.ToString() },
-                {"especialidad", especialidad.ToString() },
-                {"telefono", telefono },
-                {"medico", medico.ToString() },
-                {"correo", correo },
-                {"celular", celular },
-                {"numeroCelularConv", numeroCelularConv },
-                {"identificacion", identificacion }
-              };
-                log.GuardarErrorLogPeticion(result, JsonConvert.SerializeObject(param), "AsignarCita");
-                string nToken = aApp.RefreshToken(numeroCelularConv, identificacion);
-                if (nToken != "error_credenciales" & nToken != "error_parametros" & nToken != "error_desconocido")
-                {
-                    res.Result = serv.AsignarCita(petitionsRepository, espacioCita, tipoId, numId, centroMedico, medico, especialidad, telefono, correo, celular, nToken);
-                }
-                else {
-                    log.GuardarErrorLogPeticion(nToken, JsonConvert.SerializeObject(param), "AsignarCita");
-                    res.Result = nToken;
-                }
-                res.Token = nToken;
-            }
-            else
-            {
-                res.Result = result;
-                res.Token = token;
-            }
-            return res;
-        }
         public void ProcesarBeneficiariosCiudades(string identificacion, string token, string idConv, string numeroCelular) {
             ISchedulingPetitionsRepository petitionsRepository = new SchedulingPetitionsRepository();
             ISchedulingSaveRepository saveRepository = new SchedulingSaveRepository();
             SchedulingPetitionsService serv = new SchedulingPetitionsService();
             AuthenticationApp aApp = new AuthenticationApp();
             LocalQueriesApp lApp = new LocalQueriesApp();
-            bool limpia = lApp.LimpiarTablas(idConv);
-            if (limpia)
-            {
-                //serv.LimpiarTablasFlujo(saveRepository, 1, idConv, "");
+            _ = lApp.LimpiarTablas(idConv);
                 List<BeneficiarioContratante> bens = serv.GetBeneficiariosContratante(petitionsRepository, saveRepository, identificacion, token, idConv);
-
                 if (bens[0].Parentesco == "error_token")
                 {
                     LogApp log = new LogApp();
-                    Dictionary<string, string> param = new Dictionary<string, string>() {
-                {"numeroCelular",numeroCelular },
-                {"identificacion",identificacion},
-                {"idConv", idConv }
-              };
+                    Dictionary<string, string> param = new Dictionary<string, string>() {{"numeroCelular",numeroCelular },{"identificacion",identificacion},{"idConv", idConv }};
                     log.GuardarErrorLogPeticion(bens[0].Parentesco, JsonConvert.SerializeObject(param), "GetBeneficiariosContratante");
-
                     token = aApp.RefreshToken(numeroCelular, identificacion);
-                    if (token != "error_credenciales" & token != "error_parametros" & token != "error_desconocido")
+                    if (token != "error_credenciales" && token != "error_parametros" && token != "error_desconocido")
                     {
                         bens = serv.GetBeneficiariosContratante(petitionsRepository, saveRepository, identificacion, token, idConv);
                     }
-                    else
-                    {
-                        log.GuardarErrorLogPeticion(token, JsonConvert.SerializeObject(param), "GetBeneficiariosContratante");
-                    }
+                    else  log.GuardarErrorLogPeticion(token, JsonConvert.SerializeObject(param), "GetBeneficiariosContratante");
+                    
                 }
-
                 if (bens.Count > 0)
                 {
                     foreach (BeneficiarioContratante ben in bens)
@@ -211,7 +156,6 @@ namespace Application
                             serv.ProcesarCiudadesBeneficiarioBd(petitionsRepository, saveRepository, ben.NumeroIdentificacion, ben.TipoIdentificacion, token, idConv, ben.IdUsuario);
                         }
                     }
-                }
             }
         }
         public void DummyPetition() {

@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
@@ -63,7 +61,7 @@ namespace DataAccess.Repositories
                 throw;
             }
         }
-        public ResultBeneficiarios GetBeneficiariosContrato(int contrato,string idConv)
+        public ResultBeneficiarios GetBeneficiariosContrato(int idContrato,string idConv)
         {
             ResultBeneficiarios resultado = new ResultBeneficiarios();
             try
@@ -71,7 +69,7 @@ namespace DataAccess.Repositories
                 using (ColmedicaContext contexto = new ColmedicaContext())
                 {
                     resultado.Beneficiarios = (from tb in contexto.tempBeneficiarios
-                                 where (tb.idConv == idConv && tb.numeroContrato==contrato)
+                                 where (tb.idConv == idConv && tb.numeroContrato==idContrato)
                                  select new BeneficiarioContratante() {
                                     CiudadResidencia = (int)tb.ciudadResidencia,
                                     Colectivo = tb.colectivo.ToString(),
@@ -531,10 +529,14 @@ namespace DataAccess.Repositories
             {
                 using (ColmedicaContext contexto = new ColmedicaContext())
                 {
-                    contexto.Database.SqlQuery<string>("SELECT @@VERSION as V").FirstOrDefault();
-
+                   var s = contexto.Database.SqlQuery<string>("SELECT @@VERSION as V").FirstOrDefault();
+                    if (s.Length >= 0)
+                    {
+                        return true;
+                    }
+                    else return false;
                 }
-                return true;
+               
             }
             catch (Exception e)
             {

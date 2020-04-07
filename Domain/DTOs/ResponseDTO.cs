@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.DTOs
 {
-   public class ResponseDTO
+   public class ResponseDto
     {
         public string FulfillmentText { get; set; }
         public string Source { get; set; }

@@ -6,9 +6,6 @@ using Domain.Services;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application
 {
@@ -109,8 +106,19 @@ namespace Application
             dynamic infoCita = serv.GetInfoAsignarCita(repo,idConv);
             string telefono = String.IsNullOrEmpty(infoCita.telefono) ?"": infoCita.telefono;
             string celular = String.IsNullOrEmpty(infoCita.celular)?"": infoCita.celular;
-           
-            string resultadoAsig = sServ.AsignarCita(sRepo,infoCita.numEspacioCita,infoCita.tipoIdBeneficiario,infoCita.numIdBeneficiario,infoCita.centroMedico,infoCita.idMedico,infoCita.especialidad,telefono,"",celular,token);
+            Dictionary<string, string> values = new Dictionary<string, string>() {
+                {"espacioCita",infoCita.numEspacioCita},
+                {"tipoId",infoCita.tipoIdBeneficiario},
+                {"numId",infoCita.numIdBeneficiario},
+                {"centroMedico",infoCita.centroMedico},
+                {"medico",infoCita.idMedico},
+                {"especialidad",infoCita.especialidad},
+                {"telefono",telefono},
+                {"correo",""},
+                {"celular",celular},
+                {"token",token}
+            };
+            string resultadoAsig = sServ.AsignarCita(sRepo,values);
             if (resultadoAsig == "error_token")
             {
                 LogApp log = new LogApp();
@@ -120,17 +128,17 @@ namespace Application
                 {"idConv", idConv }
               };
                 log.GuardarErrorLogPeticion(resultadoAsig, JsonConvert.SerializeObject(param), "AsignarCita");
-
                 string nToken = aApp.RefreshToken(numeroCelular, identificacion);
-                if (nToken != "error_credenciales" & nToken != "error_parametros" & nToken != "error_desconocido")
+                if (nToken != "error_credenciales" && nToken != "error_parametros" && nToken != "error_desconocido")
                 {
-                    string res = sServ.AsignarCita(sRepo, infoCita.numEspacioCita, infoCita.tipoIdBeneficiario, infoCita.numIdBeneficiario, infoCita.centroMedico, infoCita.idMedico, infoCita.especialidad, telefono, "", celular, nToken);
+                    values.Remove("token");
+                    values.Add("token",nToken);
+                    string res = sServ.AsignarCita(sRepo,values);
                     serv.UpdateCitaBd(repo, idConv, "agendamiento", res);
 
                 }
                 else
                 {
-                 //   log.GuardarErrorLogPeticion(nToken, JsonConvert.SerializeObject(param), "AsignarCita");
                     serv.UpdateCitaBd(repo, idConv, "agendamiento", nToken);
                 }
             }

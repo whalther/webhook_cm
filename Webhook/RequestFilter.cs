@@ -2,9 +2,6 @@
 using Domain.DTOs;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web;
@@ -12,7 +9,7 @@ using System.Web.Http;
 
 namespace Webhook
 {
-    public class RequestFilterAttribute : AuthorizeAttribute
+    public sealed class RequestFilterAttribute : AuthorizeAttribute
     {
         public override void OnAuthorization(
               System.Web.Http.Controllers.HttpActionContext actionContext)

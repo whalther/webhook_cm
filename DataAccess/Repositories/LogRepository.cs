@@ -61,16 +61,12 @@ namespace DataAccess.Repositories
                         metodo = metodo,
                         origen = "webhook"
                     };
-
-                  //    contexto.logErrorPeticion.Add(log);
                     await SendChatbotData(log).ConfigureAwait(false);
                     contexto.SaveChanges();
-                   // return true;
                 }
                 catch (Exception E)
                 {
                     Trace.WriteLine(E.Message);
-                   // return false;
                     throw;
                 }
             }

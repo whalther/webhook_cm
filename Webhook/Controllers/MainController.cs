@@ -1,12 +1,8 @@
-﻿//using Application.Services;
-using Application;
-using Domain.DTOs;
+﻿using Domain.DTOs;
 using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Web.Mvc;
-
-
 
 namespace Webhook.Controllers
 {
@@ -17,7 +13,7 @@ namespace Webhook.Controllers
         public JsonResult Index()
         {
            
-            ResponseDTO respuesta = new ResponseDTO();
+            ResponseDto respuesta = new ResponseDto();
            
             
             try
@@ -25,23 +21,15 @@ namespace Webhook.Controllers
                  var bodyStream = new StreamReader(HttpContext.Request.InputStream);
                  string s = bodyStream.ReadToEnd();
 
-                 RequestDTO request = JsonConvert.DeserializeObject<RequestDTO>(s);
-                 string[] sessionString = request.session.Split('/');
-                 int lastIndex = sessionString.Length - 1;
+                 RequestDto request = JsonConvert.DeserializeObject<RequestDto>(s);
                  string action = request.queryResult.action;
-                LogApp logApp = new LogApp();
+              
                 
                 switch (action)
                  {
                      case "1":
                          respuesta.Source = "webhook_boleta";
                         respuesta.FulfillmentText = "prueba";
-                        /* 
-                         GetBoletaService getBoleta = new GetBoletaService();
-                         respuesta.fulfillmentText = getBoleta.GetBoleta(sessionDto.empleadoId, sessionDto.vhur, sessionDto.fromDb,
-                                                                             Convert.ToInt32(request.queryResult.parameters["time"].Substring(0, 4)),
-                                                                             Convert.ToInt32(Convert.ToDouble(request.queryResult.parameters["partner_mes"])));                        
-                         */
                         break;
 
                      case "lifemiles_action":
@@ -59,7 +47,7 @@ namespace Webhook.Controllers
              }
              catch (Exception ex)
              {
-                 return new JsonResult { Data = new ResponseDTO() { FulfillmentText = ex.Message, Source = "ERROR" } };
+                 return new JsonResult { Data = new ResponseDto() { FulfillmentText = ex.Message, Source = "ERROR" } };
                 throw;
              }
         }

@@ -1,5 +1,4 @@
 ﻿using CrossCutting.Repositories;
-using DataAccess.Repositories;
 using Domain.DTOs;
 using Domain.Repositories;
 using Domain.Services;
@@ -36,7 +35,7 @@ namespace Application
               };
                 log.GuardarErrorLogPeticion(resp, JsonConvert.SerializeObject(param), "ValidarOtp");
                 string nToken = serv.RefreshToken(authRepository, numeroCelular, identificacion);
-                if (nToken != "error_credenciales" & nToken != "error_parametros" & nToken != "error_desconocido")
+                if (nToken != "error_credenciales" && nToken != "error_parametros" && nToken != "error_desconocido")
                 {
                     res.Result = serv.ValidarOtp(authRepository, nToken, otp);
                 }

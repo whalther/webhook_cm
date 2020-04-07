@@ -1,5 +1,4 @@
-﻿using System;
-using DataAccess.Repositories;
+﻿using DataAccess.Repositories;
 using Domain.Repositories;
 using Domain.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -1,12 +1,7 @@
-﻿using Domain.DTOs;
-using Domain.Repositories;
-using Newtonsoft.Json;
-using System;
+﻿using Domain.Repositories;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace CrossCutting.Repositories
 {
@@ -124,7 +119,7 @@ namespace CrossCutting.Repositories
         {
             string url = ConfigurationManager.AppSettings["baseUrlApi"];
             RestClient rc = new RestClient();
-            var resp = rc.HacerPeticion(url, "VerificaUsuario", null, "POST", null, true);
+            rc.HacerPeticion(url, "VerificaUsuario", null, "POST", null, true);
         }
         public string GetCitasBeneficiario(Dictionary<string, string> headers, Dictionary<string, string> parametros)
         {

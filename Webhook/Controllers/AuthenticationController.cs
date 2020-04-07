@@ -1,12 +1,7 @@
 ﻿using Application;
 using Domain.DTOs;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web;
 using System.Web.Http;
 
 namespace Webhook.Controllers
@@ -15,7 +10,7 @@ namespace Webhook.Controllers
     [RequestFilter]
     public class AuthenticationController : ApiController
     {
-        Utilities utilidad = new Utilities();
+       readonly Utilities utilidad = new Utilities();
         [HttpPost]
         [Route("getToken")]
         public IHttpActionResult GetToken([FromBody]dynamic request)
@@ -40,6 +35,7 @@ namespace Webhook.Controllers
                 {"identificacion",identificacion},
                 {"idConv", idConv }
               };
+                log.GuardarErrorLogPeticion(resp, JsonConvert.SerializeObject(param),"GetToken");
                 log.GuardarErrorLogPeticion(resp, JsonConvert.SerializeObject(param),"GetToken");
                 respuesta.Status = "error";
             }
