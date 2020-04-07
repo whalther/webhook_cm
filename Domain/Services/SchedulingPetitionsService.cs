@@ -11,25 +11,25 @@ namespace Domain.Services
     {
         public Usuario ValidarUsuario(ISchedulingPetitionsRepository petitionsRepository, string identificacion, string token) {
             Cifrador cf = new Cifrador();
-            string iv = cf.GenerarIv();
+            string ivUsuario = cf.GenerarIv();
             Dictionary<string, string> param = new Dictionary<string, string>() {
                 {"numID",identificacion }
             };
-            string paramCifrado = cf.Cifrar(JsonConvert.SerializeObject(param),iv);
+            string paramCifradoUsuario = cf.Cifrar(JsonConvert.SerializeObject(param), ivUsuario);
             Dictionary<string, string> hd = new Dictionary<string, string>() {
                 {"token",token }
             };
             Dictionary<string, string> parametros = new Dictionary<string, string>() {
-                {"mensaje",paramCifrado},
-                {"iv",iv}
+                {"mensaje",paramCifradoUsuario},
+                {"iv",ivUsuario}
             };
             string resultado =  petitionsRepository.ValidarUsuario(hd, parametros);
             
             if (resultado != "error_parametros" && resultado != "error_desconocido" && resultado != "error_token")
             {
-                string ivE = resultado.Substring(0, 16);
-                string content = resultado.Substring(16);
-                string textoPlano = cf.Descifrar(content, ivE);
+                string ivUsuarioPeticion = resultado.Substring(0, 16);
+                string contentUsuario = resultado.Substring(16);
+                string textoPlano = cf.Descifrar(contentUsuario, ivUsuarioPeticion);
                 Usuario jsonResp = JsonConvert.DeserializeObject<Usuario>(textoPlano.ToString());
                 return jsonResp;
             }
@@ -42,26 +42,26 @@ namespace Domain.Services
         public List<BeneficiarioContratante> GetBeneficiariosContratante(ISchedulingPetitionsRepository petitionsRepository,ISchedulingSaveRepository saveRepository,  string identificacion, string token, string idConv)
         {
             Cifrador cf = new Cifrador();
-            string iv = cf.GenerarIv();
+            string ivBens = cf.GenerarIv();
             
-            Dictionary<string, string> param = new Dictionary<string, string>() {
+            Dictionary<string, string> paramBens = new Dictionary<string, string>() {
                 {"numID",identificacion }
             };
-            string paramCifrado = cf.Cifrar(JsonConvert.SerializeObject(param), iv);
+            string paramCifradoBens = cf.Cifrar(JsonConvert.SerializeObject(paramBens), ivBens);
             Dictionary<string, string> hd = new Dictionary<string, string>() {
                 {"token",token }
             };
-            Dictionary<string, string> parametros = new Dictionary<string, string>() {
-                {"mensaje",paramCifrado},
-                {"iv",iv}
+            Dictionary<string, string> parametrosBens = new Dictionary<string, string>() {
+                {"mensaje",paramCifradoBens},
+                {"iv",ivBens}
             };
-            string resultado = petitionsRepository.GetBeneficiariosContratante(hd, parametros);
+            string resultado = petitionsRepository.GetBeneficiariosContratante(hd, parametrosBens);
 
             if (resultado != "error_parametros" && resultado != "error_desconocido" && resultado != "error_token")
             {
-                string ivE = resultado.Substring(0, 16);
+                string ivBensPeticion = resultado.Substring(0, 16);
                 string content = resultado.Substring(16);
-                string textoPlano = cf.Descifrar(content, ivE);
+                string textoPlano = cf.Descifrar(content, ivBensPeticion);
                 List<BeneficiarioContratante> jsonResp = JsonConvert.DeserializeObject<List<BeneficiarioContratante>>(textoPlano);
                 bool save = saveRepository.SaveBeneficiarios(jsonResp,idConv);
                 if (save)
@@ -83,27 +83,27 @@ namespace Domain.Services
         public string ProcesarEspecialidadesCiudad(ISchedulingPetitionsRepository petitionsRepository, ISchedulingSaveRepository saveRepository, string identificacion, string tipoId, int ciudad, string token, string idConv)
         {
             Cifrador cf = new Cifrador();
-            string iv = cf.GenerarIv();
+            string ivEspe = cf.GenerarIv();
             Dictionary<string, string> param = new Dictionary<string, string>() {
                 {"tipIdeBeneficiario",tipoId },
                 {"numIdeBeneficiario",identificacion},
                 {"ciudad", ciudad.ToString() }
             };
-            string paramCifrado = cf.Cifrar(JsonConvert.SerializeObject(param), iv);
+            string paramCifradoEspe = cf.Cifrar(JsonConvert.SerializeObject(param), ivEspe);
             Dictionary<string, string> hd = new Dictionary<string, string>() {
                 {"token",token }
             };
             Dictionary<string, string> parametros = new Dictionary<string, string>() {
-                {"mensaje",paramCifrado},
-                {"iv",iv}
+                {"mensaje",paramCifradoEspe},
+                {"iv",ivEspe}
             };
             string resultado = petitionsRepository.ProcesarEspecialidadesCiudad(hd, parametros);
 
             if (resultado != "error_parametros" && resultado != "error_desconocido" && resultado != "error_token")
             {
-                string ivE = resultado.Substring(0, 16);
+                string ivEspePeticion = resultado.Substring(0, 16);
                 string content = resultado.Substring(16);
-                string textoPlano = cf.Descifrar(content, ivE);
+                string textoPlano = cf.Descifrar(content, ivEspePeticion);
                 List<Especialidad> jsonResp = JsonConvert.DeserializeObject<List<Especialidad>>(textoPlano);
                 bool save = saveRepository.SaveEspecialidadesCiudad(jsonResp, idConv);
                 if (save)
@@ -124,26 +124,26 @@ namespace Domain.Services
         public string ProcesarCitas(ISchedulingPetitionsRepository petitionsRepository, ISchedulingSaveRepository saveRepository, int ciudad, int especialidad, string token, string idConv)
         {
             Cifrador cf = new Cifrador();
-            string iv = cf.GenerarIv();
+            string ivCita = cf.GenerarIv();
             Dictionary<string, string> param = new Dictionary<string, string>() {
                 {"ciudad",ciudad.ToString() },
                 {"especialidad",especialidad.ToString()}
             };
-            string paramCifrado = cf.Cifrar(JsonConvert.SerializeObject(param), iv);
+            string paramCifradoCita = cf.Cifrar(JsonConvert.SerializeObject(param), ivCita);
             Dictionary<string, string> hd = new Dictionary<string, string>() {
                 {"token",token }
             };
             Dictionary<string, string> parametros = new Dictionary<string, string>() {
-                {"mensaje",paramCifrado},
-                {"iv",iv}
+                {"mensaje",paramCifradoCita},
+                {"iv",ivCita}
             };
             string resultado = petitionsRepository.ProcesarCitas(hd, parametros);
 
             if (resultado != "error_parametros" && resultado != "error_desconocido" && resultado != "error_token")
             {
-                string ivE = resultado.Substring(0, 16);
+                string ivCitapeticion = resultado.Substring(0, 16);
                 string content = resultado.Substring(16);
-                string textoPlano = cf.Descifrar(content, ivE);
+                string textoPlano = cf.Descifrar(content, ivCitapeticion);
                 List<Cita> jsonResp = JsonConvert.DeserializeObject<List<Cita>>(textoPlano);
                 
                 bool save = saveRepository.SaveCitasCiudad(jsonResp, idConv);
@@ -177,12 +177,12 @@ namespace Domain.Services
                 {"correo",values["correo"].ToString() }, 
                 {"celular",values["celular"].ToString()}
                     };
-            string paramCifrado = cf.Cifrar(JsonConvert.SerializeObject(param), iv);
+            string paramCifradoCita = cf.Cifrar(JsonConvert.SerializeObject(param), iv);
             Dictionary<string, string> hd = new Dictionary<string, string>() {
                 {"token",values["token"].ToString() }
             };
             Dictionary<string, string> parametros = new Dictionary<string, string>() {
-                {"mensaje",paramCifrado},
+                {"mensaje",paramCifradoCita},
                 {"iv",iv}
             };
             string resultado = petitionsRepository.AsignarCita(hd, parametros);

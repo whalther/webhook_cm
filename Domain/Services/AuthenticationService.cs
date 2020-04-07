@@ -11,22 +11,22 @@ namespace Domain.Services
         public string GetToken(IAuthenticationRepository authRepository,string numeroCelular, string documento)
         {
             Cifrador cf = new Cifrador();
-            string usuarioPwd = ConfigurationManager.AppSettings.Get("usuarioBot") +":"+ ConfigurationManager.AppSettings.Get("pwdBot");
-            string iv = cf.GenerarIv();
-            string usuarioPwdCifrado = cf.Cifrar(usuarioPwd,iv);
+            string usuarioPwdToken = ConfigurationManager.AppSettings.Get("usuarioBot") +":"+ ConfigurationManager.AppSettings.Get("pwdBot");
+            string ivToken = cf.GenerarIv();
+            string usuarioPwdCifrado = cf.Cifrar(usuarioPwdToken, ivToken);
             Dictionary<string, string> param = new Dictionary<string, string>() {
                 {"numeroCelular",numeroCelular },
                 {"identificacion",documento}
             };
-            string iv2 = cf.GenerarIv();
-            string paramCifrado = cf.Cifrar(JsonConvert.SerializeObject(param), iv2);
+            string ivCf = cf.GenerarIv();
+            string paramCifrado = cf.Cifrar(JsonConvert.SerializeObject(param), ivCf);
             Dictionary<string, string> hd = new Dictionary<string, string>() {
                 {"Authorization",usuarioPwdCifrado },
-                {"iv",iv}
+                {"iv",ivToken}
             };
             Dictionary<string, string> parametros = new Dictionary<string, string>() {
                 {"mensaje",paramCifrado},
-                {"iv",iv2}
+                {"iv",ivCf}
             };
 
             return authRepository.GetToken(hd,parametros);
@@ -35,22 +35,22 @@ namespace Domain.Services
         public string RefreshToken(IAuthenticationRepository authRepository, string numeroCelular, string documento)
         {
             Cifrador cf = new Cifrador();
-            string usuarioPwd = ConfigurationManager.AppSettings.Get("usuarioBot") + ":" + ConfigurationManager.AppSettings.Get("pwdBot");
-            string iv = cf.GenerarIv();
-            string usuarioPwdCifrado = cf.Cifrar(usuarioPwd, iv);
+            string usuarioPwdRefresh = ConfigurationManager.AppSettings.Get("usuarioBot") + ":" + ConfigurationManager.AppSettings.Get("pwdBot");
+            string ivRefresh = cf.GenerarIv();
+            string usuarioPwdCifrado = cf.Cifrar(usuarioPwdRefresh, ivRefresh);
             Dictionary<string, string> param = new Dictionary<string, string>() {
                 {"numeroCelular",numeroCelular },
                 {"identificacion",documento}
             };
-            string iv2 = cf.GenerarIv();
-            string paramCifrado = cf.Cifrar(JsonConvert.SerializeObject(param), iv2);
+            string ivParam = cf.GenerarIv();
+            string paramCifrado = cf.Cifrar(JsonConvert.SerializeObject(param), ivParam);
             Dictionary<string, string> hd = new Dictionary<string, string>() {
                 {"Authorization",usuarioPwdCifrado },
-                {"iv",iv}
+                {"iv",ivRefresh}
             };
             Dictionary<string, string> parametros = new Dictionary<string, string>() {
                 {"mensaje",paramCifrado},
-                {"iv",iv2}
+                {"iv",ivParam}
             };
 
             return authRepository.RefreshToken(hd, parametros);
