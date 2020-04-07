@@ -12,7 +12,7 @@ namespace DataAccess.Repositories
 {
    public class LogRepository : ILogRepository
     {
-        private ServiceBusClient ServiceClient;
+       readonly private ServiceBusClient ServiceClient;
         public LogRepository()
         {
             ServiceClient = new ServiceBusClient(ConfigurationManager.AppSettings["logicAppConec"], ConfigurationManager.AppSettings["nameCola"] );
@@ -57,7 +57,7 @@ namespace DataAccess.Repositories
                     {
                         tipo = tipo,
                         @params = param,
-                        fecha = DateTime.Now,
+                        fecha = Convert.ToDateTime(string.Format("{0:yyyy-MM-dd HH:mm:ss}", DateTime.Now)),
                         metodo = metodo,
                         origen = "webhook"
                     };

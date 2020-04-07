@@ -172,38 +172,44 @@ namespace Application
             ISchedulingSaveRepository saveRepository = new SchedulingSaveRepository();
             SchedulingPetitionsService serv = new SchedulingPetitionsService();
             AuthenticationApp aApp = new AuthenticationApp();
-            serv.LimpiarTablasFlujo(saveRepository, 1, idConv, "");
-            List<BeneficiarioContratante> bens = serv.GetBeneficiariosContratante(petitionsRepository, saveRepository, identificacion, token, idConv);
-            
-            if (bens[0].Parentesco == "error_token")
+            LocalQueriesApp lApp = new LocalQueriesApp();
+            bool limpia = lApp.LimpiarTablas(idConv);
+            if (limpia)
             {
-                LogApp log = new LogApp();
-                Dictionary<string, string> param = new Dictionary<string, string>() {
+                //serv.LimpiarTablasFlujo(saveRepository, 1, idConv, "");
+                List<BeneficiarioContratante> bens = serv.GetBeneficiariosContratante(petitionsRepository, saveRepository, identificacion, token, idConv);
+
+                if (bens[0].Parentesco == "error_token")
+                {
+                    LogApp log = new LogApp();
+                    Dictionary<string, string> param = new Dictionary<string, string>() {
                 {"numeroCelular",numeroCelular },
                 {"identificacion",identificacion},
                 {"idConv", idConv }
               };
-                log.GuardarErrorLogPeticion(bens[0].Parentesco, JsonConvert.SerializeObject(param), "GetBeneficiariosContratante");
+                    log.GuardarErrorLogPeticion(bens[0].Parentesco, JsonConvert.SerializeObject(param), "GetBeneficiariosContratante");
 
-                token = aApp.RefreshToken(numeroCelular, identificacion);
-                if (token != "error_credenciales" & token != "error_parametros" & token != "error_desconocido")
-                {
-                   bens = serv.GetBeneficiariosContratante(petitionsRepository, saveRepository, identificacion, token, idConv);
-                }
-                else
-                {
-                    log.GuardarErrorLogPeticion(token, JsonConvert.SerializeObject(param), "GetBeneficiariosContratante");
-                }
-            }
-
-            if (bens.Count>0) {
-                foreach (BeneficiarioContratante ben in bens)
-                {
-                    string rC = serv.ProcesarCiudadesBeneficiarioBd(petitionsRepository, saveRepository, ben.NumeroIdentificacion, ben.TipoIdentificacion, token, idConv,ben.IdUsuario);
-                    if (rC == "error_token")
+                    token = aApp.RefreshToken(numeroCelular, identificacion);
+                    if (token != "error_credenciales" & token != "error_parametros" & token != "error_desconocido")
                     {
-                        token = aApp.RefreshToken(numeroCelular, identificacion);
-                        serv.ProcesarCiudadesBeneficiarioBd(petitionsRepository, saveRepository, ben.NumeroIdentificacion, ben.TipoIdentificacion, token, idConv, ben.IdUsuario);
+                        bens = serv.GetBeneficiariosContratante(petitionsRepository, saveRepository, identificacion, token, idConv);
+                    }
+                    else
+                    {
+                        log.GuardarErrorLogPeticion(token, JsonConvert.SerializeObject(param), "GetBeneficiariosContratante");
+                    }
+                }
+
+                if (bens.Count > 0)
+                {
+                    foreach (BeneficiarioContratante ben in bens)
+                    {
+                        string rC = serv.ProcesarCiudadesBeneficiarioBd(petitionsRepository, saveRepository, ben.NumeroIdentificacion, ben.TipoIdentificacion, token, idConv, ben.IdUsuario);
+                        if (rC == "error_token")
+                        {
+                            token = aApp.RefreshToken(numeroCelular, identificacion);
+                            serv.ProcesarCiudadesBeneficiarioBd(petitionsRepository, saveRepository, ben.NumeroIdentificacion, ben.TipoIdentificacion, token, idConv, ben.IdUsuario);
+                        }
                     }
                 }
             }

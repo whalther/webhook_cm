@@ -19,7 +19,7 @@ namespace CrossCutting
                     request = new RestRequest(metodo, Method.GET);
                     break;
                 default:
-                    request = null;
+                    request = new RestRequest();
                     break;
             }
 

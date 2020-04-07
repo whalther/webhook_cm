@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using DataAccess.Repositories;
 using Domain.DTOs;
 using Domain.Repositories;
@@ -11,19 +12,16 @@ namespace DataAccess.Tests
     public class LogpetitionTest
     {
         [TestMethod]
-        public void LogPetition()
+        public async void LogPetition()
         {
             //Arrange
-        /*    LogPeticion log = new LogPeticion();
+            LogPeticion log = new LogPeticion();
             ILogRepository logRepository = new LogRepository();
             LogService logService = new LogService();
-            log.FechaHora = new DateTime();
-            log.Action = "prueba";
-            log.Parameters = "['id_empleado=16309','membresia=14']";
             //Act
-            bool seInserto = logService.GuardarLogPeticion(logRepository, log);
+             await logService.GuardarErrorLogPeticion(logRepository,"prueba","prueba_error","test").ConfigureAwait(false);
             //Accert
-           Assert.IsTrue(seInserto);*/
+          // Assert.IsNotNull(seInserto);
         }
     }
 }
