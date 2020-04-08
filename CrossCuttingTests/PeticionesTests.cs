@@ -11,8 +11,8 @@ namespace CrossCuttingTests
     [TestClass]
     public class PeticionesTests
     {
-       
 
+        [TestCategory("UnitTests")]
         [TestMethod]
         public void ValidarUsuario()
         {
@@ -23,7 +23,7 @@ namespace CrossCuttingTests
             Assert.IsNotNull(res);
 
         }
-
+        [TestCategory("UnitTests")]
         [TestMethod]
         public void GetBeneficiariosContratante()
         {
@@ -37,7 +37,7 @@ namespace CrossCuttingTests
             Assert.IsNotNull(res);
 
         }
-    
+        [TestCategory("UnitTests")]
         [TestMethod]
         public void GetEspecialidadesCiudad()
         {
@@ -50,6 +50,7 @@ namespace CrossCuttingTests
             string res = petService.ProcesarEspecialidadesCiudad(petRepository, saveRepository, "1123440768", "TI", 50001, token, "98fddusfh89udf-sf98df-9");
             Assert.IsNotNull(res);
         }
+        [TestCategory("UnitTests")]
         [TestMethod]
         public void GetCitasCiudad()
         {
@@ -62,7 +63,7 @@ namespace CrossCuttingTests
             string res = petService.ProcesarCitas(petRepository, saveRepository, 50001, 172, token, "98fddusfh89udf-sf98df-9");
             Assert.IsNotNull(res);
         }
-
+        [TestCategory("UnitTests")]
         [TestMethod]
         public void AsignarCita()
         {
