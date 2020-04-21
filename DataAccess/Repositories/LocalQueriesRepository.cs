@@ -260,7 +260,7 @@ namespace DataAccess.Repositories
                     if (String.IsNullOrEmpty(fecha))
                     {
                         resultado = (from tia in contexto.tempInfoAgendamiento
-                                     orderby tia.fecha
+                                     orderby tia.fechaHoraInicio ascending,tia.horaInicio descending
                                      where tia.idConv == idConv
                                      select new Cita()
                                      {
@@ -283,7 +283,7 @@ namespace DataAccess.Repositories
                     else {
                         DateTime nFecha = DateTime.Parse(fecha);
                         resultado = (from tia in contexto.tempInfoAgendamiento
-                                     orderby tia.fecha
+                                     orderby tia.fechaHoraInicio ascending, tia.horaInicio descending
                                      where (tia.idConv == idConv && tia.fecha >= nFecha)
                                      select new Cita()
                                      {
@@ -324,7 +324,7 @@ namespace DataAccess.Repositories
                 {
                     
                         resultado = (from tia in contexto.tempInfoAgendamiento
-                                     orderby tia.fecha
+                                     orderby tia.fechaHoraInicio ascending, tia.horaInicio descending
                                      where (tia.idConv == idConv && tia.idMedico==idMedico)
                                      select new Cita()
                                      {
@@ -363,7 +363,7 @@ namespace DataAccess.Repositories
                 {
 
                     resultado = (from tia in contexto.tempInfoAgendamiento
-                                 orderby tia.fecha
+                                 orderby tia.fechaHoraInicio ascending, tia.horaInicio descending
                                  where (tia.idConv == idConv && tia.idCentroMedico == idCentroMedico)
                                  select new Cita()
                                  {

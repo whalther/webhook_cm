@@ -107,12 +107,12 @@ namespace Application
             string telefono = String.IsNullOrEmpty(infoCita.telefono) ?"": infoCita.telefono;
             string celular = String.IsNullOrEmpty(infoCita.celular)?"": infoCita.celular;
             Dictionary<string, string> values = new Dictionary<string, string>() {
-                {"espacioCita",infoCita.numEspacioCita},
+                {"espacioCita",infoCita.numEspacioCita.ToString()},
                 {"tipoId",infoCita.tipoIdBeneficiario},
-                {"numId",infoCita.numIdBeneficiario},
-                {"centroMedico",infoCita.centroMedico},
-                {"medico",infoCita.idMedico},
-                {"especialidad",infoCita.especialidad},
+                {"numId",infoCita.numIdBeneficiario.ToString()},
+                {"centroMedico",infoCita.centroMedico.ToString()},
+                {"medico",infoCita.idMedico.ToString()},
+                {"especialidad",infoCita.especialidad.ToString()},
                 {"telefono",telefono},
                 {"correo",""},
                 {"celular",celular},
