@@ -1,4 +1,5 @@
 ﻿using CrossCutting.Repositories;
+using DataAccess.Repositories;
 using Domain.DTOs;
 using Domain.Repositories;
 using Domain.Services;
@@ -9,10 +10,15 @@ namespace Application
 {
     public class AuthenticationApp
     {
-        public string GetToken(string numeroCelular, string documento)
+        public string GetToken(string numeroCelular, string numDoc, string tipoDoc,string idConv)
         {
             IAuthenticationRepository authRepository = new AuthenticationRepository();
-            return new AuthenticationService().GetToken(authRepository, numeroCelular, documento);
+            IAuthenticationSaveRepository saveRepository = new AuthenticationSaveRepository();
+            AuthenticationSaveService saveService = new AuthenticationSaveService();
+            string documento = tipoDoc + numDoc;
+            string token = new AuthenticationService().GetToken(authRepository, numeroCelular, documento);
+            saveService.SaveAuthentication(saveRepository, numDoc, tipoDoc, token, idConv);
+            return token;
         }
         public string RefreshToken(string numeroCelular, string documento) 
         {
@@ -22,6 +28,8 @@ namespace Application
         public Resultado ValidarOtp(string token, string otp,string identificacion, string numeroCelular,string idConv)
         {
             IAuthenticationRepository authRepository = new AuthenticationRepository();
+            IAuthenticationSaveRepository saveRepository = new AuthenticationSaveRepository();
+            AuthenticationSaveService saveService = new AuthenticationSaveService();
             Resultado res = new Resultado();
             AuthenticationService serv = new AuthenticationService();
             string resp = serv.ValidarOtp(authRepository, token, otp);
@@ -33,7 +41,7 @@ namespace Application
                 {"identificacion",identificacion},
                 {"idConv", idConv }
               };
-                log.GuardarErrorLogPeticion(resp, JsonConvert.SerializeObject(param), "ValidarOtp");
+                 log.GuardarErrorLogPeticion(resp, JsonConvert.SerializeObject(param), "ValidarOtp");
                 string nToken = serv.RefreshToken(authRepository, numeroCelular, identificacion);
                 if (nToken != "error_credenciales" && nToken != "error_parametros" && nToken != "error_desconocido")
                 {
@@ -50,8 +58,14 @@ namespace Application
                 res.Result = resp;
                 res.Token = token;
             }
+            saveService.SaveValidacionOtp(saveRepository, res.Result.ToString(), idConv);
             return res;
         }
-            
+        public dynamic GetAuthentication(string idConv)
+        {
+            IAuthenticationSaveRepository saveRepository = new AuthenticationSaveRepository();
+            AuthenticationSaveService saveService = new AuthenticationSaveService();
+            return saveService.GetAuthentication(saveRepository, idConv);
+        }
     }
 }

@@ -15,7 +15,7 @@ namespace Domain.DTOs
         public int IdUsuario { get; set; }
         public string Mora { get; set; }
         public string Nombre { get; set; }
-        public int NumeroContrato { get; set; }
+        public string NumeroContrato { get; set; }
         public string NumeroIdentificacion { get; set; }
         public string Parentesco { get; set; }
         public string Sexo { get; set; }

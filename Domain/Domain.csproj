@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="DTOs\BeneficiarioContratante.cs" />
     <Compile Include="DTOs\Cita.cs" />
+    <Compile Include="DTOs\CitaBeneficiario.cs" />
     <Compile Include="DTOs\Ciudad.cs" />
     <Compile Include="DTOs\Contrato.cs" />
     <Compile Include="DTOs\Especialidad.cs" />
@@ -70,10 +71,12 @@
     <Compile Include="DTOs\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IAuthenticationRepository.cs" />
+    <Compile Include="Repositories\IAuthenticationSaveRepository.cs" />
     <Compile Include="Repositories\ILocalQueriesRepository.cs" />
     <Compile Include="Repositories\ILogRepository.cs" />
     <Compile Include="Repositories\ISchedulingPetitionsRepository.cs" />
     <Compile Include="Repositories\ISchedulingSaveRepository.cs" />
+    <Compile Include="Services\AuthenticationSaveService.cs" />
     <Compile Include="Services\LocalQueriesService.cs" />
     <Compile Include="Services\LogService.cs" />
     <Compile Include="Services\AuthenticationService.cs" />

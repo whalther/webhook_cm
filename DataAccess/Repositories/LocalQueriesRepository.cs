@@ -46,9 +46,9 @@ namespace DataAccess.Repositories
                     resultado = (from tp in contexto.tempContratos
                                  where tp.idConv == idConv
                                  select new Contrato() {
-                                 idContrato =(int) tp.idContrato,
-                                 nombre = tp.nombre,
-                                 idConv = idConv
+                                 IdContrato = tp.idContrato,
+                                 Nombre = tp.nombre,
+                                 IdConv = idConv
                                  }
                                  ).ToList();
                 }
@@ -69,14 +69,14 @@ namespace DataAccess.Repositories
                 using (ColmedicaContext contexto = new ColmedicaContext())
                 {
                     resultado.Beneficiarios = (from tb in contexto.tempBeneficiarios
-                                 where (tb.idConv == idConv && tb.numeroContrato==idContrato)
+                                 where (tb.idConv == idConv && tb.numeroContrato==idContrato.ToString())
                                  select new BeneficiarioContratante() {
                                     CiudadResidencia = (int)tb.ciudadResidencia,
                                     Colectivo = tb.colectivo.ToString(),
                                     DescripcionPlan = tb.descripcionPlan,
                                     IdUsuario =(int) tb.idUsuario,
                                     Nombre = tb.nombre,
-                                    NumeroContrato =(int) tb.numeroContrato,
+                                    NumeroContrato = tb.numeroContrato.ToString(),
                                     NumeroIdentificacion = tb.numeroIdentificacion,
                                     Parentesco = tb.parentesco,
                                     Sexo = tb.sexo,
@@ -94,7 +94,7 @@ namespace DataAccess.Repositories
                                                    DescripcionPlan = tb.descripcionPlan,
                                                    IdUsuario = (int)tb.idUsuario,
                                                    Nombre = tb.nombre,
-                                                   NumeroContrato = (int)tb.numeroContrato,
+                                                   NumeroContrato = tb.numeroContrato.ToString(),
                                                    NumeroIdentificacion = tb.numeroIdentificacion,
                                                    Parentesco = tb.parentesco,
                                                    Sexo = tb.sexo,
@@ -543,6 +543,140 @@ namespace DataAccess.Repositories
                 Trace.WriteLine(e.Message);
                 return false;
                 throw;
+            }
+        }
+        public List<CitaBeneficiario> GetCitasBeneficiario(string idConv)
+        {
+            List<CitaBeneficiario> resultado = null;
+            try
+            {
+
+                using (ColmedicaContext contexto = new ColmedicaContext())
+                {
+
+                    resultado = (from tcb in contexto.tempCitasBeneficiario
+                                 where tcb.idConv == idConv
+                                 select new CitaBeneficiario()
+                                 {
+                                    AsignoCita = tcb.asignoCita,
+                                    ConQR = tcb.conQr,
+                                    Especialidad = tcb.especialidad,
+                                    Estado = tcb.estado,
+                                    EstadoQR = (int)tcb.estadoQr,
+                                    Fecha = tcb.fecha.ToString(),
+                                    FechaHoraCita = (DateTime)tcb.fechaHora,
+                                    HoraFin = tcb.horaFin,
+                                    HoraInicio = tcb.horaInicio,
+                                    IdCentroMedico = (int)tcb.idCentroMedico,
+                                    IdCita = (int)tcb.idCita,
+                                    IdEstado = (int)tcb.idEstado,
+                                    Nombre = tcb.nombre,
+                                    NombreAgente = tcb.nombreAgente,
+                                    NombreCentroMedico = tcb.nombreCentroMedico,
+                                    NombreMedico = tcb.nombreMedico,
+                                    NumeroIdentificacion = tcb.numeroIdentificacion,
+                                    Observaciones = tcb.observaciones,
+                                    TelefonoContacto = tcb.telefonoContacto,
+                                    TipoIdentificacion = tcb.tipoIdentificacion,
+                                    ValorPagar = tcb.valorPagar
+                                 }
+                                 ).ToList();
+                }
+                return resultado;
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+                return new List<CitaBeneficiario>();
+                throw;
+            }
+        }
+        public CitaBeneficiario GetInfoCitaBeneficiario(string idConv, int idCita)
+        {
+            CitaBeneficiario resultado = null;
+            try
+            {
+
+                using (ColmedicaContext contexto = new ColmedicaContext())
+                {
+
+                    resultado = (from tcb in contexto.tempCitasBeneficiario
+                                 where (tcb.idConv == idConv && tcb.idCita == idCita)
+                                 select new CitaBeneficiario()
+                                 {
+                                     AsignoCita = tcb.asignoCita,
+                                     ConQR = tcb.conQr,
+                                     Especialidad = tcb.especialidad,
+                                     Estado = tcb.estado,
+                                     EstadoQR = (int)tcb.estadoQr,
+                                     Fecha = tcb.fecha.ToString(),
+                                     FechaHoraCita = (DateTime)tcb.fechaHora,
+                                     HoraFin = tcb.horaFin,
+                                     HoraInicio = tcb.horaInicio,
+                                     IdCentroMedico = (int)tcb.idCentroMedico,
+                                     IdCita = (int)tcb.idCita,
+                                     IdEstado = (int)tcb.idEstado,
+                                     Nombre = tcb.nombre,
+                                     NombreAgente = tcb.nombreAgente,
+                                     NombreCentroMedico = tcb.nombreCentroMedico,
+                                     NombreMedico = tcb.nombreMedico,
+                                     NumeroIdentificacion = tcb.numeroIdentificacion,
+                                     Observaciones = tcb.observaciones,
+                                     TelefonoContacto = tcb.telefonoContacto,
+                                     TipoIdentificacion = tcb.tipoIdentificacion,
+                                     ValorPagar = tcb.valorPagar
+                                 }
+                                 ).FirstOrDefault();
+                }
+                return resultado;
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+                return new CitaBeneficiario();
+                throw;
+            }
+        }
+        public Boolean UpdateCancelacionCita(string idConv, int idCita, string resultado) 
+        {
+            using (ColmedicaContext contexto = new ColmedicaContext())
+            {
+                try
+                {
+
+                    var up = (from cit in contexto.tempCitasBeneficiario
+                              where (cit.idConv == idConv && cit.idCita==idCita)
+                              select cit).FirstOrDefault();
+                    up.resultCancelacion = resultado;
+                    contexto.SaveChanges();
+                    return true;
+                }
+                catch (Exception E)
+                {
+                    Trace.WriteLine(E.Message);
+                    return false;
+                    throw;
+                }
+            }
+        }
+        public string GetEstadoCancelacion(string idConv, int idCita)
+        {
+            using (ColmedicaContext contexto = new ColmedicaContext())
+            {
+                try
+                {
+
+                    string estado = (from cit in contexto.tempCitasBeneficiario
+                              where (cit.idConv == idConv && cit.idCita == idCita)
+                              select cit.resultCancelacion).FirstOrDefault();
+                    return estado;
+                }
+                catch (Exception E)
+                {
+                    Trace.WriteLine(E.Message);
+                    return "error_bd";
+                    throw;
+                }
             }
         }
     }

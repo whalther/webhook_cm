@@ -71,5 +71,20 @@ namespace Domain.Services
         {
             return repo.QueryDummy();
         }
+        public List<CitaBeneficiario> GetCitasBeneficiario(ILocalQueriesRepository repo, string idConv) {
+            return repo.GetCitasBeneficiario(idConv);
+        }
+        public CitaBeneficiario GetInfoCitaBeneficiario(ILocalQueriesRepository repo, string idConv, int idCita)
+        {
+            return repo.GetInfoCitaBeneficiario(idConv,idCita);
+        }
+        public Boolean UpdateCancelacionCita(ILocalQueriesRepository repo, string idConv, int idCita, string resultado)
+        {
+            return repo.UpdateCancelacionCita(idConv, idCita, resultado);
+        }
+        public string GetEstadoCancelacion(ILocalQueriesRepository repo, string idConv, int idCita)
+        {
+            return repo.GetEstadoCancelacion(idConv, idCita);
+        }
     }
 }

@@ -121,13 +121,41 @@ namespace CrossCutting.Repositories
             RestClient rc = new RestClient();
             rc.HacerPeticion(url, "VerificaUsuario", null, "POST", null, true);
         }
-        public string GetCitasBeneficiario(Dictionary<string, string> headers, Dictionary<string, string> parametros)
+        public string ConsultarCitasBeneficiario(Dictionary<string, string> headers, Dictionary<string, string> parametros)
         {
-            return "";
+            string url = ConfigurationManager.AppSettings["baseUrlApi"];
+            RestClient rc = new RestClient();
+            var resp = rc.HacerPeticion(url, "consultarCitasBeneficiario", parametros, "POST", headers, true);
+            string status = resp.StatusCode.ToString();
+            switch (status)
+            {
+                case "OK":
+                    return resp.Content;
+                case "Unauthorized":
+                    return "error_token";
+                case "Forbidden":
+                    return "error_parametros";
+                default:
+                    return "error_desconocido";
+            }
         }
         public string CancelarCitaBeneficiario(Dictionary<string, string> headers, Dictionary<string, string> parametros)
         {
-            return "";
+            string url = ConfigurationManager.AppSettings["baseUrlApi"];
+            RestClient rc = new RestClient();
+            var resp = rc.HacerPeticion(url, "cancelarCitaBeneficiario", parametros, "POST", headers, true);
+            string status = resp.StatusCode.ToString();
+            switch (status)
+            {
+                case "OK":
+                    return resp.Content;
+                case "Unauthorized":
+                    return "error_token";
+                case "Forbidden":
+                    return "error_parametros";
+                default:
+                    return "error_desconocido";
+            }
         }
     }
 }

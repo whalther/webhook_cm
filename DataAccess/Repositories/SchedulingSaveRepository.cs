@@ -171,5 +171,52 @@ namespace DataAccess.Repositories
                 throw;
             }
         }
+        public Boolean SaveCitasBeneficiario(List<CitaBeneficiario> citas, string idConv)
+        {
+            using (ColmedicaContext contexto = new ColmedicaContext())
+            {
+                try
+                {
+                    foreach (CitaBeneficiario cita in citas)
+                    {
+                        DateTime nFecha = DateTime.Parse(cita.Fecha);
+                        tempCitasBeneficiario cit = new tempCitasBeneficiario()
+                        {
+                            asignoCita = cita.AsignoCita,
+                            conQr = cita.ConQR,
+                            especialidad = cita.Especialidad,
+                            estado = cita.Estado,
+                            estadoQr = cita.EstadoQR,
+                            fecha = nFecha,
+                            fechaHora = cita.FechaHoraCita,
+                            horaFin = cita.HoraFin,
+                            horaInicio = cita.HoraInicio,
+                            idCentroMedico = cita.IdCentroMedico,
+                            idCita = cita.IdCita,
+                            idEstado = cita.IdEstado,
+                            nombre = cita.Nombre,
+                            nombreAgente = cita.NombreAgente,
+                            nombreCentroMedico = cita.NombreCentroMedico,
+                            nombreMedico = cita.NombreMedico,
+                            numeroIdentificacion = cita.NumeroIdentificacion,
+                            observaciones = cita.Observaciones,
+                            telefonoContacto = cita.TelefonoContacto,
+                            tipoIdentificacion = cita.TipoIdentificacion,
+                            valorPagar = cita.ValorPagar,
+                            idConv = idConv
+                        };
+                        contexto.tempCitasBeneficiario.Add(cit);
+                    }
+                    contexto.SaveChanges();
+                    return true;
+                }
+                catch (Exception E)
+                {
+                    Trace.WriteLine(E.Message);
+                    return false;
+                    throw;
+                }
+            }
+        }
     }
 }

@@ -12,11 +12,13 @@ namespace DataAccess.ColmedicaModel
     using System;
     using System.Collections.Generic;
     
-    public partial class tempContratos
+    public partial class tempAuth
     {
         public int id { get; set; }
-        public string idContrato { get; set; }
-        public string nombre { get; set; }
         public string idConv { get; set; }
+        public string token { get; set; }
+        public string numDoc { get; set; }
+        public string tipoDoc { get; set; }
+        public string otp { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace Domain.Repositories
         string ProcesarEspecialidadesCiudad(Dictionary<string, string> headers, Dictionary<string, string> parametros);
         string ProcesarCitas(Dictionary<string, string> headers, Dictionary<string, string> parametros);
         string AsignarCita(Dictionary<string, string> headers, Dictionary<string, string> parametros);
-        string GetCitasBeneficiario(Dictionary<string, string> headers, Dictionary<string, string> parametros);
+        string ConsultarCitasBeneficiario(Dictionary<string, string> headers, Dictionary<string, string> parametros);
         string CancelarCitaBeneficiario(Dictionary<string, string> headers, Dictionary<string, string> parametros);
         void DummyPetition();
 

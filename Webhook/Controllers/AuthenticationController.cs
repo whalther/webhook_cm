@@ -20,13 +20,15 @@ namespace Webhook.Controllers
             string[] sessionId = request["sessionId"].ToString().Split('*');
             string idConv = sessionId[0];
             string numeroCelular = utilidad.GetNumero(sessionId[1]);
-            string identificacion = request["tipoDoc"]+ request["numDoc"];
-            string resp = app.GetToken(numeroCelular, identificacion);
+            string numDoc = request["numDoc"];
+            string tipoDoc = request["tipoDoc"];
+            string identificacion = tipoDoc+ numDoc;
+            string resp = app.GetToken(numeroCelular, numDoc, tipoDoc , idConv);
             respuesta.IdConv = idConv;
 
             if (resp != "error_credenciales" && resp != "error_parametros" && resp != "error_desconocido")
             {
-                respuesta.Status = "OK";
+                respuesta.Status = "ok";
             }
             else {
                 LogApp log = new LogApp();
@@ -35,7 +37,6 @@ namespace Webhook.Controllers
                 {"identificacion",identificacion},
                 {"idConv", idConv }
               };
-                log.GuardarErrorLogPeticion(resp, JsonConvert.SerializeObject(param),"GetToken");
                 log.GuardarErrorLogPeticion(resp, JsonConvert.SerializeObject(param),"GetToken");
                 respuesta.Status = "error";
             }
@@ -59,7 +60,7 @@ namespace Webhook.Controllers
             Resultado res = app.ValidarOtp(token, otp, identificacion, numeroCelular,idConv);
             if (res.Result.ToString() != "error_credenciales" && res.Result.ToString() != "error_parametros" && res.Result.ToString() != "error_desconocido")
             {
-                respuesta.Status = "OK";
+                respuesta.Status = "ok";
             }
             else
             {
@@ -76,6 +77,77 @@ namespace Webhook.Controllers
             respuesta.Info.Add("data", res.Result);
             return Json(respuesta);
         }
+        [HttpPost]
+        [Route("getEstadoAuth")]
+        public IHttpActionResult GetAuthentication([FromBody]dynamic request)
+        {
+            AuthenticationApp app = new AuthenticationApp();
+            Replay respuesta = new Replay();
+            string[] sessionId = request["sessionId"].ToString().Split('*');
+            string idConv = sessionId[0];
+            
+            respuesta.IdConv = idConv;
+            dynamic res = app.GetAuthentication(idConv);
+            if (res != null)
+            {
+                if (res.token.ToString() != "error_credenciales" && res.token.ToString() != "error_parametros" && res.token.ToString() != "error_desconocido")
+                {
+                    respuesta.Status = "ok";
+                }
+                else
+                {
+                    respuesta.Status = "error";
+                }
+                respuesta.Token = res.token;
+                respuesta.Info.Add("data", res);
+            }
+            else {
+                respuesta.Status = "processing";
+            }
+            
+            return Json(respuesta);
+        }
+        [HttpPost]
+        [Route("getEstadoOtp")]
+        public IHttpActionResult GetEstadoOtp([FromBody]dynamic request)
+        {
+            AuthenticationApp app = new AuthenticationApp();
+            Replay respuesta = new Replay();
+            string[] sessionId = request["sessionId"].ToString().Split('*');
+            string idConv = sessionId[0];
 
+            respuesta.IdConv = idConv;
+            dynamic res = app.GetAuthentication(idConv);
+            if (res != null)
+            {
+                if ( string.IsNullOrEmpty(res.otp))
+                {
+                    respuesta.Status = "processing";
+                }
+                else if (res.otp.ToString() != "error_credenciales" && res.otp.ToString() != "error_parametros" && res.otp.ToString() != "error_desconocido")
+                {
+                    if (res.otp.ToString() == "1")
+                    {
+                        respuesta.Status = "ok";
+                    }
+                    else
+                    {
+                        respuesta.Status = "invalid";
+                    }
+                }
+                else
+                {
+                    respuesta.Status = "error";
+                }
+                respuesta.Token = res.token;
+                respuesta.Info.Add("data", res.otp);
+            }
+            else
+            {
+                respuesta.Status = "processing";
+            }
+
+            return Json(respuesta);
+        }
     }
 }

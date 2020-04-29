@@ -232,6 +232,70 @@ namespace Domain.Services
             }
 
         }
+        public string ConsultarCitasBeneficiario(ISchedulingPetitionsRepository petitionsRepository, ISchedulingSaveRepository saveRepository,string idConv, string token, string idUsuario)
+        {
+            Cifrador cf = new Cifrador();
+            string iv = cf.GenerarIv();
+            Dictionary<string, string> param = new Dictionary<string, string>() {
+                {"idUsuario",idUsuario }
+            };
+            string paramCifrado = cf.Cifrar(JsonConvert.SerializeObject(param), iv);
+            Dictionary<string, string> hd = new Dictionary<string, string>() {
+                {"token",token }
+            };
+            Dictionary<string, string> parametros = new Dictionary<string, string>() {
+                {"mensaje",paramCifrado},
+                {"iv",iv}
+            };
+            string resultado = petitionsRepository.ConsultarCitasBeneficiario(hd, parametros);
+
+            if (resultado != "error_parametros" && resultado != "error_desconocido" && resultado != "error_token")
+            {
+                string ivE = resultado.Substring(0, 16);
+                string content = resultado.Substring(16);
+                string textoPlano = cf.Descifrar(content, ivE);
+                List<CitaBeneficiario> jsonResp = JsonConvert.DeserializeObject<List<CitaBeneficiario>>(textoPlano);
+                saveRepository.SaveCitasBeneficiario(jsonResp, idConv);
+                return "ok";
+            }
+            else
+            {
+                return resultado;
+            }
+
+        }
+        public string CancelarCitaBeneficiario(ISchedulingPetitionsRepository petitionsRepository, string token, string identificacionCotizante, string identificacionBeneficiario, string idCita)
+        {
+            Cifrador cf = new Cifrador();
+            string iv = cf.GenerarIv();
+            Dictionary<string, string> param = new Dictionary<string, string>() {
+                {"identificacionCotizante",identificacionCotizante },
+                {"identificacionBeneficiario",identificacionBeneficiario },
+                {"id_Cita",idCita }
+            };
+            string paramCifrado = cf.Cifrar(JsonConvert.SerializeObject(param), iv);
+            Dictionary<string, string> hd = new Dictionary<string, string>() {
+                {"token",token }
+            };
+            Dictionary<string, string> parametros = new Dictionary<string, string>() {
+                {"mensaje",paramCifrado},
+                {"iv",iv}
+            };
+            string resultado = petitionsRepository.CancelarCitaBeneficiario(hd, parametros);
+
+            if (resultado != "error_parametros" && resultado != "error_desconocido" && resultado != "error_token")
+            {
+                string ivE = resultado.Substring(0, 16);
+                string content = resultado.Substring(16);
+                string textoPlano = cf.Descifrar(content, ivE);
+                return textoPlano;
+            }
+            else
+            {
+                return resultado;
+            }
+
+        }
         public Boolean LimpiarTablasFlujo(ISchedulingSaveRepository repo, int proceso, string idConv, string tabla) 
         {
             return repo.LimpiarTablasFlujo(proceso,idConv,tabla);

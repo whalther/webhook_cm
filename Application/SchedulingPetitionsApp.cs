@@ -163,5 +163,27 @@ namespace Application
             SchedulingPetitionsService serv = new SchedulingPetitionsService();
             serv.DummyPetition(petitionsRepository);
         }
+        public void ProcesarCitasBeneficiario(string identificacion, string token, string idConv, string numeroCelular, string idUsuario)
+        {
+            ISchedulingPetitionsRepository petitionsRepository = new SchedulingPetitionsRepository();
+            ISchedulingSaveRepository saveRepository = new SchedulingSaveRepository();
+            SchedulingPetitionsService serv = new SchedulingPetitionsService();
+            AuthenticationApp aApp = new AuthenticationApp();
+            serv.LimpiarTablasFlujo(saveRepository, 0, idConv, "tempCitasBeneficiario");
+            string resp = serv.ConsultarCitasBeneficiario(petitionsRepository, saveRepository, idConv,token, idUsuario);
+            if (resp == "error_token")
+            {
+                LogApp log = new LogApp();
+                Dictionary<string, string> param = new Dictionary<string, string>() { { "numeroCelular", numeroCelular }, { "identificacion", identificacion }, { "idConv", idConv } };
+                log.GuardarErrorLogPeticion(resp, JsonConvert.SerializeObject(param), "ProcesarCitasBeneficiario");
+                token = aApp.RefreshToken(numeroCelular, identificacion);
+                if (token != "error_credenciales" && token != "error_parametros" && token != "error_desconocido")
+                {
+                    _ = serv.ConsultarCitasBeneficiario(petitionsRepository, saveRepository, idConv, token, idUsuario);
+                }
+                else log.GuardarErrorLogPeticion(token, JsonConvert.SerializeObject(param), "ProcesarCitasBeneficiario");
+
+            }
+        }
     }
 }

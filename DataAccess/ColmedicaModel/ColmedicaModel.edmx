@@ -89,6 +89,17 @@
           <Property Name="metodo" Type="varchar" MaxLength="50" />
           <Property Name="origen" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="tempAuth">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idConv" Type="varchar" MaxLength="500" />
+          <Property Name="token" Type="varchar" MaxLength="500" />
+          <Property Name="numDoc" Type="varchar" MaxLength="50" />
+          <Property Name="tipoDoc" Type="varchar" MaxLength="50" />
+          <Property Name="otp" Type="varchar" MaxLength="500" />
+        </EntityType>
         <EntityType Name="tempBeneficiarios">
           <Key>
             <PropertyRef Name="id" />
@@ -99,7 +110,7 @@
           <Property Name="descripcionPlan" Type="varchar" MaxLength="500" />
           <Property Name="idUsuario" Type="int" />
           <Property Name="nombre" Type="varchar" MaxLength="500" />
-          <Property Name="numeroContrato" Type="int" />
+          <Property Name="numeroContrato" Type="varchar" MaxLength="100" />
           <Property Name="numeroIdentificacion" Type="varchar" MaxLength="50" />
           <Property Name="parentesco" Type="varchar" MaxLength="50" />
           <Property Name="sexo" Type="varchar" MaxLength="50" />
@@ -125,6 +136,35 @@
           <Property Name="estado" Type="int" />
           <Property Name="result" Type="text" />
         </EntityType>
+        <EntityType Name="tempCitasBeneficiario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="asignoCita" Type="varchar" MaxLength="100" />
+          <Property Name="conQr" Type="int" />
+          <Property Name="especialidad" Type="varchar" MaxLength="100" />
+          <Property Name="estado" Type="varchar" MaxLength="50" />
+          <Property Name="estadoQr" Type="int" />
+          <Property Name="fecha" Type="date" />
+          <Property Name="fechaHora" Type="smalldatetime" />
+          <Property Name="horaFin" Type="varchar" MaxLength="50" />
+          <Property Name="horaInicio" Type="varchar" MaxLength="50" />
+          <Property Name="idCentroMedico" Type="int" />
+          <Property Name="idCita" Type="int" />
+          <Property Name="idEstado" Type="int" />
+          <Property Name="nombre" Type="varchar" MaxLength="100" />
+          <Property Name="nombreAgente" Type="varchar" MaxLength="50" />
+          <Property Name="nombreCentroMedico" Type="varchar" MaxLength="500" />
+          <Property Name="nombreMedico" Type="varchar" MaxLength="50" />
+          <Property Name="numeroIdentificacion" Type="varchar" MaxLength="50" />
+          <Property Name="observaciones" Type="text" />
+          <Property Name="telefonoContacto" Type="varchar" MaxLength="50" />
+          <Property Name="tipoIdentificacion" Type="varchar" MaxLength="50" />
+          <Property Name="valorPagar" Type="varchar" MaxLength="50" />
+          <Property Name="idConv" Type="varchar" MaxLength="500" />
+          <Property Name="resultCancelacion" Type="varchar" MaxLength="500" />
+        </EntityType>
         <EntityType Name="tempCiudades">
           <Key>
             <PropertyRef Name="id" />
@@ -141,7 +181,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="idContrato" Type="int" />
+          <Property Name="idContrato" Type="varchar" MaxLength="500" />
           <Property Name="nombre" Type="varchar" MaxLength="500" />
           <Property Name="idConv" Type="varchar" MaxLength="500" />
         </EntityType>
@@ -210,8 +250,10 @@
           <EntitySet Name="intentUnderstanding" EntityType="Self.intentUnderstanding" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="log_petitions" EntityType="Self.log_petitions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="logErrorPeticion" EntityType="Self.logErrorPeticion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tempAuth" EntityType="Self.tempAuth" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tempBeneficiarios" EntityType="Self.tempBeneficiarios" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tempCita" EntityType="Self.tempCita" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tempCitasBeneficiario" EntityType="Self.tempCitasBeneficiario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tempCiudades" EntityType="Self.tempCiudades" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tempContratos" EntityType="Self.tempContratos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tempEspecialidades" EntityType="Self.tempEspecialidades" Schema="dbo" store:Type="Tables" />
@@ -276,15 +318,6 @@
           <Property Name="status" Type="Int32" />
           <Property Name="createdAt" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="tempContratos">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="nombre" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="idContrato" Type="Int32" />
-        </EntityType>
         <EntityType Name="tempEspecialidades">
           <Key>
             <PropertyRef Name="id" />
@@ -334,7 +367,6 @@
           <EntitySet Name="intentCategory" EntityType="Self.intentCategory" />
           <EntitySet Name="intentList" EntityType="Self.intentList" />
           <EntitySet Name="intentUnderstanding" EntityType="Self.intentUnderstanding" />
-          <EntitySet Name="tempContratos" EntityType="Self.tempContratos" />
           <EntitySet Name="tempEspecialidades" EntityType="Self.tempEspecialidades" />
           <EntitySet Name="tempInfoAgendamiento" EntityType="Self.tempInfoAgendamiento" />
           <EntitySet Name="userVisits" EntityType="Self.userVisits" />
@@ -343,7 +375,6 @@
           <EntitySet Name="tempCita" EntityType="ColmedicaModel.tempCita" />
           <EntitySet Name="logErrorPeticion" EntityType="ColmedicaModel.logErrorPeticion" />
           <EntitySet Name="log_petitions" EntityType="ColmedicaModel.log_petitions" />
-          <EntitySet Name="tempBeneficiarios" EntityType="ColmedicaModel.tempBeneficiarios" />
           <EntitySet Name="tempCiudades" EntityType="ColmedicaModel.tempCiudades" />
           <FunctionImport Name="updateCita">
             <Parameter Name="idConversacion" Mode="In" Type="String" />
@@ -358,6 +389,10 @@
             <Parameter Name="idConversacion" Mode="In" Type="String" />
             <Parameter Name="tabla" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="tempAuth" EntityType="ColmedicaModel.tempAuth" />
+          <EntitySet Name="tempCitasBeneficiario" EntityType="ColmedicaModel.tempCitasBeneficiario" />
+          <EntitySet Name="tempBeneficiarios" EntityType="ColmedicaModel.tempBeneficiarios" />
+          <EntitySet Name="tempContratos" EntityType="ColmedicaModel.tempContratos" />
         </EntityContainer>
         <EntityType Name="cmTipoDocumento">
           <Key>
@@ -407,25 +442,6 @@
           <Property Name="date" Type="DateTime" Precision="3" />
           <Property Name="ip" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="tempBeneficiarios">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ciudadResidencia" Type="Int32" />
-          <Property Name="colectivo" Type="Int32" />
-          <Property Name="descripcionPlan" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="idUsuario" Type="Int32" />
-          <Property Name="nombre" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="numeroContrato" Type="Int32" />
-          <Property Name="numeroIdentificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="parentesco" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="sexo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="telefonoCelular" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="telefonoResidencia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="tipoIdentificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="tempCiudades">
           <Key>
             <PropertyRef Name="id" />
@@ -436,6 +452,74 @@
           <Property Name="ciuNombre" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="idUsuario" Type="Int32" />
+        </EntityType>
+        <EntityType Name="tempAuth">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="token" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="numDoc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tipoDoc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="otp" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tempCitasBeneficiario">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="conQr" Type="Int32" />
+          <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="estadoQr" Type="Int32" />
+          <Property Name="fecha" Type="DateTime" Precision="0" />
+          <Property Name="fechaHora" Type="DateTime" Precision="0" />
+          <Property Name="horaFin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="horaInicio" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="idCentroMedico" Type="Int32" />
+          <Property Name="idCita" Type="Int32" />
+          <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="nombreAgente" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="nombreMedico" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="observaciones" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="telefonoContacto" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="asignoCita" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="especialidad" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="idEstado" Type="Int32" />
+          <Property Name="nombreCentroMedico" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="numeroIdentificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tipoIdentificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="valorPagar" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="resultCancelacion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tempBeneficiarios">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ciudadResidencia" Type="Int32" />
+          <Property Name="colectivo" Type="Int32" />
+          <Property Name="descripcionPlan" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="idUsuario" Type="Int32" />
+          <Property Name="nombre" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="numeroContrato" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="numeroIdentificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="parentesco" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sexo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="telefonoCelular" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="telefonoResidencia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tipoIdentificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tempContratos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idContrato" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="nombre" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -497,16 +581,6 @@
                 <ScalarProperty Name="understanding_name" ColumnName="understanding_name" />
                 <ScalarProperty Name="status" ColumnName="status" />
                 <ScalarProperty Name="createdAt" ColumnName="createdAt" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tempContratos">
-            <EntityTypeMapping TypeName="ColmedicaModel.tempContratos">
-              <MappingFragment StoreEntitySet="tempContratos">
-                <ScalarProperty Name="idContrato" ColumnName="idContrato" />
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="nombre" ColumnName="nombre" />
-                <ScalarProperty Name="idConv" ColumnName="idConv" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -610,6 +684,63 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="tempCiudades">
+            <EntityTypeMapping TypeName="ColmedicaModel.tempCiudades">
+              <MappingFragment StoreEntitySet="tempCiudades">
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="idConv" ColumnName="idConv" />
+                <ScalarProperty Name="ciuNombre" ColumnName="ciuNombre" />
+                <ScalarProperty Name="ciuCod" ColumnName="ciuCod" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="updateCita" FunctionName="ColmedicaModel.Store.updateCita" />
+          <FunctionImportMapping FunctionImportName="cleanTablesConversation" FunctionName="ColmedicaModel.Store.cleanTablesConversation" />
+          <FunctionImportMapping FunctionImportName="cleanTablesFlujo" FunctionName="ColmedicaModel.Store.cleanTablesFlujo" />
+          <EntitySetMapping Name="tempAuth">
+            <EntityTypeMapping TypeName="ColmedicaModel.tempAuth">
+              <MappingFragment StoreEntitySet="tempAuth">
+                <ScalarProperty Name="otp" ColumnName="otp" />
+                <ScalarProperty Name="tipoDoc" ColumnName="tipoDoc" />
+                <ScalarProperty Name="numDoc" ColumnName="numDoc" />
+                <ScalarProperty Name="token" ColumnName="token" />
+                <ScalarProperty Name="idConv" ColumnName="idConv" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tempCitasBeneficiario">
+            <EntityTypeMapping TypeName="ColmedicaModel.tempCitasBeneficiario">
+              <MappingFragment StoreEntitySet="tempCitasBeneficiario">
+                <ScalarProperty Name="resultCancelacion" ColumnName="resultCancelacion" />
+                <ScalarProperty Name="valorPagar" ColumnName="valorPagar" />
+                <ScalarProperty Name="tipoIdentificacion" ColumnName="tipoIdentificacion" />
+                <ScalarProperty Name="numeroIdentificacion" ColumnName="numeroIdentificacion" />
+                <ScalarProperty Name="nombreCentroMedico" ColumnName="nombreCentroMedico" />
+                <ScalarProperty Name="idEstado" ColumnName="idEstado" />
+                <ScalarProperty Name="especialidad" ColumnName="especialidad" />
+                <ScalarProperty Name="asignoCita" ColumnName="asignoCita" />
+                <ScalarProperty Name="idConv" ColumnName="idConv" />
+                <ScalarProperty Name="telefonoContacto" ColumnName="telefonoContacto" />
+                <ScalarProperty Name="observaciones" ColumnName="observaciones" />
+                <ScalarProperty Name="nombreMedico" ColumnName="nombreMedico" />
+                <ScalarProperty Name="nombreAgente" ColumnName="nombreAgente" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="idCita" ColumnName="idCita" />
+                <ScalarProperty Name="idCentroMedico" ColumnName="idCentroMedico" />
+                <ScalarProperty Name="horaInicio" ColumnName="horaInicio" />
+                <ScalarProperty Name="horaFin" ColumnName="horaFin" />
+                <ScalarProperty Name="fechaHora" ColumnName="fechaHora" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="estadoQr" ColumnName="estadoQr" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="conQr" ColumnName="conQr" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="tempBeneficiarios">
             <EntityTypeMapping TypeName="ColmedicaModel.tempBeneficiarios">
               <MappingFragment StoreEntitySet="tempBeneficiarios">
@@ -630,21 +761,16 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tempCiudades">
-            <EntityTypeMapping TypeName="ColmedicaModel.tempCiudades">
-              <MappingFragment StoreEntitySet="tempCiudades">
-                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+          <EntitySetMapping Name="tempContratos">
+            <EntityTypeMapping TypeName="ColmedicaModel.tempContratos">
+              <MappingFragment StoreEntitySet="tempContratos">
                 <ScalarProperty Name="idConv" ColumnName="idConv" />
-                <ScalarProperty Name="ciuNombre" ColumnName="ciuNombre" />
-                <ScalarProperty Name="ciuCod" ColumnName="ciuCod" />
-                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="idContrato" ColumnName="idContrato" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="updateCita" FunctionName="ColmedicaModel.Store.updateCita" />
-          <FunctionImportMapping FunctionImportName="cleanTablesConversation" FunctionName="ColmedicaModel.Store.cleanTablesConversation" />
-          <FunctionImportMapping FunctionImportName="cleanTablesFlujo" FunctionName="ColmedicaModel.Store.cleanTablesFlujo" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

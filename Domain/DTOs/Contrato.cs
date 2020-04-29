@@ -2,8 +2,8 @@
 {
    public class Contrato
     {
-        public int idContrato { get; set; }
-        public string nombre { get; set; }
-        public string idConv { get; set; }
+        public string IdContrato { get; set; }
+        public string Nombre { get; set; }
+        public string IdConv { get; set; }
     }
 }

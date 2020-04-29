@@ -1,5 +1,6 @@
 ﻿using Application;
 using Domain.DTOs;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace Webhook.Controllers
             appS.DummyPetition();
             Replay respuesta = new Replay()
             {
-                Status = "OK",
+                Status = "ok",
             };
             return Json(respuesta);
         }
@@ -32,7 +33,7 @@ namespace Webhook.Controllers
             List<TipoDocumento> tps = app.GetTiposDocumento();
             Replay respuesta = new Replay()
             {
-                Status = tps.Count > 0 ? "OK" : "empty",
+                Status = tps.Count > 0 ? "ok" : "empty",
                 Info = new Dictionary<string, object> { { "data", tps } },
             };
             return Json(respuesta);
@@ -45,7 +46,7 @@ namespace Webhook.Controllers
             string[] sessionId = request["sessionId"].ToString().Split('*');
             List<Contrato> ct = app.GetContratos(sessionId[0]);
             Replay respuesta = new Replay() {
-                Status = ct.Count > 0 ? "OK" : "empty",
+                Status = ct.Count > 0 ? "ok" : "empty",
                 Info = new Dictionary<string, object> { { "data", ct } },
                 IdConv = sessionId[0]
             };
@@ -62,7 +63,7 @@ namespace Webhook.Controllers
             ResultBeneficiarios bens = app.GetBeneficiariosContrato(idContrato, sessionId[0]);
             Replay respuesta = new Replay()
             {
-                Status = bens.Beneficiarios.Count > 0 ? "OK" : "empty",
+                Status = bens.Beneficiarios.Count > 0 ? "ok" : "empty",
                 Info = new Dictionary<string, object> { { "data", bens } },
                 IdConv = sessionId[0]
             };
@@ -78,7 +79,7 @@ namespace Webhook.Controllers
             Ciudad ciu = app.GetCiudadBeneficiario(idUsuario, sessionId[0]);
             Replay respuesta = new Replay()
             {
-                Status = !(ciu is null) ? "OK" : "empty",
+                Status = !(ciu is null) ? "ok" : "empty",
                 Info = new Dictionary<string, object> { { "data", ciu } },
                 IdConv = sessionId[0]
             };
@@ -94,7 +95,7 @@ namespace Webhook.Controllers
             List<Ciudad> cius = app.GetCiudadesBeneficiario(idUsuario, sessionId[0]);
             Replay respuesta = new Replay()
             {
-                Status = !(cius is null) ? "OK" : "empty",
+                Status = !(cius is null) ? "ok" : "empty",
                 Info = new Dictionary<string, object> { { "data", cius } },
                 IdConv = sessionId[0]
             };
@@ -109,7 +110,7 @@ namespace Webhook.Controllers
             List<Especialidad> espes = app.GetEspecialidades(sessionId[0]);
             Replay respuesta = new Replay()
             {
-                Status = espes.Count > 0 ? "OK" : "empty",
+                Status = espes.Count > 0 ? "ok" : "empty",
                 Info = new Dictionary<string, object> { { "data", espes } },
                 IdConv = sessionId[0]
             };
@@ -124,7 +125,7 @@ namespace Webhook.Controllers
             List<GlobalResp> meds = app.GetMedicos(sessionId[0]);
             Replay respuesta = new Replay()
             {
-                Status = meds.Count > 0 ? "OK" : "empty",
+                Status = meds.Count > 0 ? "ok" : "empty",
                 Info = new Dictionary<string, object> { { "data", meds } },
                 IdConv = sessionId[0]
             };
@@ -139,7 +140,7 @@ namespace Webhook.Controllers
             List<GlobalResp> cms = app.GetCentrosMedicos(sessionId[0]);
             Replay respuesta = new Replay()
             {
-                Status = cms.Count > 0 ? "OK" : "empty",
+                Status = cms.Count > 0 ? "ok" : "empty",
                 Info = new Dictionary<string, object> { { "data", cms } },
                 IdConv = sessionId[0]
             };
@@ -155,7 +156,7 @@ namespace Webhook.Controllers
             List<Cita> citas = app.GetCitasProximas(fecha, sessionId[0]);
             Replay respuesta = new Replay()
             {
-                Status = citas.Count > 0 ? "OK" : "empty",
+                Status = citas.Count > 0 ? "ok" : "empty",
                 Info = new Dictionary<string, object> { { "data", citas } },
                 IdConv = sessionId[0]
             };
@@ -171,7 +172,7 @@ namespace Webhook.Controllers
             List<Cita> citas = app.GetCitasMedico(idMedico, sessionId[0]);
             Replay respuesta = new Replay()
             {
-                Status = citas.Count > 0 ? "OK" : "empty",
+                Status = citas.Count > 0 ? "ok" : "empty",
                 Info = new Dictionary<string, object> { { "data", citas } },
                 IdConv = sessionId[0]
             };
@@ -187,7 +188,7 @@ namespace Webhook.Controllers
             List<Cita> citas = app.GetCitasCentroMedico(idCentroMedico, sessionId[0]);
             Replay respuesta = new Replay()
             {
-                Status = citas.Count > 0 ? "OK" : "empty",
+                Status = citas.Count > 0 ? "ok" : "empty",
                 Info = new Dictionary<string, object> { { "data", citas } },
                 IdConv = sessionId[0]
             };
@@ -205,7 +206,7 @@ namespace Webhook.Controllers
             Replay respuesta = new Replay()
             {
                 IdConv = idConv,
-                Status = res ? "OK" : "error"
+                Status = res ? "ok" : "error"
             };
             return Json(respuesta);
         }
@@ -221,7 +222,7 @@ namespace Webhook.Controllers
             Replay respuesta = new Replay()
             {
                 IdConv = idConv,
-                Status = res ? "OK" : "error"
+                Status = res ? "ok" : "error"
             };
             return Json(respuesta);
         }
@@ -237,7 +238,7 @@ namespace Webhook.Controllers
             Replay respuesta = new Replay()
             {
                 IdConv = idConv,
-                Status = res ? "OK" : "error"
+                Status = res ? "ok" : "error"
             };
             return Json(respuesta);
         }
@@ -251,7 +252,7 @@ namespace Webhook.Controllers
             Boolean res = app.LimpiarTablas(idConv);
             Replay respuesta = new Replay() {
                 IdConv = idConv,
-                Status = res ? "OK" : "error"
+                Status = res ? "ok" : "error"
             };
             return Json(respuesta);
         }
@@ -266,7 +267,7 @@ namespace Webhook.Controllers
             Replay respuesta = new Replay()
             {
                 IdConv = idConv,
-                Status = res !="" ? "OK" : "error",
+                Status = res !="" ? "ok" : "error",
                 Info = new Dictionary<string, object> { { "data", res } }
             };
             return Json(respuesta);
@@ -332,6 +333,90 @@ namespace Webhook.Controllers
                 Status = status,
                 Info = new Dictionary<string, object> { { "data", resultEncode },{ "statusCita",statusCita } }
             };
+            return Json(respuesta);
+        }
+        [HttpPost]
+        [Route("getCitasBeneficiario")]
+        public IHttpActionResult GetCitasBeneficiario([FromBody]dynamic request)
+        {
+            LocalQueriesApp app = new LocalQueriesApp();
+            string[] sessionId = request["sessionId"].ToString().Split('*');
+            List<CitaBeneficiario> citas = app.GetCitasBeneficiario(sessionId[0]);
+            Replay respuesta = new Replay()
+            {
+                Status = citas.Count > 0 ? "ok" : "empty",
+                Info = new Dictionary<string, object> { { "data", citas } },
+                IdConv = sessionId[0]
+            };
+            return Json(respuesta);
+        }
+        [HttpPost]
+        [Route("getInfoCitaBeneficiario")]
+        public IHttpActionResult GetInfoCitaBeneficiario([FromBody]dynamic request)
+        {
+            LocalQueriesApp app = new LocalQueriesApp();
+            string[] sessionId = request["sessionId"].ToString().Split('*');
+            int idCita = request["idCita"];
+            CitaBeneficiario cita = app.GetInfoCitaBeneficiario(sessionId[0],idCita);
+            Replay respuesta = new Replay()
+            {
+                Status = cita != null  ? "ok" : "empty",
+                Info = new Dictionary<string, object> { { "data", cita } },
+                IdConv = sessionId[0]
+            };
+            return Json(respuesta);
+        }
+        [HttpPost]
+        [Route("procesarCancelacionCita")]
+        public void ProcesarCancelacionCita([FromBody]dynamic request)
+        {
+            LocalQueriesApp app = new LocalQueriesApp();
+            Utilities utilidad = new Utilities();
+            string[] sessionId = request["sessionId"].ToString().Split('*');
+            string idConv = sessionId[0];
+            string numeroCelular = utilidad.GetNumero(sessionId[1]);
+            string identificacionConv = request["tipoDoc"] + request["numDoc"];
+            string identificacionCotizante = request["tipoDocCotizante"] + request["numDocCotizante"];
+            string identificacionBeneficiario = request["tipoDocBeneficiario"] + request["numDocBeneficiario"];
+            string token = request["token"];
+            int idCita = request["idCita"];
+            app.CancelarCitaBeneficiario(idConv,identificacionConv,identificacionBeneficiario,identificacionCotizante,idCita,numeroCelular,token);
+        }
+        [HttpPost]
+        [Route("getEstadoCancelacionCita")]
+        public IHttpActionResult GetEstadoCancelacionCita([FromBody]dynamic request)
+        {
+            LocalQueriesApp app = new LocalQueriesApp();
+            Replay respuesta = new Replay();
+            string[] sessionId = request["sessionId"].ToString().Split('*');
+            string idConv = sessionId[0];
+            int idCita = (int)request["idCita"];
+            respuesta.IdConv = idConv;
+            string res = app.GetEstadoCancelacion(idConv,idCita);
+           
+                if (string.IsNullOrEmpty(res))
+                {
+                    respuesta.Status = "processing";
+                }
+                else if (res != "error_credenciales" && res != "error_parametros" && res != "error_desconocido" && res.Length>15)
+                {
+                dynamic jsonRes = JObject.Parse(res);
+                if (jsonRes.Resultado == "1")
+                    {
+                        respuesta.Status = "ok";
+                    }
+                    else
+                    {
+                        respuesta.Status = "error_cancelar";
+                    }
+                respuesta.Message = jsonRes.Mensaje;
+                respuesta.Info.Add("data",jsonRes.Resultado);
+                 }
+                else
+                {
+                    respuesta.Status = "error";
+                    respuesta.Info.Add("data",res);
+                }
             return Json(respuesta);
         }
     }

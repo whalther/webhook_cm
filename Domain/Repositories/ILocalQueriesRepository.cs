@@ -22,5 +22,9 @@ namespace Domain.Repositories
         dynamic GetInfoCita(string idConv);
         dynamic GetInfoAsignarCita(string idConv);
         Boolean QueryDummy();
+        List<CitaBeneficiario> GetCitasBeneficiario(string idConv);
+        CitaBeneficiario GetInfoCitaBeneficiario(string idConv, int idCita);
+        Boolean UpdateCancelacionCita(string idConv, int idCita, string resultado);
+        String GetEstadoCancelacion(string idConv, int idCita);
        }
 }

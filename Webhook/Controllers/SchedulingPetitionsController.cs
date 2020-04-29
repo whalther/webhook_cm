@@ -29,7 +29,7 @@ namespace Webhook.Controllers
             Usuario usuario = (Usuario)res.Result;
             if (usuario.Mensaje != "error_parametros" && usuario.Mensaje != "error_desconocido")
             {
-                respuesta.Status = "OK";
+                respuesta.Status = "ok";
                 respuesta.Info.Add("data", usuario);
             }
             else {
@@ -80,6 +80,19 @@ namespace Webhook.Controllers
             int especialidad = (int)request["especialidad"];
             SchedulingPetitionsApp app = new SchedulingPetitionsApp();
             app.ProcesarCitas(ciudad, especialidad, token, idConv, numeroCelular, identificacion);
+        }
+        [HttpPost]
+        [Route("procesarCitasBeneficiario")]
+        public void ProcesarCitasBeneficiario([FromBody]dynamic request)
+        {
+            string[] sessionId = request["sessionId"].ToString().Split('*');
+            string numeroCelular = utilidad.GetNumero(sessionId[1]);
+            string identificacion = request["tipoDoc"] + request["numDoc"];
+            string idConv = sessionId[0];
+            string token = request["token"];
+            string idUsuario = request["idUsuario"];
+            SchedulingPetitionsApp app = new SchedulingPetitionsApp();
+            app.ProcesarCitasBeneficiario(identificacion,token,idConv,numeroCelular,idUsuario);
         }
     }
 }

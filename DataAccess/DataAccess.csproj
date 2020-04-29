@@ -154,10 +154,16 @@
     <Compile Include="ColmedicaModel\log_petitions.cs">
       <DependentUpon>ColmedicaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ColmedicaModel\tempAuth.cs">
+      <DependentUpon>ColmedicaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ColmedicaModel\tempBeneficiarios.cs">
       <DependentUpon>ColmedicaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ColmedicaModel\tempCita.cs">
+      <DependentUpon>ColmedicaModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ColmedicaModel\tempCitasBeneficiario.cs">
       <DependentUpon>ColmedicaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ColmedicaModel\tempCiudades.cs">
@@ -179,6 +185,7 @@
       <DependentUpon>ColmedicaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\AuthenticationSaveRepository.cs" />
     <Compile Include="Repositories\LocalQueriesRepository.cs" />
     <Compile Include="Repositories\LogRepository.cs" />
     <Compile Include="Repositories\SchedulingSaveRepository.cs" />

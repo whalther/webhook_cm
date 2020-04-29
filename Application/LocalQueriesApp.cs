@@ -159,5 +159,59 @@ namespace Application
             LocalQueriesService serv = new LocalQueriesService();
             return serv.GetInfoAsignarCita(repo,idConv);
         }
+        public List<CitaBeneficiario> GetCitasBeneficiario(string idConv)
+        {
+            ILocalQueriesRepository repo = new LocalQueriesRepository();
+            LocalQueriesService serv = new LocalQueriesService();
+            return serv.GetCitasBeneficiario(repo, idConv);
+        }
+        public CitaBeneficiario GetInfoCitaBeneficiario(string idConv, int idCita)
+        {
+            ILocalQueriesRepository repo = new LocalQueriesRepository();
+            LocalQueriesService serv = new LocalQueriesService();
+            return serv.GetInfoCitaBeneficiario(repo, idConv,idCita);
+        }
+        public void CancelarCitaBeneficiario(string idConv, string identificacionConv, string identificacionBeneficiario, string identificacionCotizante,int idCita, string numeroCelular, string token)
+        {
+            ILocalQueriesRepository repo = new LocalQueriesRepository();
+            ISchedulingPetitionsRepository sRepo = new SchedulingPetitionsRepository();
+            LocalQueriesService serv = new LocalQueriesService();
+            SchedulingPetitionsService sServ = new SchedulingPetitionsService();
+            AuthenticationApp aApp = new AuthenticationApp();
+            
+            string resultadoCan = sServ.CancelarCitaBeneficiario(sRepo, token,identificacionCotizante,identificacionBeneficiario,idCita.ToString());
+            if (resultadoCan == "error_token")
+            {
+                LogApp log = new LogApp();
+                Dictionary<string, string> param = new Dictionary<string, string>() {
+                {"numeroCelular",numeroCelular },
+                {"identificacion",identificacionConv},
+                {"idConv", idConv }
+              };
+                log.GuardarErrorLogPeticion(resultadoCan, JsonConvert.SerializeObject(param), "AsignarCita");
+                string nToken = aApp.RefreshToken(numeroCelular, identificacionConv);
+                if (nToken != "error_credenciales" && nToken != "error_parametros" && nToken != "error_desconocido")
+                {
+
+                    string res = sServ.CancelarCitaBeneficiario(sRepo, nToken, identificacionCotizante, identificacionBeneficiario, idCita.ToString());
+                    serv.UpdateCancelacionCita(repo, idConv, idCita, res);
+
+                }
+                else
+                {
+                    serv.UpdateCancelacionCita(repo, idConv, idCita, nToken);
+                }
+            }
+            else
+            {
+                serv.UpdateCancelacionCita(repo, idConv, idCita, resultadoCan);
+            }
+        }
+        public string GetEstadoCancelacion(string idConv, int idCita)
+        {
+            ILocalQueriesRepository repo = new LocalQueriesRepository();
+            LocalQueriesService serv = new LocalQueriesService();
+            return serv.GetEstadoCancelacion(repo, idConv, idCita);
+        }
     }
 }
