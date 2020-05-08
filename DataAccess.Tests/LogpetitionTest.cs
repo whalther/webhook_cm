@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using DataAccess.Repositories;
+using CrossCutting.Repositories;
 using Domain.Repositories;
 using Domain.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,7 +14,7 @@ namespace DataAccess.Tests
         {
             ILogRepository logRepository = new LogRepository();
             LogService logService = new LogService();
-            await logService.GuardarErrorLogPeticion(logRepository,"prueba","prueba_error","test").ConfigureAwait(false);
+            await logService.GuardarErrorLogPeticion(logRepository,"prueba","prueba_error","prueba","test", "alvaroposada").ConfigureAwait(false);
             Assert.IsNotNull("a");
           
         }

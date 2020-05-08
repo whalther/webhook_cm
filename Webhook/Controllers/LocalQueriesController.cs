@@ -59,7 +59,7 @@ namespace Webhook.Controllers
         {
             LocalQueriesApp app = new LocalQueriesApp();
             string[] sessionId = request["sessionId"].ToString().Split('*');
-            int idContrato = request["idContrato"];
+            string idContrato = request["idContrato"];
             ResultBeneficiarios bens = app.GetBeneficiariosContrato(idContrato, sessionId[0]);
             Replay respuesta = new Replay()
             {
@@ -375,12 +375,13 @@ namespace Webhook.Controllers
             string[] sessionId = request["sessionId"].ToString().Split('*');
             string idConv = sessionId[0];
             string numeroCelular = utilidad.GetNumero(sessionId[1]);
-            string identificacionConv = request["tipoDoc"] + request["numDoc"];
+            string numDocConv = request["numDoc"] ;
+            string tipoDocConv = request["tipoDoc"];
             string identificacionCotizante = request["tipoDocCotizante"] + request["numDocCotizante"];
             string identificacionBeneficiario = request["tipoDocBeneficiario"] + request["numDocBeneficiario"];
             string token = request["token"];
             int idCita = request["idCita"];
-            app.CancelarCitaBeneficiario(idConv,identificacionConv,identificacionBeneficiario,identificacionCotizante,idCita,numeroCelular,token);
+            app.CancelarCitaBeneficiario(idConv,numDocConv,tipoDocConv,identificacionBeneficiario,identificacionCotizante,idCita,numeroCelular,token);
         }
         [HttpPost]
         [Route("getEstadoCancelacionCita")]

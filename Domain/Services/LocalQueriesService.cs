@@ -15,7 +15,7 @@ namespace Domain.Services
         {
             return repo.GetContratos(idConv);
         }
-        public ResultBeneficiarios GetBeneficiatiosContrato(ILocalQueriesRepository repo,int contrato, string idConv)
+        public ResultBeneficiarios GetBeneficiatiosContrato(ILocalQueriesRepository repo,string contrato, string idConv)
         {
             return repo.GetBeneficiariosContrato(contrato,idConv);
         }
@@ -85,6 +85,14 @@ namespace Domain.Services
         public string GetEstadoCancelacion(ILocalQueriesRepository repo, string idConv, int idCita)
         {
             return repo.GetEstadoCancelacion(idConv, idCita);
+        }
+        public dynamic GetInfoLinkPagos(ILocalQueriesRepository repo, string idConv, int idCita) 
+        {
+            return repo.GetInfoLinkPagos(idConv,idCita);
+        }
+        public Boolean UpdateLinkCita(ILocalQueriesRepository repo, string idConv, int idCita, string result)
+        {
+            return repo.UpdateLinkCita(idConv,idCita,result);
         }
     }
 }

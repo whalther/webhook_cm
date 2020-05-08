@@ -3,7 +3,7 @@ using DataAccess.Repositories;
 using Domain.DTOs;
 using Domain.Repositories;
 using Domain.Services;
-using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 
@@ -23,7 +23,7 @@ namespace Application
             LocalQueriesService serv = new LocalQueriesService();
             return serv.GetContratos(repo,idConv);
         }
-        public ResultBeneficiarios GetBeneficiariosContrato(int idContrato,string idConv)
+        public ResultBeneficiarios GetBeneficiariosContrato(string idContrato,string idConv)
         {
             ILocalQueriesRepository repo = new LocalQueriesRepository();
             LocalQueriesService serv = new LocalQueriesService();
@@ -102,10 +102,15 @@ namespace Application
             LocalQueriesService serv = new LocalQueriesService();
             SchedulingPetitionsService sServ = new SchedulingPetitionsService();
             AuthenticationApp aApp = new AuthenticationApp();
+            LogApp log = new LogApp();
             string identificacion = tipoDoc + numDoc;
             dynamic infoCita = serv.GetInfoAsignarCita(repo,idConv);
             string telefono = String.IsNullOrEmpty(infoCita.telefono) ?"": infoCita.telefono;
             string celular = String.IsNullOrEmpty(infoCita.celular)?"": infoCita.celular;
+            bool resultAgendamiento = false;
+            dynamic res;
+            string detalle="";
+            string resultadoAsig;
             Dictionary<string, string> values = new Dictionary<string, string>() {
                 {"espacioCita",infoCita.numEspacioCita.ToString()},
                 {"tipoId",infoCita.tipoIdBeneficiario},
@@ -118,34 +123,58 @@ namespace Application
                 {"celular",celular},
                 {"token",token}
             };
-            string resultadoAsig = sServ.AsignarCita(sRepo,values);
+             resultadoAsig = sServ.AsignarCita(sRepo,values,idConv);
             if (resultadoAsig == "error_token")
             {
-                LogApp log = new LogApp();
-                Dictionary<string, string> param = new Dictionary<string, string>() {
-                {"numeroCelular",numeroCelular },
-                {"identificacion",identificacion},
-                {"idConv", idConv }
-              };
-                log.GuardarErrorLogPeticion(resultadoAsig, JsonConvert.SerializeObject(param), "AsignarCita");
-                string nToken = aApp.RefreshToken(numeroCelular, identificacion);
+                string nToken = aApp.RefreshToken(numeroCelular, identificacion,idConv);
                 if (nToken != "error_credenciales" && nToken != "error_parametros" && nToken != "error_desconocido")
                 {
                     values.Remove("token");
                     values.Add("token",nToken);
-                    string res = sServ.AsignarCita(sRepo,values);
-                    serv.UpdateCitaBd(repo, idConv, "agendamiento", res);
-
+                    resultadoAsig = sServ.AsignarCita(sRepo,values,idConv);
                 }
                 else
                 {
-                    serv.UpdateCitaBd(repo, idConv, "agendamiento", nToken);
+                    resultadoAsig = nToken;
+                }
+            }
+                serv.UpdateCitaBd(repo,idConv,"agendamiento", resultadoAsig);
+            if (resultadoAsig != "error_credenciales" && resultadoAsig != "error_parametros" && resultadoAsig != "error_desconocido" && resultadoAsig != "error_token") 
+            {
+                res = JToken.Parse(resultadoAsig);
+                string msj = res.Mensaje;
+                string numConfirm = res.Numconfirmacion;
+                if (!string.IsNullOrEmpty(numConfirm))
+                {
+                    resultAgendamiento = true;
+                    detalle = "Cita agendada";
+                }
+                else if (!string.IsNullOrEmpty(msj))
+                {
+                    resultAgendamiento = false;
+                    detalle = res.Mensaje;
+                }
+                else
+                {
+                    resultAgendamiento = false;
+                    detalle = resultadoAsig;
                 }
             }
             else
             {
-                serv.UpdateCitaBd(repo,idConv,"agendamiento", resultadoAsig);
-            } 
+                resultAgendamiento = false;
+                detalle = resultadoAsig;
+            }
+            Dictionary<string, object> paramLog = new Dictionary<string, object>() {
+                {"tipoTransaccion","agendamiento" },
+                {"fechaTransaccion", Convert.ToDateTime(string.Format("{0:yyyy-MM-dd HH:mm:ss}", DateTime.Now)) },
+                {"exitoso",resultAgendamiento },
+                {"detalle", detalle},
+                {"sessionId", idConv },
+                {"celular", numeroCelular },
+                {"traza" , "log"}
+            };
+            log.GuardarLogCitaAgendada(paramLog);
         }
         public Boolean QueryDummy()
         {
@@ -171,29 +200,22 @@ namespace Application
             LocalQueriesService serv = new LocalQueriesService();
             return serv.GetInfoCitaBeneficiario(repo, idConv,idCita);
         }
-        public void CancelarCitaBeneficiario(string idConv, string identificacionConv, string identificacionBeneficiario, string identificacionCotizante,int idCita, string numeroCelular, string token)
+        public void CancelarCitaBeneficiario(string idConv, string numDocConv,string tipoDocConv, string identificacionBeneficiario, string identificacionCotizante,int idCita, string numeroCelular, string token)
         {
             ILocalQueriesRepository repo = new LocalQueriesRepository();
             ISchedulingPetitionsRepository sRepo = new SchedulingPetitionsRepository();
             LocalQueriesService serv = new LocalQueriesService();
             SchedulingPetitionsService sServ = new SchedulingPetitionsService();
             AuthenticationApp aApp = new AuthenticationApp();
-            
-            string resultadoCan = sServ.CancelarCitaBeneficiario(sRepo, token,identificacionCotizante,identificacionBeneficiario,idCita.ToString());
+            string identificacionConv = tipoDocConv + numDocConv;
+            string resultadoCan = sServ.CancelarCitaBeneficiario(sRepo, token,identificacionCotizante,identificacionBeneficiario,idCita.ToString(),idConv);
             if (resultadoCan == "error_token")
             {
-                LogApp log = new LogApp();
-                Dictionary<string, string> param = new Dictionary<string, string>() {
-                {"numeroCelular",numeroCelular },
-                {"identificacion",identificacionConv},
-                {"idConv", idConv }
-              };
-                log.GuardarErrorLogPeticion(resultadoCan, JsonConvert.SerializeObject(param), "AsignarCita");
-                string nToken = aApp.RefreshToken(numeroCelular, identificacionConv);
+                string nToken = aApp.RefreshToken(numeroCelular, identificacionConv,idConv);
                 if (nToken != "error_credenciales" && nToken != "error_parametros" && nToken != "error_desconocido")
                 {
 
-                    string res = sServ.CancelarCitaBeneficiario(sRepo, nToken, identificacionCotizante, identificacionBeneficiario, idCita.ToString());
+                    string res = sServ.CancelarCitaBeneficiario(sRepo, nToken, identificacionCotizante, identificacionBeneficiario, idCita.ToString(),idConv);
                     serv.UpdateCancelacionCita(repo, idConv, idCita, res);
 
                 }

@@ -7,7 +7,6 @@ using System.Web.Http;
 namespace Webhook.Controllers
 {
     [RoutePrefix("api/authentication")]
-    [RequestFilter]
     public class AuthenticationController : ApiController
     {
        readonly Utilities utilidad = new Utilities();
@@ -22,7 +21,6 @@ namespace Webhook.Controllers
             string numeroCelular = utilidad.GetNumero(sessionId[1]);
             string numDoc = request["numDoc"];
             string tipoDoc = request["tipoDoc"];
-            string identificacion = tipoDoc+ numDoc;
             string resp = app.GetToken(numeroCelular, numDoc, tipoDoc , idConv);
             respuesta.IdConv = idConv;
 
@@ -31,13 +29,7 @@ namespace Webhook.Controllers
                 respuesta.Status = "ok";
             }
             else {
-                LogApp log = new LogApp();
-                Dictionary<string, string> param = new Dictionary<string, string>() {
-                {"numeroCelular",numeroCelular },
-                {"identificacion",identificacion},
-                {"idConv", idConv }
-              };
-                log.GuardarErrorLogPeticion(resp, JsonConvert.SerializeObject(param),"GetToken");
+                
                 respuesta.Status = "error";
             }
             respuesta.Token = resp;
@@ -55,22 +47,16 @@ namespace Webhook.Controllers
             string numeroCelular = utilidad.GetNumero(sessionId[1]);
             string token = request["token"];
             string otp = request["otp"];
-            string identificacion = request["tipoDoc"] + request["numDoc"];
+            string numDoc = request["numDoc"];
+            string tipoDoc = request["tipoDoc"];
             respuesta.IdConv = idConv;
-            Resultado res = app.ValidarOtp(token, otp, identificacion, numeroCelular,idConv);
+            Resultado res = app.ValidarOtp(token, otp, numDoc,tipoDoc, numeroCelular,idConv);
             if (res.Result.ToString() != "error_credenciales" && res.Result.ToString() != "error_parametros" && res.Result.ToString() != "error_desconocido")
             {
                 respuesta.Status = "ok";
             }
             else
             {
-                LogApp log = new LogApp();
-                Dictionary<string, string> param = new Dictionary<string, string>() {
-                {"numeroCelular",numeroCelular },
-                {"identificacion",identificacion},
-                {"idConv", idConv }
-              };
-                log.GuardarErrorLogPeticion(res.Result.ToString(), JsonConvert.SerializeObject(param), "ValidarOtp");
                 respuesta.Status = "error";
             }
             respuesta.Token = res.Token;

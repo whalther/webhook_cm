@@ -8,7 +8,7 @@ namespace Domain.Repositories
     {
         List<TipoDocumento> GetTiposDocumento();
         List<Contrato> GetContratos(string idConv);
-        ResultBeneficiarios GetBeneficiariosContrato(int idContrato, string idConv);
+        ResultBeneficiarios GetBeneficiariosContrato(string idContrato, string idConv);
         Ciudad GetCiudadBeneficiario(int idUsuario, string idConv);
         List<Ciudad> GetCiudadesBeneficiario(int idUsuario, string idConv);
         List<Especialidad> GetEspecialidades(string idConv);
@@ -26,5 +26,7 @@ namespace Domain.Repositories
         CitaBeneficiario GetInfoCitaBeneficiario(string idConv, int idCita);
         Boolean UpdateCancelacionCita(string idConv, int idCita, string resultado);
         String GetEstadoCancelacion(string idConv, int idCita);
+        dynamic GetInfoLinkPagos(string idConv, int idCita);
+        Boolean UpdateLinkCita(string idConv, int idCita, string result);
        }
 }

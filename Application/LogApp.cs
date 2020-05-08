@@ -1,23 +1,22 @@
-﻿using DataAccess.Repositories;
-using Domain.DTOs;
+﻿using CrossCutting.Repositories;
 using Domain.Repositories;
 using Domain.Services;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Application
 {
    public class LogApp
     {
-        public bool GuardarLogPeticion(LogPeticion logPeticion)
+        public async Task GuardarErrorLogPeticion(string tipo, string param,string detalle,string metodo,string idConv)
         {
             ILogRepository logRepository = new LogRepository();
-            return new LogService().GuardarLogPeticion(logRepository, logPeticion);
-
+            await new LogService().GuardarErrorLogPeticion(logRepository,tipo,param,detalle,metodo,idConv).ConfigureAwait(false);
         }
-        public async Task GuardarErrorLogPeticion(string tipo, string param,string metodo)
+        public async Task GuardarLogCitaAgendada(Dictionary<string,object> param)
         {
             ILogRepository logRepository = new LogRepository();
-            await new LogService().GuardarErrorLogPeticion(logRepository,tipo,param,metodo).ConfigureAwait(false);
+            await new LogService().GuardarLogCitaAgendada(logRepository, param).ConfigureAwait(false);
         }
     }
 }

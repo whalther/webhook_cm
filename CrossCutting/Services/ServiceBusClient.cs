@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Services
 {
- public  class ServiceBusClient
+    public class ServiceBusClient
     {
         private readonly IQueueClient Client;
         public ServiceBusClient(string ServiceBusConnectionString, string QueueName)

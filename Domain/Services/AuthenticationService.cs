@@ -8,7 +8,7 @@ namespace Domain.Services
 {
    public class AuthenticationService
     {
-        public string GetToken(IAuthenticationRepository authRepository,string numeroCelular, string documento)
+        public string GetToken(IAuthenticationRepository authRepository,string numeroCelular, string documento, string idConv)
         {
             Cifrador cf = new Cifrador();
             string usuarioPwdToken = ConfigurationManager.AppSettings.Get("usuarioBot") +":"+ ConfigurationManager.AppSettings.Get("pwdBot");
@@ -29,10 +29,10 @@ namespace Domain.Services
                 {"iv",ivCf}
             };
 
-            return authRepository.GetToken(hd,parametros);
+            return authRepository.GetToken(hd,parametros,idConv);
         }
 
-        public string RefreshToken(IAuthenticationRepository authRepository, string numeroCelular, string documento)
+        public string RefreshToken(IAuthenticationRepository authRepository, string numeroCelular, string documento, string idConv)
         {
             Cifrador cf = new Cifrador();
             string usuarioPwdRefresh = ConfigurationManager.AppSettings.Get("usuarioBot") + ":" + ConfigurationManager.AppSettings.Get("pwdBot");
@@ -53,10 +53,10 @@ namespace Domain.Services
                 {"iv",ivParam}
             };
 
-            return authRepository.RefreshToken(hd, parametros);
+            return authRepository.RefreshToken(hd, parametros, idConv);
         }
 
-        public string ValidarOtp(IAuthenticationRepository authRepository, string token, string otp)
+        public string ValidarOtp(IAuthenticationRepository authRepository, string token, string otp, string idConv)
         {
             Cifrador cf = new Cifrador();
             Dictionary<string, string> param = new Dictionary<string, string>() {
@@ -71,7 +71,7 @@ namespace Domain.Services
                 {"mensaje",paramCifrado},
                 {"iv",iv2}
             };
-            string resultado =  authRepository.ValidaOtp(hd, parametros);
+            string resultado =  authRepository.ValidaOtp(hd, parametros, idConv);
             if (resultado != "error_parametros" && resultado != "error_desconocido" && resultado != "error_token")
             {
                 string iv = resultado.Substring(0, 16);

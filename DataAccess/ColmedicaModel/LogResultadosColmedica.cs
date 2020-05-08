@@ -12,20 +12,14 @@ namespace DataAccess.ColmedicaModel
     using System;
     using System.Collections.Generic;
     
-    public partial class tempCita
+    public partial class LogResultadosColmedica
     {
         public int id { get; set; }
-        public Nullable<int> numEspacioCita { get; set; }
-        public string tipoIdBeneficiario { get; set; }
-        public string numIdBeneficiario { get; set; }
-        public Nullable<int> centroMedico { get; set; }
-        public Nullable<int> especialidad { get; set; }
-        public string telefono { get; set; }
+        public string tipoTransaccion { get; set; }
+        public bool exitoso { get; set; }
+        public string detalle { get; set; }
+        public System.DateTime fechaTransaccion { get; set; }
+        public string sessionId { get; set; }
         public string celular { get; set; }
-        public string idConv { get; set; }
-        public Nullable<int> idMedico { get; set; }
-        public Nullable<int> estado { get; set; }
-        public string result { get; set; }
-        public string correo { get; set; }
     }
 }

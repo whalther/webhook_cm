@@ -20,5 +20,7 @@ namespace DataAccess.ColmedicaModel
         public Nullable<System.DateTime> fecha { get; set; }
         public string metodo { get; set; }
         public string origen { get; set; }
+        public string detalle { get; set; }
+        public string idConv { get; set; }
     }
 }

@@ -151,6 +151,9 @@
     <Compile Include="ColmedicaModel\logErrorPeticion.cs">
       <DependentUpon>ColmedicaModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ColmedicaModel\LogResultadosColmedica.cs">
+      <DependentUpon>ColmedicaModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ColmedicaModel\log_petitions.cs">
       <DependentUpon>ColmedicaModel.tt</DependentUpon>
     </Compile>
@@ -187,9 +190,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AuthenticationSaveRepository.cs" />
     <Compile Include="Repositories\LocalQueriesRepository.cs" />
-    <Compile Include="Repositories\LogRepository.cs" />
     <Compile Include="Repositories\SchedulingSaveRepository.cs" />
-    <Compile Include="Services\ServiceBusClient.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

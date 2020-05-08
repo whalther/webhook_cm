@@ -2,6 +2,7 @@
 using Domain.Repositories;
 using Domain.Utilities;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 
@@ -9,7 +10,7 @@ namespace Domain.Services
 {
    public class SchedulingPetitionsService
     {
-        public Usuario ValidarUsuario(ISchedulingPetitionsRepository petitionsRepository, string identificacion, string token) {
+        public Usuario ValidarUsuario(ISchedulingPetitionsRepository petitionsRepository, string identificacion, string token, string idConv) {
             Cifrador cf = new Cifrador();
             string ivUsuario = cf.GenerarIv();
             Dictionary<string, string> param = new Dictionary<string, string>() {
@@ -23,7 +24,7 @@ namespace Domain.Services
                 {"mensaje",paramCifradoUsuario},
                 {"iv",ivUsuario}
             };
-            string resultado =  petitionsRepository.ValidarUsuario(hd, parametros);
+            string resultado =  petitionsRepository.ValidarUsuario(hd, parametros, idConv);
             
             if (resultado != "error_parametros" && resultado != "error_desconocido" && resultado != "error_token")
             {
@@ -55,7 +56,7 @@ namespace Domain.Services
                 {"mensaje",paramCifradoBens},
                 {"iv",ivBens}
             };
-            string resultado = petitionsRepository.GetBeneficiariosContratante(hd, parametrosBens);
+            string resultado = petitionsRepository.GetBeneficiariosContratante(hd, parametrosBens,idConv);
 
             if (resultado != "error_parametros" && resultado != "error_desconocido" && resultado != "error_token")
             {
@@ -97,7 +98,7 @@ namespace Domain.Services
                 {"mensaje",paramCifradoEspe},
                 {"iv",ivEspe}
             };
-            string resultado = petitionsRepository.ProcesarEspecialidadesCiudad(hd, parametros);
+            string resultado = petitionsRepository.ProcesarEspecialidadesCiudad(hd, parametros,idConv);
 
             if (resultado != "error_parametros" && resultado != "error_desconocido" && resultado != "error_token")
             {
@@ -137,7 +138,7 @@ namespace Domain.Services
                 {"mensaje",paramCifradoCita},
                 {"iv",ivCita}
             };
-            string resultado = petitionsRepository.ProcesarCitas(hd, parametros);
+            string resultado = petitionsRepository.ProcesarCitas(hd, parametros,idConv);
 
             if (resultado != "error_parametros" && resultado != "error_desconocido" && resultado != "error_token")
             {
@@ -162,7 +163,7 @@ namespace Domain.Services
             }
         }
 
-        public string AsignarCita(ISchedulingPetitionsRepository petitionsRepository, Dictionary<string,string> values)
+        public string AsignarCita(ISchedulingPetitionsRepository petitionsRepository, Dictionary<string,string> values,string idConv)
         {
             Cifrador cf = new Cifrador();
             string iv = cf.GenerarIv();
@@ -185,7 +186,7 @@ namespace Domain.Services
                 {"mensaje",paramCifradoCita},
                 {"iv",iv}
             };
-            string resultado = petitionsRepository.AsignarCita(hd, parametros);
+            string resultado = petitionsRepository.AsignarCita(hd, parametros,idConv);
 
             if (resultado != "error_parametros" && resultado != "error_desconocido" && resultado != "error_token")
             {
@@ -215,7 +216,7 @@ namespace Domain.Services
                 {"mensaje",paramCifrado},
                 {"iv",iv}
             };
-            string resultado = petitionsRepository.GetCiudadesUsuario(hd, parametros);
+            string resultado = petitionsRepository.GetCiudadesUsuario(hd, parametros,idConv);
 
             if (resultado != "error_parametros" && resultado != "error_desconocido" && resultado != "error_token")
             {
@@ -247,7 +248,7 @@ namespace Domain.Services
                 {"mensaje",paramCifrado},
                 {"iv",iv}
             };
-            string resultado = petitionsRepository.ConsultarCitasBeneficiario(hd, parametros);
+            string resultado = petitionsRepository.ConsultarCitasBeneficiario(hd, parametros,idConv);
 
             if (resultado != "error_parametros" && resultado != "error_desconocido" && resultado != "error_token")
             {
@@ -264,7 +265,7 @@ namespace Domain.Services
             }
 
         }
-        public string CancelarCitaBeneficiario(ISchedulingPetitionsRepository petitionsRepository, string token, string identificacionCotizante, string identificacionBeneficiario, string idCita)
+        public string CancelarCitaBeneficiario(ISchedulingPetitionsRepository petitionsRepository, string token, string identificacionCotizante, string identificacionBeneficiario, string idCita,string idConv)
         {
             Cifrador cf = new Cifrador();
             string iv = cf.GenerarIv();
@@ -281,7 +282,7 @@ namespace Domain.Services
                 {"mensaje",paramCifrado},
                 {"iv",iv}
             };
-            string resultado = petitionsRepository.CancelarCitaBeneficiario(hd, parametros);
+            string resultado = petitionsRepository.CancelarCitaBeneficiario(hd, parametros,idConv);
 
             if (resultado != "error_parametros" && resultado != "error_desconocido" && resultado != "error_token")
             {

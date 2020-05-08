@@ -16,16 +16,13 @@ namespace DataAccess.Repositories
             {
                 try
                 {
-                    var rBorrar = (from ta in contexto.tempAuth
-                                  where ta.idConv == idConv
-                                  select ta).FirstOrDefault();
-                    if (rBorrar != null) { contexto.tempAuth.Remove(rBorrar); }
                     tempAuth auth = new tempAuth()
                     {
                         idConv = idConv,
                         token = token,
                         numDoc = numDoc,
-                        tipoDoc = tipoDoc
+                        tipoDoc = tipoDoc,
+                        date = DateTime.Now
                     };
                    contexto.tempAuth.Add(auth);
                   await Task.FromResult( contexto.SaveChanges()).ConfigureAwait(false);
@@ -73,6 +70,30 @@ namespace DataAccess.Repositories
                 catch (Exception E)
                 {
                     Trace.WriteLine(E.Message);
+                    throw;
+                }
+            }
+        }
+        public Boolean DeleteAuthentication(string idConv)
+        {
+            using (ColmedicaContext contexto = new ColmedicaContext())
+            {
+                try
+                {
+                    var rBorrar = (from ta in contexto.tempAuth
+                                   where ta.idConv == idConv
+                                   select ta).FirstOrDefault();
+                    if (rBorrar != null) { 
+                        contexto.tempAuth.Remove(rBorrar);
+                        contexto.SaveChanges();
+                    }
+
+                    return true;
+                }
+                catch (Exception E)
+                {
+                    Trace.WriteLine(E.Message);
+                    return false;
                     throw;
                 }
             }

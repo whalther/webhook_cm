@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AuthenticationApp.cs" />
+    <Compile Include="LinkPagosApp.cs" />
     <Compile Include="LocalQueriesApp.cs" />
     <Compile Include="LogApp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

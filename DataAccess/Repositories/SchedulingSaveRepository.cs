@@ -18,31 +18,33 @@ namespace DataAccess.Repositories
                 {
                     foreach (BeneficiarioContratante beneficiario in beneficiarios)
                     {
+                        string nombre = beneficiario.Nombres.TrimEnd(' ') + " " + beneficiario.PrimerApellido.TrimEnd(' ') + " " + beneficiario.SegundoApellido.TrimEnd(' ');
                         tempBeneficiarios ben = new tempBeneficiarios()
                         {
-                            ciudadResidencia = beneficiario.CiudadResidencia,
+                            ciudadResidencia = beneficiario.CodigoCiudadResidencia,
                             colectivo = beneficiario.Colectivo.Length==0?0:Int32.Parse(beneficiario.Colectivo),
-                            descripcionPlan = beneficiario.DescripcionPlan,
+                            descripcionPlan = beneficiario.Plan,
                             idUsuario = beneficiario.IdUsuario,
-                            nombre = beneficiario.Nombre,
+                            nombre = nombre,
                             numeroContrato = beneficiario.NumeroContrato,
                             numeroIdentificacion = beneficiario.NumeroIdentificacion,
                             parentesco = beneficiario.Parentesco,
-                            sexo = beneficiario.Sexo,
+                            sexo = beneficiario.Genero,
                             telefonoCelular = beneficiario.TelefonoCelular,
                             telefonoResidencia = beneficiario.TelefonoResidencia,
                             tipoIdentificacion = beneficiario.TipoIdentificacion,
+                            correo = beneficiario.CorreoElectronico,
                             idConv = idConv
                         };
                         contexto.tempBeneficiarios.Add(ben);
                     }
 
-                    dynamic contratos = beneficiarios.Select(o =>  new {o.DescripcionPlan,o.NumeroContrato }).Distinct().ToList();
+                    dynamic contratos = beneficiarios.Select(o =>  new {o.Plan,o.NumeroContrato }).Distinct().ToList();
                     foreach (dynamic contrato in contratos) {
                         tempContratos c = new tempContratos()
                         {
                           idContrato = contrato.NumeroContrato,
-                          nombre = contrato.DescripcionPlan,
+                          nombre = contrato.Plan,
                           idConv = idConv
                         };
 

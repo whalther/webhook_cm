@@ -6,7 +6,6 @@ namespace Webhook.Controllers
 {
 
     [RoutePrefix("api/scheduling")]
-    [RequestFilter]
     public class SchedulingPetitionsController : ApiController
     {
         readonly Utilities utilidad = new Utilities();
@@ -18,13 +17,14 @@ namespace Webhook.Controllers
             Replay respuesta = new Replay();
             string[] sessionId = request["sessionId"].ToString().Split('*');
             string numeroCelular = utilidad.GetNumero(sessionId[1]);
-            string identificacion = request["tipoDoc"] + request["numDoc"];
+            string numDoc = request["numDoc"];
+            string tipoDoc = request["tipoDoc"];
             string identificacionBeneficiario = request["tipoDocBeneficiario"]+ request["numDocBeneficiario"];
             string idConv = sessionId[0];
             string token = request["token"];
 
             respuesta.IdConv = idConv;
-            Resultado res = app.ValidarUsuario(identificacion,identificacionBeneficiario, numeroCelular, token, idConv);
+            Resultado res = app.ValidarUsuario(numDoc,tipoDoc,identificacionBeneficiario, numeroCelular, token, idConv);
             respuesta.Token = res.Token;
             Usuario usuario = (Usuario)res.Result;
             if (usuario.Mensaje != "error_parametros" && usuario.Mensaje != "error_desconocido")
@@ -47,10 +47,11 @@ namespace Webhook.Controllers
             SchedulingPetitionsApp app = new SchedulingPetitionsApp();
             string[] sessionId = request["sessionId"].ToString().Split('*');
             string numeroCelular = utilidad.GetNumero(sessionId[1]);
-            string identificacion = request["tipoDoc"]+ request["numDoc"];
+            string numDoc = request["numDoc"];
+            string tipoDoc = request["tipoDoc"];
             string idConv = sessionId[0];
             string token = request["token"];
-            app.ProcesarBeneficiariosCiudades(identificacion,token,idConv,numeroCelular);
+            app.ProcesarBeneficiariosCiudades(numDoc,tipoDoc,token,idConv,numeroCelular);
         }
         [HttpPost]
         [Route("procesarEspecialidades")]
@@ -62,10 +63,11 @@ namespace Webhook.Controllers
             string tipoDoc = request["tipoDocBeneficiario"];
             string idConv = sessionId[0];
             string token = request["token"];
-            string identificacionChat = request["tipoDoc"] + request["numDoc"];
+            string numDocChat = request["numDoc"];
+            string tipoDocChat = request["tipoDoc"];
             int ciudad = (int)request["ciudad"];
             SchedulingPetitionsApp app = new SchedulingPetitionsApp();
-            app.ProcesarEspecialidadesCiudad(identificacion, tipoDoc, ciudad, token, idConv, identificacionChat, numeroCelular);
+            app.ProcesarEspecialidadesCiudad(identificacion, tipoDoc, ciudad, token, idConv, numDocChat,tipoDocChat, numeroCelular);
         }
         [HttpPost]
         [Route("procesarCitas")]
@@ -73,13 +75,14 @@ namespace Webhook.Controllers
         {
             string[] sessionId = request["sessionId"].ToString().Split('*');
             string numeroCelular = utilidad.GetNumero(sessionId[1]);
-            string identificacion = request["tipoDoc"] + request["numDoc"];
+            string numDoc = request["numDoc"];
+            string tipoDoc = request["tipoDoc"];
             string idConv = sessionId[0];
             string token = request["token"];
             int ciudad = (int)request["ciudad"];
             int especialidad = (int)request["especialidad"];
             SchedulingPetitionsApp app = new SchedulingPetitionsApp();
-            app.ProcesarCitas(ciudad, especialidad, token, idConv, numeroCelular, identificacion);
+            app.ProcesarCitas(ciudad, especialidad, token, idConv, numeroCelular, numDoc,tipoDoc);
         }
         [HttpPost]
         [Route("procesarCitasBeneficiario")]
@@ -87,12 +90,13 @@ namespace Webhook.Controllers
         {
             string[] sessionId = request["sessionId"].ToString().Split('*');
             string numeroCelular = utilidad.GetNumero(sessionId[1]);
-            string identificacion = request["tipoDoc"] + request["numDoc"];
+            string numDoc = request["numDoc"];
+            string tipoDoc = request["tipoDoc"];
             string idConv = sessionId[0];
             string token = request["token"];
             string idUsuario = request["idUsuario"];
             SchedulingPetitionsApp app = new SchedulingPetitionsApp();
-            app.ProcesarCitasBeneficiario(identificacion,token,idConv,numeroCelular,idUsuario);
+            app.ProcesarCitasBeneficiario(numDoc,tipoDoc,token,idConv,numeroCelular,idUsuario);
         }
     }
 }

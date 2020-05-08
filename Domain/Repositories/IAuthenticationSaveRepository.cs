@@ -11,5 +11,6 @@ namespace Domain.Repositories
         Task SaveAuthentication (string numDoc, string tipoDoc, string token, string idConv);
         Task SaveValidacionOtp (string resOtp, string idConv);
         dynamic GetAuthentication(string idConv);
+        Boolean DeleteAuthentication(string idConv);
     }
 }

@@ -21,7 +21,9 @@ namespace Domain.Services
         {
             return authRepository.GetAuthentication(idConv);
         }
-        
-
+        public Boolean DeleteAuthentication(IAuthenticationSaveRepository authRepository, string idConv)
+        {
+           return authRepository.DeleteAuthentication(idConv);
+        }
     }
 }

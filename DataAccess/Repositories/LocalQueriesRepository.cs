@@ -4,6 +4,7 @@ using Domain.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Dynamic;
 using System.Linq;
 
 namespace DataAccess.Repositories
@@ -61,7 +62,7 @@ namespace DataAccess.Repositories
                 throw;
             }
         }
-        public ResultBeneficiarios GetBeneficiariosContrato(int idContrato,string idConv)
+        public ResultBeneficiarios GetBeneficiariosContrato(string idContrato,string idConv)
         {
             ResultBeneficiarios resultado = new ResultBeneficiarios();
             try
@@ -69,38 +70,40 @@ namespace DataAccess.Repositories
                 using (ColmedicaContext contexto = new ColmedicaContext())
                 {
                     resultado.Beneficiarios = (from tb in contexto.tempBeneficiarios
-                                 where (tb.idConv == idConv && tb.numeroContrato==idContrato.ToString())
+                                 where (tb.idConv == idConv && tb.numeroContrato==idContrato)
                                  select new BeneficiarioContratante() {
-                                    CiudadResidencia = (int)tb.ciudadResidencia,
+                                    CodigoCiudadResidencia = (int)tb.ciudadResidencia,
                                     Colectivo = tb.colectivo.ToString(),
-                                    DescripcionPlan = tb.descripcionPlan,
+                                    Plan = tb.descripcionPlan,
                                     IdUsuario =(int) tb.idUsuario,
-                                    Nombre = tb.nombre,
+                                    Nombres = tb.nombre,
                                     NumeroContrato = tb.numeroContrato.ToString(),
                                     NumeroIdentificacion = tb.numeroIdentificacion,
                                     Parentesco = tb.parentesco,
-                                    Sexo = tb.sexo,
+                                    Genero = tb.sexo,
                                     TelefonoCelular = tb.telefonoCelular,
                                     TelefonoResidencia = tb.telefonoResidencia,
-                                    TipoIdentificacion = tb.tipoIdentificacion
+                                    TipoIdentificacion = tb.tipoIdentificacion,
+                                    CorreoElectronico = tb.correo
                                  }
                                  ).ToList();
                     resultado.Cotizante = (from tb in contexto.tempBeneficiarios
                                                where (tb.idConv == idConv && tb.parentesco=="Cotizante")
                                                select new BeneficiarioContratante()
                                                {
-                                                   CiudadResidencia = (int)tb.ciudadResidencia,
+                                                   CodigoCiudadResidencia = (int)tb.ciudadResidencia,
                                                    Colectivo = tb.colectivo.ToString(),
-                                                   DescripcionPlan = tb.descripcionPlan,
+                                                   Plan = tb.descripcionPlan,
                                                    IdUsuario = (int)tb.idUsuario,
-                                                   Nombre = tb.nombre,
+                                                   Nombres = tb.nombre,
                                                    NumeroContrato = tb.numeroContrato.ToString(),
                                                    NumeroIdentificacion = tb.numeroIdentificacion,
                                                    Parentesco = tb.parentesco,
-                                                   Sexo = tb.sexo,
+                                                   Genero = tb.sexo,
                                                    TelefonoCelular = tb.telefonoCelular,
                                                    TelefonoResidencia = tb.telefonoResidencia,
-                                                   TipoIdentificacion = tb.tipoIdentificacion
+                                                   TipoIdentificacion = tb.tipoIdentificacion,
+                                                   CorreoElectronico = tb.correo
                                                }
                                  ).FirstOrDefault();
                 }
@@ -128,6 +131,7 @@ namespace DataAccess.Repositories
                                  {
                                      CiuCod = (int)cius.ciuCod,
                                      CiuNombre = cius.ciuNombre,
+                                     Cantidad = cius.cantidad
                                  }
                                  ).FirstOrDefault();
                 }
@@ -155,6 +159,7 @@ namespace DataAccess.Repositories
                                  {
                                      CiuCod = (int)tc.ciuCod,
                                      CiuNombre = tc.ciuNombre,
+                                     Cantidad = tc.cantidad
                                  }
                                  ).ToList();
                 }
@@ -404,13 +409,16 @@ namespace DataAccess.Repositories
                         string numDoc = doc[1];
                         dynamic resultado = (from tb in contexto.tempBeneficiarios
                                              where (tb.idConv == idConv && tb.tipoIdentificacion == tipoDoc && tb.numeroIdentificacion == numDoc)
-                                             select new { tb.telefonoResidencia, tb.telefonoCelular }
+                                             select new { tb.telefonoResidencia, tb.telefonoCelular, tb.correo }
                                              ).FirstOrDefault();
+                        contexto.cleanTablesFlujo(0,idConv,"tempCita");
                         contexto.updateCita(idConv, "tipoIdBeneficiario", tipoDoc);
                         contexto.updateCita(idConv, "numIdBeneficiario", numDoc);
                         contexto.updateCita(idConv, "telefono", resultado.telefonoResidencia);
                         contexto.updateCita(idConv, "celular", resultado.telefonoCelular);
+                        contexto.updateCita(idConv, "correo", resultado.correo);
                         contexto.updateCita(idConv, "estado", "0");
+                        contexto.updateCita(idConv, "result", "");
                     }
                     else if (campo == "cita")
                     {
@@ -529,8 +537,16 @@ namespace DataAccess.Repositories
             {
                 using (ColmedicaContext contexto = new ColmedicaContext())
                 {
-                   var s = contexto.Database.SqlQuery<string>("SELECT @@VERSION as V").FirstOrDefault();
-                    if (s.Length >= 0)
+                var s = contexto.Database.SqlQuery<string>("SELECT @@VERSION as V;").FirstOrDefault();
+                var s2 = contexto.Database.SqlQuery<string>("SELECT top 1 * from tempAuth;").FirstOrDefault();
+                var s3 = contexto.Database.SqlQuery<string>("SELECT top 1 * from tempBeneficiarios;").FirstOrDefault();
+                var s4 = contexto.Database.SqlQuery<string>("SELECT top 1 * from tempCitasBeneficiario;").FirstOrDefault();
+                var s5 = contexto.Database.SqlQuery<string>("SELECT top 1 * from tempCiudades;").FirstOrDefault();
+                var s6 = contexto.Database.SqlQuery<string>("SELECT top 1 * from tempContratos;").FirstOrDefault();
+                var s7 = contexto.Database.SqlQuery<string>("SELECT top 1 * from tempEspecialidades;").FirstOrDefault();
+                var s8 = contexto.Database.SqlQuery<string>("SELECT top 1 * from tempInfoAgendamiento;").FirstOrDefault();
+
+                    if (s.Length >= 0 || s2.Length >= 0 || s3.Length >= 0 || s4.Length >= 0 || s5.Length >= 0 || s6.Length >= 0 || s7.Length >= 0 || s8.Length >= 0)
                     {
                         return true;
                     }
@@ -675,6 +691,64 @@ namespace DataAccess.Repositories
                 {
                     Trace.WriteLine(E.Message);
                     return "error_bd";
+                    throw;
+                }
+            }
+        }
+        public dynamic GetInfoLinkPagos(string idConv, int idCita)
+        {
+            dynamic resultado;
+            try
+            {
+                using (ColmedicaContext contexto = new ColmedicaContext())
+                {
+                    resultado = (from tcb in contexto.tempCitasBeneficiario
+                                 join tb in contexto.tempBeneficiarios on new { x1 = tcb.numeroIdentificacion, x2 = tcb.tipoIdentificacion } equals new { x1 = tb.numeroIdentificacion, x2 = tb.tipoIdentificacion }
+                                 where (tcb.idConv == idConv && tcb.idCita==idCita)
+                                 select new { 
+                                    NumeroIdentificacion = tcb.numeroIdentificacion,
+                                    TipoIdentificacion = tcb.tipoIdentificacion,
+                                    ValorPagar = tcb.valorPagar, 
+                                    NumeroContrato = tb.numeroContrato, 
+                                    TelefonoCelular = tb.telefonoCelular, 
+                                    Nombre = tb.nombre }
+                                 ).FirstOrDefault();
+                }
+                dynamic r = new ExpandoObject();
+                r.Nombre = resultado.Nombre;
+                r.NumeroIdentificacion = resultado.NumeroIdentificacion;
+                r.TipoIdentificacion = resultado.TipoIdentificacion;
+                r.ValorPagar = resultado.ValorPagar;
+                r.NumeroContrato = resultado.NumeroContrato;
+                r.TelefonoCelular = resultado.TelefonoCelular;
+
+                return r;
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+                return new { };
+                throw;
+            }
+        }
+        public Boolean UpdateLinkCita(string idConv, int idCita, string result)
+        {
+            using (ColmedicaContext contexto = new ColmedicaContext())
+            {
+                try
+                {
+
+                    var up = (from cit in contexto.tempCitasBeneficiario
+                              where (cit.idConv == idConv && cit.idCita == idCita)
+                              select cit).FirstOrDefault();
+                    up.linkPago = result;
+                    contexto.SaveChanges();
+                    return true;
+                }
+                catch (Exception E)
+                {
+                    Trace.WriteLine(E.Message);
+                    return false;
                     throw;
                 }
             }

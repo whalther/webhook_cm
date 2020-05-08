@@ -35,3 +35,9 @@ dotnet_style_require_accessibility_modifiers = for_non_interface_members:none
 
 # S1144: Unused private types or members should be removed
 dotnet_diagnostic.S1144.severity = none
+
+# S107: Methods should not have too many parameters
+dotnet_diagnostic.S107.severity = none
+
+# AD0001: Error del analizador
+dotnet_diagnostic.AD0001.severity = none
