@@ -3,7 +3,6 @@ using DataAccess.Repositories;
 using Domain.DTOs;
 using Domain.Repositories;
 using Domain.Services;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
 
