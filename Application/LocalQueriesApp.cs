@@ -119,7 +119,7 @@ namespace Application
                 {"medico",infoCita.idMedico.ToString()},
                 {"especialidad",infoCita.especialidad.ToString()},
                 {"telefono",telefono},
-                {"correo",""},
+                {"correo",infoCita.correo},
                 {"celular",celular},
                 {"token",token}
             };
