@@ -81,7 +81,7 @@ namespace Domain.Services
                 return u;
             }
         }
-        public string ProcesarEspecialidadesCiudad(ISchedulingPetitionsRepository petitionsRepository, ISchedulingSaveRepository saveRepository, string identificacion, string tipoId, int ciudad, string token, string idConv)
+        public List<Especialidad> ProcesarEspecialidadesCiudad(ISchedulingPetitionsRepository petitionsRepository, ISchedulingSaveRepository saveRepository, string identificacion, string tipoId, int ciudad, string token, string idConv)
         {
             Cifrador cf = new Cifrador();
             string ivEspe = cf.GenerarIv();
@@ -109,20 +109,22 @@ namespace Domain.Services
                 bool save = saveRepository.SaveEspecialidadesCiudad(jsonResp, idConv);
                 if (save)
                 {
-                    return "ok";
+                    return jsonResp;
                 }
                 else
                 {
-                    return "error_bd";
+                    List <Especialidad> e = new List<Especialidad>() { new Especialidad() { Nombre = "error_bd" } };
+                    return e;
                 }
             }
             else
             {
-                return resultado;
+                List<Especialidad> e = new List<Especialidad>() { new Especialidad { Nombre = resultado } };
+                return e;
             }
 
         }
-        public string ProcesarCitas(ISchedulingPetitionsRepository petitionsRepository, ISchedulingSaveRepository saveRepository, int ciudad, int especialidad, string token, string idConv)
+        public string ProcesarCitas(ISchedulingPetitionsRepository petitionsRepository, ISchedulingSaveRepository saveRepository, int ciudad, string especialidad, string token, string idConv)
         {
             Cifrador cf = new Cifrador();
             string ivCita = cf.GenerarIv();

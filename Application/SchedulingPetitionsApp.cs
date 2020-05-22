@@ -46,30 +46,38 @@ namespace Application
             SchedulingPetitionsService serv = new SchedulingPetitionsService();
             AuthenticationApp aApp = new AuthenticationApp();
             serv.LimpiarTablasFlujo(saveRepository, 0, idConv, "tempEspecialidades");
-            string espe = serv.ProcesarEspecialidadesCiudad(petitionsRepository, saveRepository, numDoc, tipoDoc,ciudad, token, idConv);
+            List<Especialidad> espe = serv.ProcesarEspecialidadesCiudad(petitionsRepository, saveRepository, numDoc, tipoDoc,ciudad, token, idConv);
             Resultado res = new Resultado();
             string identificacionChat = tipoDocChat + numDocChat;
-            if (espe == "error_token")
+            if (espe.Count == 0)
             {
-                string nToken = aApp.RefreshToken(numeroCelular, identificacionChat,idConv);
-                if (nToken != "error_credenciales" && nToken != "error_parametros" && nToken != "error_desconocido")
-                {
-                    res.Result = serv.ProcesarEspecialidadesCiudad(petitionsRepository, saveRepository, numDoc, tipoDoc, ciudad, nToken, idConv);
-                }
-                else
-                {
-                    res.Result = nToken;
-                }
-                res.Token = nToken;
+                res.Result = new List<Especialidad>();
+                res.Token = token;
             }
             else
             {
-                res.Result = espe;
-                res.Token = token;
+                if (espe[0].Nombre == "error_token")
+                {
+                    string nToken = aApp.RefreshToken(numeroCelular, identificacionChat, idConv);
+                    if (nToken != "error_credenciales" && nToken != "error_parametros" && nToken != "error_desconocido")
+                    {
+                        res.Result = serv.ProcesarEspecialidadesCiudad(petitionsRepository, saveRepository, numDoc, tipoDoc, ciudad, nToken, idConv);
+                    }
+                    else
+                    {
+                        res.Result = nToken;
+                    }
+                    res.Token = nToken;
+                }
+                else
+                {
+                    res.Result = espe;
+                    res.Token = token;
+                }
             }
             return res;
         }
-        public Resultado ProcesarCitas(int ciudad, int especialidad, string token, string idConv,string numeroCelular,string numDoc, string tipoDoc) 
+        public Resultado ProcesarCitas(int ciudad, string especialidad, string token, string idConv,string numeroCelular,string numDoc, string tipoDoc) 
         {
             ISchedulingPetitionsRepository petitionsRepository = new SchedulingPetitionsRepository();
             ISchedulingSaveRepository saveRepository = new SchedulingSaveRepository();

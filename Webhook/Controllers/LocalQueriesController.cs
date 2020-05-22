@@ -274,7 +274,7 @@ namespace Webhook.Controllers
         }
         [HttpPost]
         [Route("asignarCita")]
-        public void AsignarCita([FromBody]dynamic request)
+        public IHttpActionResult AsignarCita([FromBody]dynamic request)
         {
             LocalQueriesApp app = new LocalQueriesApp();
             Utilities utilidad = new Utilities();
@@ -285,6 +285,8 @@ namespace Webhook.Controllers
             string numDoc = request["numDoc"];
             string token = request["token"];
             app.AsignarCita(idConv,numDoc,tipoDoc,numeroCelular,token);
+            return GetInfoCitaAgendada(request);
+           
         }
         [HttpPost]
         [Route("getInfoCitaAgendada")]
@@ -331,7 +333,7 @@ namespace Webhook.Controllers
             {
                 IdConv = idConv,
                 Status = status,
-                Info = new Dictionary<string, object> { { "data", resultEncode },{ "statusCita",statusCita } }
+                Info = new Dictionary<string, object> { { "data", resultEncode },{ "statusCita",statusCita }, { "numEspacioCita", res.numEspacioCita } }
             };
             return Json(respuesta);
         }

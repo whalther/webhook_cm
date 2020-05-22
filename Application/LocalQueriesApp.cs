@@ -107,9 +107,9 @@ namespace Application
             dynamic infoCita = serv.GetInfoAsignarCita(repo,idConv);
             string telefono = String.IsNullOrEmpty(infoCita.telefono) ?"": infoCita.telefono;
             string celular = String.IsNullOrEmpty(infoCita.celular)?"": infoCita.celular;
-            bool resultAgendamiento = false;
+            bool resultAgendamiento;
             dynamic res;
-            string detalle="";
+            string detalle;
             string resultadoAsig;
             Dictionary<string, string> values = new Dictionary<string, string>() {
                 {"espacioCita",infoCita.numEspacioCita.ToString()},
@@ -144,10 +144,12 @@ namespace Application
                 res = JToken.Parse(resultadoAsig);
                 string msj = res.Mensaje;
                 string numConfirm = res.Numconfirmacion;
+                string valorPagar = res.Valor;
                 if (!string.IsNullOrEmpty(numConfirm))
                 {
                     resultAgendamiento = true;
                     detalle = "Cita agendada";
+                    serv.UpdateCitaBd(repo,idConv,"valorPagar",valorPagar);
                 }
                 else if (!string.IsNullOrEmpty(msj))
                 {

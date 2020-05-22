@@ -9,20 +9,18 @@
         <EntityTypeShape EntityType="ColmedicaModel.intentCategory" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="false" />
         <EntityTypeShape EntityType="ColmedicaModel.intentList" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="false" />
         <EntityTypeShape EntityType="ColmedicaModel.intentUnderstanding" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="false" />
-        <EntityTypeShape EntityType="ColmedicaModel.tempEspecialidades" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="false" />
         <EntityTypeShape EntityType="ColmedicaModel.tempInfoAgendamiento" Width="1.5" PointX="4.75" PointY="1.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="ColmedicaModel.userVisits" Width="1.5" PointX="6.75" PointY="1.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="ColmedicaModel.whiteListIntent" Width="1.5" PointX="8.625" PointY="2.5" IsExpanded="false" />
         <EntityTypeShape EntityType="ColmedicaModel.cmTipoDocumento" Width="1.5" PointX="0.75" PointY="2.5" IsExpanded="false" />
-        <EntityTypeShape EntityType="ColmedicaModel.tempCita" Width="1.5" PointX="2.75" PointY="2.5" IsExpanded="false" />
         <EntityTypeShape EntityType="ColmedicaModel.logErrorPeticion" Width="1.5" PointX="4.75" PointY="2.5" IsExpanded="false" />
         <EntityTypeShape EntityType="ColmedicaModel.log_petitions" Width="1.5" PointX="2.75" PointY="1.625" IsExpanded="false" />
-        <EntityTypeShape EntityType="ColmedicaModel.tempCiudades" Width="1.5" PointX="8.625" PointY="1.625" IsExpanded="false" />
+        <EntityTypeShape EntityType="ColmedicaModel.tempCiudades" Width="1.5" PointX="6.75" PointY="1.625" IsExpanded="false" />
         <EntityTypeShape EntityType="ColmedicaModel.tempAuth" Width="1.5" PointX="0.75" PointY="3.25" IsExpanded="false" />
         <EntityTypeShape EntityType="ColmedicaModel.tempBeneficiarios" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="false" />
         <EntityTypeShape EntityType="ColmedicaModel.tempContratos" Width="1.5" PointX="6.75" PointY="2.5" IsExpanded="false" />
         <EntityTypeShape EntityType="ColmedicaModel.tempCitasBeneficiario" Width="1.5" PointX="2.75" PointY="3.25" IsExpanded="false" />
         <EntityTypeShape EntityType="ColmedicaModel.LogResultadosColmedica" Width="1.5" PointX="4.75" PointY="3.25" IsExpanded="false" />
+        <EntityTypeShape EntityType="ColmedicaModel.tempCita" Width="1.5" PointX="2.75" PointY="2.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="ColmedicaModel.tempEspecialidades" Width="1.5" PointX="6.75" PointY="3.25" IsExpanded="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

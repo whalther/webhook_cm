@@ -11,7 +11,7 @@ namespace Domain.Services
 {
     public class LinkPagosService
     {
-        public string GenerarLink(ILinkPagosRepository repo,Dictionary<string,object> paramEnvio)
+        public string GenerarLink(ILinkPagosRepository repo,Dictionary<string,object> paramEnvio, string idConv)
         {
             Dictionary<string, string> hd = new Dictionary<string, string>() {
                 {"Ocp-Apim-Subscription-Key", ConfigurationManager.AppSettings["appIdLinkPagos"]}
@@ -19,8 +19,20 @@ namespace Domain.Services
             Dictionary<string, string> parametros = new Dictionary<string, string>() {
                 {"clientInfo",JsonConvert.SerializeObject(paramEnvio)}
             };
-            string resultado = repo.GenerarLink(hd, parametros);
+            string resultado = repo.GenerarLink(hd, parametros,idConv);
                 return resultado;
+        }
+        public dynamic GetInfoLinkPagos(ILinkPagosQueriesRepository repo, string idConv, int idCita, string flag)
+        {
+            return repo.GetInfoLinkPagos(idConv, idCita, flag);
+        }
+        public Boolean UpdateLinkCita(ILinkPagosQueriesRepository repo, string idConv, int idCita, string result, string flag)
+        {
+            return repo.UpdateLinkCita(idConv, idCita, result, flag);
+        }
+        public string GetLinkPago(ILinkPagosQueriesRepository repo, string idConv, int idCita, string flag)
+        {
+            return repo.GetLinkPago(idConv, idCita, flag);
         }
     }
 }

@@ -47,7 +47,7 @@ namespace CrossCuttingTests
             ISchedulingSaveRepository saveRepository = new SchedulingSaveRepository();
             AuthenticationService authService = new AuthenticationService();
             string token = authService.RefreshToken(authRepository, "3194198375", "CC79880800", "alvaroposada");
-            string res = petService.ProcesarEspecialidadesCiudad(petRepository, saveRepository, "1123440768", "TI", 50001, token, "98fddusfh89udf-sf98df-9");
+            List<Especialidad> res = petService.ProcesarEspecialidadesCiudad(petRepository, saveRepository, "1123440768", "TI", 50001, token, "98fddusfh89udf-sf98df-9");
             Assert.IsNotNull(res);
         }
         [TestCategory("UnitTests")]
@@ -60,7 +60,7 @@ namespace CrossCuttingTests
             ISchedulingSaveRepository saveRepository = new SchedulingSaveRepository();
             AuthenticationService authService = new AuthenticationService();
             string token = authService.RefreshToken(authRepository, "3194198375", "CC79880800", "alvaroposada");
-            string res = petService.ProcesarCitas(petRepository, saveRepository, 50001, 172, token, "98fddusfh89udf-sf98df-9");
+            string res = petService.ProcesarCitas(petRepository, saveRepository, 50001, "172", token, "98fddusfh89udf-sf98df-9");
             Assert.IsNotNull(res);
         }
         [TestCategory("UnitTests")]

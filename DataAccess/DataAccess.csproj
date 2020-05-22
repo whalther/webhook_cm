@@ -181,14 +181,9 @@
     <Compile Include="ColmedicaModel\tempInfoAgendamiento.cs">
       <DependentUpon>ColmedicaModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="ColmedicaModel\userVisits.cs">
-      <DependentUpon>ColmedicaModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ColmedicaModel\whiteListIntent.cs">
-      <DependentUpon>ColmedicaModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AuthenticationSaveRepository.cs" />
+    <Compile Include="Repositories\LinkPagosQueriesRepository.cs" />
     <Compile Include="Repositories\LocalQueriesRepository.cs" />
     <Compile Include="Repositories\SchedulingSaveRepository.cs" />
   </ItemGroup>

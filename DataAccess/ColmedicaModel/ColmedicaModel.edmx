@@ -145,13 +145,15 @@
           <Property Name="numIdBeneficiario" Type="varchar" MaxLength="50" />
           <Property Name="idMedico" Type="int" />
           <Property Name="centroMedico" Type="int" />
-          <Property Name="especialidad" Type="int" />
+          <Property Name="especialidad" Type="varchar" MaxLength="50" />
           <Property Name="telefono" Type="varchar" MaxLength="50" />
           <Property Name="celular" Type="varchar" MaxLength="50" />
           <Property Name="correo" Type="varchar" MaxLength="500" />
           <Property Name="idConv" Type="varchar" MaxLength="500" />
           <Property Name="estado" Type="int" />
           <Property Name="result" Type="text" />
+          <Property Name="linkPago" Type="varchar" MaxLength="500" />
+          <Property Name="valorPagar" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="tempCitasBeneficiario">
           <Key>
@@ -209,7 +211,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nombre" Type="varchar" MaxLength="500" />
-          <Property Name="tipoEspecialidad" Type="int" />
+          <Property Name="tipoEspecialidad" Type="varchar" MaxLength="50" />
           <Property Name="idConv" Type="varchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="tempInfoAgendamiento">
@@ -232,21 +234,6 @@
           <Property Name="nombreMedico" Type="varchar" MaxLength="500" />
           <Property Name="idConv" Type="varchar" MaxLength="500" />
         </EntityType>
-        <EntityType Name="userVisits">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="session_id_client" Type="text" Nullable="false" />
-          <Property Name="type" Type="text" Nullable="false" />
-          <Property Name="dateVisit" Type="date" />
-        </EntityType>
-        <EntityType Name="whiteListIntent">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-        </EntityType>
         <Function Name="cleanTablesConversation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idConversacion" Type="varchar" Mode="In" />
         </Function>
@@ -254,6 +241,15 @@
           <Parameter Name="proceso" Type="int" Mode="In" />
           <Parameter Name="idConversacion" Type="varchar" Mode="In" />
           <Parameter Name="tabla" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="insertCitas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="jsonCitas" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="idConv" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="saveLinkCitaNoTemp" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idConversacion" Type="varchar" Mode="In" />
+          <Parameter Name="idCitaParam" Type="int" Mode="In" />
+          <Parameter Name="flag" Type="varchar" Mode="In" />
         </Function>
         <Function Name="updateCita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idConversacion" Type="varchar" Mode="In" />
@@ -277,8 +273,6 @@
           <EntitySet Name="tempContratos" EntityType="Self.tempContratos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tempEspecialidades" EntityType="Self.tempEspecialidades" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tempInfoAgendamiento" EntityType="Self.tempInfoAgendamiento" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="userVisits" EntityType="Self.userVisits" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="whiteListIntent" EntityType="Self.whiteListIntent" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -337,15 +331,6 @@
           <Property Name="status" Type="Int32" />
           <Property Name="createdAt" Type="DateTime" Precision="3" />
         </EntityType>
-        <EntityType Name="tempEspecialidades">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="nombre" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="tipoEspecialidad" Type="Int32" />
-          <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-        </EntityType>
         <EntityType Name="tempInfoAgendamiento">
           <Key>
             <PropertyRef Name="id" />
@@ -366,32 +351,13 @@
           <Property Name="nombreMedico" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="userVisits">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="session_id_client" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="type" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="dateVisit" Type="DateTime" Precision="0" />
-        </EntityType>
-        <EntityType Name="whiteListIntent">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-        </EntityType>
         <EntityContainer Name="ColmedicaContext" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="chatbotData" EntityType="Self.chatbotData" />
           <EntitySet Name="intentCategory" EntityType="Self.intentCategory" />
           <EntitySet Name="intentList" EntityType="Self.intentList" />
           <EntitySet Name="intentUnderstanding" EntityType="Self.intentUnderstanding" />
-          <EntitySet Name="tempEspecialidades" EntityType="Self.tempEspecialidades" />
           <EntitySet Name="tempInfoAgendamiento" EntityType="Self.tempInfoAgendamiento" />
-          <EntitySet Name="userVisits" EntityType="Self.userVisits" />
-          <EntitySet Name="whiteListIntent" EntityType="Self.whiteListIntent" />
           <EntitySet Name="cmTipoDocumento" EntityType="ColmedicaModel.cmTipoDocumento" />
-          <EntitySet Name="tempCita" EntityType="ColmedicaModel.tempCita" />
           <EntitySet Name="logErrorPeticion" EntityType="ColmedicaModel.logErrorPeticion" />
           <EntitySet Name="log_petitions" EntityType="ColmedicaModel.log_petitions" />
           <EntitySet Name="tempCiudades" EntityType="ColmedicaModel.tempCiudades" />
@@ -413,6 +379,17 @@
           <EntitySet Name="tempContratos" EntityType="ColmedicaModel.tempContratos" />
           <EntitySet Name="tempCitasBeneficiario" EntityType="ColmedicaModel.tempCitasBeneficiario" />
           <EntitySet Name="LogResultadosColmedica" EntityType="ColmedicaModel.LogResultadosColmedica" />
+          <FunctionImport Name="saveLinkCitaNoTemp">
+            <Parameter Name="idConversacion" Mode="In" Type="String" />
+            <Parameter Name="idCitaParam" Mode="In" Type="Int32" />
+            <Parameter Name="flag" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="tempCita" EntityType="ColmedicaModel.tempCita" />
+          <EntitySet Name="tempEspecialidades" EntityType="ColmedicaModel.tempEspecialidades" />
+          <FunctionImport Name="insertCitas">
+            <Parameter Name="jsonCitas" Mode="In" Type="String" />
+            <Parameter Name="idConv" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="cmTipoDocumento">
           <Key>
@@ -423,24 +400,6 @@
           <Property Name="doc_label" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
           <Property Name="estado" Type="Int32" />
           <Property Name="orden" Type="Int32" />
-        </EntityType>
-        <EntityType Name="tempCita">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="numEspacioCita" Type="Int32" />
-          <Property Name="tipoIdBeneficiario" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="numIdBeneficiario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="centroMedico" Type="Int32" />
-          <Property Name="especialidad" Type="Int32" />
-          <Property Name="telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="celular" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="idMedico" Type="Int32" />
-          <Property Name="estado" Type="Int32" />
-          <Property Name="result" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="correo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="logErrorPeticion">
           <Key>
@@ -559,6 +518,35 @@
           <Property Name="sessionId" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="celular" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="tempCita">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="numEspacioCita" Type="Int32" />
+          <Property Name="tipoIdBeneficiario" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="numIdBeneficiario" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="idMedico" Type="Int32" />
+          <Property Name="centroMedico" Type="Int32" />
+          <Property Name="especialidad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="celular" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="correo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="estado" Type="Int32" />
+          <Property Name="result" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="linkPago" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="valorPagar" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tempEspecialidades">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="tipoEspecialidad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -622,16 +610,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tempEspecialidades">
-            <EntityTypeMapping TypeName="ColmedicaModel.tempEspecialidades">
-              <MappingFragment StoreEntitySet="tempEspecialidades">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="nombre" ColumnName="nombre" />
-                <ScalarProperty Name="tipoEspecialidad" ColumnName="tipoEspecialidad" />
-                <ScalarProperty Name="idConv" ColumnName="idConv" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tempInfoAgendamiento">
             <EntityTypeMapping TypeName="ColmedicaModel.tempInfoAgendamiento">
               <MappingFragment StoreEntitySet="tempInfoAgendamiento">
@@ -653,23 +631,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="userVisits">
-            <EntityTypeMapping TypeName="ColmedicaModel.userVisits">
-              <MappingFragment StoreEntitySet="userVisits">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="session_id_client" ColumnName="session_id_client" />
-                <ScalarProperty Name="type" ColumnName="type" />
-                <ScalarProperty Name="dateVisit" ColumnName="dateVisit" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="whiteListIntent">
-            <EntityTypeMapping TypeName="ColmedicaModel.whiteListIntent">
-              <MappingFragment StoreEntitySet="whiteListIntent">
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="cmTipoDocumento">
             <EntityTypeMapping TypeName="ColmedicaModel.cmTipoDocumento">
               <MappingFragment StoreEntitySet="cmTipoDocumento">
@@ -677,25 +638,6 @@
                 <ScalarProperty Name="estado" ColumnName="estado" />
                 <ScalarProperty Name="doc_label" ColumnName="doc_label" />
                 <ScalarProperty Name="tipo_doc" ColumnName="tipo_doc" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tempCita">
-            <EntityTypeMapping TypeName="ColmedicaModel.tempCita">
-              <MappingFragment StoreEntitySet="tempCita">
-                <ScalarProperty Name="correo" ColumnName="correo" />
-                <ScalarProperty Name="result" ColumnName="result" />
-                <ScalarProperty Name="estado" ColumnName="estado" />
-                <ScalarProperty Name="idMedico" ColumnName="idMedico" />
-                <ScalarProperty Name="idConv" ColumnName="idConv" />
-                <ScalarProperty Name="celular" ColumnName="celular" />
-                <ScalarProperty Name="telefono" ColumnName="telefono" />
-                <ScalarProperty Name="especialidad" ColumnName="especialidad" />
-                <ScalarProperty Name="centroMedico" ColumnName="centroMedico" />
-                <ScalarProperty Name="numIdBeneficiario" ColumnName="numIdBeneficiario" />
-                <ScalarProperty Name="tipoIdBeneficiario" ColumnName="tipoIdBeneficiario" />
-                <ScalarProperty Name="numEspacioCita" ColumnName="numEspacioCita" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -828,6 +770,39 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="saveLinkCitaNoTemp" FunctionName="ColmedicaModel.Store.saveLinkCitaNoTemp" />
+          <EntitySetMapping Name="tempCita">
+            <EntityTypeMapping TypeName="ColmedicaModel.tempCita">
+              <MappingFragment StoreEntitySet="tempCita">
+                <ScalarProperty Name="valorPagar" ColumnName="valorPagar" />
+                <ScalarProperty Name="linkPago" ColumnName="linkPago" />
+                <ScalarProperty Name="result" ColumnName="result" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="idConv" ColumnName="idConv" />
+                <ScalarProperty Name="correo" ColumnName="correo" />
+                <ScalarProperty Name="celular" ColumnName="celular" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="especialidad" ColumnName="especialidad" />
+                <ScalarProperty Name="centroMedico" ColumnName="centroMedico" />
+                <ScalarProperty Name="idMedico" ColumnName="idMedico" />
+                <ScalarProperty Name="numIdBeneficiario" ColumnName="numIdBeneficiario" />
+                <ScalarProperty Name="tipoIdBeneficiario" ColumnName="tipoIdBeneficiario" />
+                <ScalarProperty Name="numEspacioCita" ColumnName="numEspacioCita" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tempEspecialidades">
+            <EntityTypeMapping TypeName="ColmedicaModel.tempEspecialidades">
+              <MappingFragment StoreEntitySet="tempEspecialidades">
+                <ScalarProperty Name="idConv" ColumnName="idConv" />
+                <ScalarProperty Name="tipoEspecialidad" ColumnName="tipoEspecialidad" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="insertCitas" FunctionName="ColmedicaModel.Store.insertCitas" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

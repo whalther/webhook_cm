@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Dynamic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DataAccess.Repositories
 {
@@ -187,7 +188,7 @@ namespace DataAccess.Repositories
                                  select new Especialidad()
                                  {
                                      Nombre = te.nombre,
-                                     TipoEspecialidad =(int) te.tipoEspecialidad,
+                                     TipoEspecialidad = te.tipoEspecialidad,
                                  }
                                  ).ToList();
                 }
@@ -283,7 +284,7 @@ namespace DataAccess.Repositories
                                          NombreEspecialidad = tia.nombreEspecialidad,
                                          NombreMedico = tia.nombreMedico
                                      }
-                                     ).Take(10).ToList();
+                                     ).Take(15).ToList();
                     }
                     else {
                         DateTime nFecha = DateTime.Parse(fecha);
@@ -347,7 +348,7 @@ namespace DataAccess.Repositories
                                          NombreEspecialidad = tia.nombreEspecialidad,
                                          NombreMedico = tia.nombreMedico
                                      }
-                                     ).Take(10).ToList();
+                                     ).Take(15).ToList();
                 }
                 return resultado;
             }
@@ -386,7 +387,7 @@ namespace DataAccess.Repositories
                                      NombreEspecialidad = tia.nombreEspecialidad,
                                      NombreMedico = tia.nombreMedico
                                  }
-                                 ).Take(10).ToList();
+                                 ).Take(15).ToList();
                 }
                 return resultado;
             }
@@ -481,7 +482,7 @@ namespace DataAccess.Repositories
                                  join tb in contexto.tempBeneficiarios on new { x1 = tct.tipoIdBeneficiario, x2 = tct.numIdBeneficiario } equals new { x1 = tb.tipoIdentificacion, x2 = tb.numeroIdentificacion }
                                  join tciu in contexto.tempCiudades on tb.ciudadResidencia equals tciu.ciuCod
                                  join tia in contexto.tempInfoAgendamiento on tct.numEspacioCita equals tia.idEspacioCita
-                                 where (tct.idConv == idConv)
+                                 where (tct.idConv == idConv && tb.idConv == idConv)
                                  select new 
                                  {
                                      tb.nombre,
@@ -494,7 +495,9 @@ namespace DataAccess.Repositories
                                      tia.horaInicio,
                                      tia.horaFin,
                                      tia.nombreEspacioFisico,
-                                     tia.nombreMedico
+                                     tia.nombreMedico,
+                                     tia.dia,
+                                     tct.numEspacioCita
                                  }
                                  ).FirstOrDefault();
                    
@@ -695,63 +698,6 @@ namespace DataAccess.Repositories
                 }
             }
         }
-        public dynamic GetInfoLinkPagos(string idConv, int idCita)
-        {
-            dynamic resultado;
-            try
-            {
-                using (ColmedicaContext contexto = new ColmedicaContext())
-                {
-                    resultado = (from tcb in contexto.tempCitasBeneficiario
-                                 join tb in contexto.tempBeneficiarios on new { x1 = tcb.numeroIdentificacion, x2 = tcb.tipoIdentificacion } equals new { x1 = tb.numeroIdentificacion, x2 = tb.tipoIdentificacion }
-                                 where (tcb.idConv == idConv && tcb.idCita==idCita)
-                                 select new { 
-                                    NumeroIdentificacion = tcb.numeroIdentificacion,
-                                    TipoIdentificacion = tcb.tipoIdentificacion,
-                                    ValorPagar = tcb.valorPagar, 
-                                    NumeroContrato = tb.numeroContrato, 
-                                    TelefonoCelular = tb.telefonoCelular, 
-                                    Nombre = tb.nombre }
-                                 ).FirstOrDefault();
-                }
-                dynamic r = new ExpandoObject();
-                r.Nombre = resultado.Nombre;
-                r.NumeroIdentificacion = resultado.NumeroIdentificacion;
-                r.TipoIdentificacion = resultado.TipoIdentificacion;
-                r.ValorPagar = resultado.ValorPagar;
-                r.NumeroContrato = resultado.NumeroContrato;
-                r.TelefonoCelular = resultado.TelefonoCelular;
-
-                return r;
-            }
-            catch (Exception e)
-            {
-                Trace.WriteLine(e.Message);
-                return new { };
-                throw;
-            }
-        }
-        public Boolean UpdateLinkCita(string idConv, int idCita, string result)
-        {
-            using (ColmedicaContext contexto = new ColmedicaContext())
-            {
-                try
-                {
-
-                    var up = (from cit in contexto.tempCitasBeneficiario
-                              where (cit.idConv == idConv && cit.idCita == idCita)
-                              select cit).FirstOrDefault();
-                    up.linkPago = result;
-                    contexto.SaveChanges();
-                    return true;
-                }
-                catch (Exception E)
-                {
-                    Trace.WriteLine(E.Message);
-                    return false;
-                    throw;
-                }
-            }
-        }
+       
     }
 }

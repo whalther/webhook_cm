@@ -1,6 +1,7 @@
 ﻿using DataAccess.ColmedicaModel;
 using Domain.DTOs;
 using Domain.Repositories;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -125,7 +126,7 @@ namespace DataAccess.Repositories
             {
                 try
                 {
-                    foreach (Cita cita in citas)
+                    /*foreach (Cita cita in citas)
                     {
                         tempInfoAgendamiento cit = new tempInfoAgendamiento()
                         {
@@ -146,7 +147,8 @@ namespace DataAccess.Repositories
                         };
                         contexto.tempInfoAgendamiento.Add(cit);
                     }
-                    contexto.SaveChanges();
+                    contexto.SaveChanges();*/
+                    contexto.insertCitas(JsonConvert.SerializeObject(citas),idConv);
                     return true;
                 }
                 catch (Exception E)

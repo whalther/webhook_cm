@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using System.Collections.Generic;
+using System.Web.Http;
 using Application;
 using Domain.DTOs;
 
@@ -55,7 +56,7 @@ namespace Webhook.Controllers
         }
         [HttpPost]
         [Route("procesarEspecialidades")]
-        public void ProcesarEspecialidades([FromBody]dynamic request)
+        public IHttpActionResult ProcesarEspecialidades([FromBody]dynamic request)
         {
             string[] sessionId = request["sessionId"].ToString().Split('*');
             string numeroCelular = utilidad.GetNumero(sessionId[1]);
@@ -66,8 +67,37 @@ namespace Webhook.Controllers
             string numDocChat = request["numDoc"];
             string tipoDocChat = request["tipoDoc"];
             int ciudad = (int)request["ciudad"];
+            Replay respuesta = new Replay();
             SchedulingPetitionsApp app = new SchedulingPetitionsApp();
-            app.ProcesarEspecialidadesCiudad(identificacion, tipoDoc, ciudad, token, idConv, numDocChat,tipoDocChat, numeroCelular);
+            Resultado res= app.ProcesarEspecialidadesCiudad(identificacion, tipoDoc, ciudad, token, idConv, numDocChat,tipoDocChat, numeroCelular);
+            if (res.Result.ToString() != "error_credenciales" && res.Result.ToString() != "error_parametros" && res.Result.ToString() != "error_desconocido" && res.Result.ToString() != "error_bd")
+            {
+                List<Especialidad> espes = (List<Especialidad>)res.Result;
+                respuesta.IdConv = idConv;
+                respuesta.Token = res.Token;
+                if(espes.Count==0)
+                {
+                    respuesta.Status = "empty";
+                    respuesta.Info.Add("data", "");
+                }
+                else if (espes[0].Nombre != "error_parametros" && espes[0].Nombre != "error_desconocido" && espes[0].Nombre != "error_credenciales" && espes[0].Nombre != "error_token")
+                {
+                    respuesta.Status = "ok";
+                    respuesta.Info.Add("data", espes);
+                }
+                else
+                {
+                    respuesta.Status = "error";
+                    respuesta.Info.Add("data", espes[0].Nombre);
+                }
+            }
+            else 
+            {
+                respuesta.Status = "error";
+                respuesta.Info.Add("data", res.Result);
+            }
+            return Json(respuesta);
+
         }
         [HttpPost]
         [Route("procesarCitas")]
@@ -80,7 +110,7 @@ namespace Webhook.Controllers
             string idConv = sessionId[0];
             string token = request["token"];
             int ciudad = (int)request["ciudad"];
-            int especialidad = (int)request["especialidad"];
+            string especialidad = request["especialidad"];
             SchedulingPetitionsApp app = new SchedulingPetitionsApp();
             app.ProcesarCitas(ciudad, especialidad, token, idConv, numeroCelular, numDoc,tipoDoc);
         }

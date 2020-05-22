@@ -26,7 +26,6 @@ namespace Domain.Repositories
         CitaBeneficiario GetInfoCitaBeneficiario(string idConv, int idCita);
         Boolean UpdateCancelacionCita(string idConv, int idCita, string resultado);
         String GetEstadoCancelacion(string idConv, int idCita);
-        dynamic GetInfoLinkPagos(string idConv, int idCita);
-        Boolean UpdateLinkCita(string idConv, int idCita, string result);
+        
        }
 }
