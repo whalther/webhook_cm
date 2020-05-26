@@ -118,12 +118,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColmedicaModel\chatbotData.cs">
-      <DependentUpon>ColmedicaModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ColmedicaModel\cmTipoDocumento.cs">
-      <DependentUpon>ColmedicaModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="ColmedicaModel\ColmedicaModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -139,22 +133,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ColmedicaModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="ColmedicaModel\intentCategory.cs">
-      <DependentUpon>ColmedicaModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ColmedicaModel\intentList.cs">
-      <DependentUpon>ColmedicaModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ColmedicaModel\intentUnderstanding.cs">
-      <DependentUpon>ColmedicaModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="ColmedicaModel\logErrorPeticion.cs">
       <DependentUpon>ColmedicaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ColmedicaModel\LogResultadosColmedica.cs">
-      <DependentUpon>ColmedicaModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ColmedicaModel\log_petitions.cs">
       <DependentUpon>ColmedicaModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ColmedicaModel\tempAuth.cs">

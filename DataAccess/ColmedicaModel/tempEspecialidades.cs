@@ -18,5 +18,6 @@ namespace DataAccess.ColmedicaModel
         public string nombre { get; set; }
         public string tipoEspecialidad { get; set; }
         public string idConv { get; set; }
+        public Nullable<System.DateTime> fechaRegistro { get; set; }
     }
 }

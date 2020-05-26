@@ -2,15 +2,12 @@
 using Domain.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Domain.Services
 {
    public class LocalQueriesService
     {
-        public List<TipoDocumento> GetTiposDocumentos(ILocalQueriesRepository repo) 
-        {
-            return repo.GetTiposDocumento();
-        }
         public List<Contrato> GetContratos(ILocalQueriesRepository repo,string idConv)
         {
             return repo.GetContratos(idConv);
@@ -86,6 +83,9 @@ namespace Domain.Services
         {
             return repo.GetEstadoCancelacion(idConv, idCita);
         }
-        
+        public async Task SaveCitaNoTemp(ILocalQueriesRepository repo, string idConv, int idCita, string flag, string estado)
+        {
+            await repo.SaveCitaNoTemp(idConv,idCita, flag,estado).ConfigureAwait(false);
+        }
     }
 }

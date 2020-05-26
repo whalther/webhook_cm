@@ -126,28 +126,6 @@ namespace DataAccess.Repositories
             {
                 try
                 {
-                    /*foreach (Cita cita in citas)
-                    {
-                        tempInfoAgendamiento cit = new tempInfoAgendamiento()
-                        {
-                            dia = cita.Dia,
-                            direccionCentroMedico = cita.DireccionCentroMedico,
-                            fecha = cita.Fecha,
-                            fechaHoraInicio = cita.FechaHoraInicio,
-                            horaFin = cita.HoraFin,
-                            horaInicio = cita.HoraInicio,
-                            idCentroMedico = cita.IdCentroMedico,
-                            idEspacioCita = cita.IdEspacioCita,
-                            idMedico = cita.IdMedico,
-                            nombreCentroMedico = cita.NombreCentroMedico,
-                            nombreEspacioFisico = cita.NombreEspacioFisico,
-                            nombreEspecialidad = cita.NombreEspecialidad,
-                            nombreMedico = cita.NombreMedico,
-                            idConv = idConv
-                        };
-                        contexto.tempInfoAgendamiento.Add(cit);
-                    }
-                    contexto.SaveChanges();*/
                     contexto.insertCitas(JsonConvert.SerializeObject(citas),idConv);
                     return true;
                 }
