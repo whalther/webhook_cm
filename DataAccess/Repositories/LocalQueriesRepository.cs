@@ -672,13 +672,16 @@ namespace DataAccess.Repositories
                 }
             }
         }
-        public async Task SaveCitaNoTemp(string idConv, int idCita, string flag, string estado)
+        public async Task<int> SaveCitaNoTemp(string idConv, int idCita, string flag, string estado)
         {
             using (ColmedicaContext contexto = new ColmedicaContext())
             {
+                
                 try
                 {
-                    await Task.Run(() => contexto.insertLogCita(idConv, idCita, flag, estado)).ConfigureAwait(false);
+                 var r = contexto.insertLogCita(idConv, idCita, flag, estado);
+                  await Task.Run(() =>r).ConfigureAwait(false);
+                  return r;
                 }
                 catch (Exception E)
                 {
