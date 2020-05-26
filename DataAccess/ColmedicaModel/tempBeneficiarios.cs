@@ -20,6 +20,7 @@ namespace DataAccess.ColmedicaModel
         public string descripcionPlan { get; set; }
         public Nullable<int> idUsuario { get; set; }
         public string nombre { get; set; }
+        public string correo { get; set; }
         public string numeroContrato { get; set; }
         public string numeroIdentificacion { get; set; }
         public string parentesco { get; set; }
@@ -28,7 +29,6 @@ namespace DataAccess.ColmedicaModel
         public string telefonoResidencia { get; set; }
         public string tipoIdentificacion { get; set; }
         public string idConv { get; set; }
-        public string correo { get; set; }
         public Nullable<System.DateTime> fechaRegistro { get; set; }
     }
 }

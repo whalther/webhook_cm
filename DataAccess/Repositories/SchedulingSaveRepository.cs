@@ -35,7 +35,8 @@ namespace DataAccess.Repositories
                             telefonoResidencia = beneficiario.TelefonoResidencia,
                             tipoIdentificacion = beneficiario.TipoIdentificacion,
                             correo = beneficiario.CorreoElectronico,
-                            idConv = idConv
+                            idConv = idConv,
+                            fechaRegistro = DateTime.Now
                         };
                         contexto.tempBeneficiarios.Add(ben);
                     }
@@ -46,7 +47,8 @@ namespace DataAccess.Repositories
                         {
                           idContrato = contrato.NumeroContrato,
                           nombre = contrato.Plan,
-                          idConv = idConv
+                          idConv = idConv,
+                          fechaRegistro = DateTime.Now
                         };
 
                         contexto.tempContratos.Add(c);
@@ -77,7 +79,8 @@ namespace DataAccess.Repositories
                            ciuCod = ciudad.CiuCod,
                            ciuNombre = ciudad.CiuNombre,
                            idConv = idConv,
-                           idUsuario = idUsuario
+                           idUsuario = idUsuario,
+                           fechaRegistro = DateTime.Now
                         };
                         contexto.tempCiudades.Add(ciu);
                     }
@@ -105,7 +108,8 @@ namespace DataAccess.Repositories
                         {
                             nombre = especialidad.Nombre,
                             tipoEspecialidad = especialidad.TipoEspecialidad,
-                            idConv = idConv
+                            idConv = idConv,
+                            fechaRegistro = DateTime.Now
                         };
                         contexto.tempEspecialidades.Add(esp);
                     }
@@ -185,7 +189,8 @@ namespace DataAccess.Repositories
                             telefonoContacto = cita.TelefonoContacto,
                             tipoIdentificacion = cita.TipoIdentificacion,
                             valorPagar = cita.ValorPagar,
-                            idConv = idConv
+                            idConv = idConv,
+                            fechaRegistro = DateTime.Now
                         };
                         contexto.tempCitasBeneficiario.Add(cit);
                     }

@@ -26,7 +26,7 @@ namespace Domain.Repositories
         CitaBeneficiario GetInfoCitaBeneficiario(string idConv, int idCita);
         Boolean UpdateCancelacionCita(string idConv, int idCita, string resultado);
         String GetEstadoCancelacion(string idConv, int idCita);
-        Task SaveCitaNoTemp(string idConv, int idCita, string flag, string estado);
+        Task<int> SaveCitaNoTemp(string idConv, int idCita, string flag, string estado);
 
     }
 }
