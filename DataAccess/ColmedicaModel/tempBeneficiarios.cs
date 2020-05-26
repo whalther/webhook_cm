@@ -29,5 +29,6 @@ namespace DataAccess.ColmedicaModel
         public string tipoIdentificacion { get; set; }
         public string idConv { get; set; }
         public string correo { get; set; }
+        public Nullable<System.DateTime> fechaRegistro { get; set; }
     }
 }

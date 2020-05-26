@@ -26,19 +26,6 @@ namespace Webhook.Controllers
             return Json(respuesta);
         }
         [HttpPost]
-        [Route("getTiposDocumento")]
-        public IHttpActionResult GetTiposDocumento()
-        {
-            LocalQueriesApp app = new LocalQueriesApp();
-            List<TipoDocumento> tps = app.GetTiposDocumento();
-            Replay respuesta = new Replay()
-            {
-                Status = tps.Count > 0 ? "ok" : "empty",
-                Info = new Dictionary<string, object> { { "data", tps } },
-            };
-            return Json(respuesta);
-        }
-        [HttpPost]
         [Route("getContratos")]
         public IHttpActionResult GetContratos([FromBody]dynamic request)
         {

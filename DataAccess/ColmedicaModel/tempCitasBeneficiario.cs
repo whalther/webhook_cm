@@ -39,5 +39,6 @@ namespace DataAccess.ColmedicaModel
         public string idConv { get; set; }
         public string resultCancelacion { get; set; }
         public string linkPago { get; set; }
+        public Nullable<System.DateTime> fechaRegistro { get; set; }
     }
 }

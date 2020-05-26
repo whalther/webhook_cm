@@ -27,14 +27,8 @@ namespace DataAccess.ColmedicaModel
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<chatbotData> chatbotData { get; set; }
-        public virtual DbSet<intentCategory> intentCategory { get; set; }
-        public virtual DbSet<intentList> intentList { get; set; }
-        public virtual DbSet<intentUnderstanding> intentUnderstanding { get; set; }
         public virtual DbSet<tempInfoAgendamiento> tempInfoAgendamiento { get; set; }
-        public virtual DbSet<cmTipoDocumento> cmTipoDocumento { get; set; }
         public virtual DbSet<logErrorPeticion> logErrorPeticion { get; set; }
-        public virtual DbSet<log_petitions> log_petitions { get; set; }
         public virtual DbSet<tempCiudades> tempCiudades { get; set; }
         public virtual DbSet<tempAuth> tempAuth { get; set; }
         public virtual DbSet<tempBeneficiarios> tempBeneficiarios { get; set; }
@@ -115,6 +109,27 @@ namespace DataAccess.ColmedicaModel
                 new ObjectParameter("idConv", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("insertCitas", jsonCitasParameter, idConvParameter);
+        }
+    
+        public virtual int insertLogCita(string idConversacion, Nullable<int> idCitaParam, string flag, string estadoCita)
+        {
+            var idConversacionParameter = idConversacion != null ?
+                new ObjectParameter("idConversacion", idConversacion) :
+                new ObjectParameter("idConversacion", typeof(string));
+    
+            var idCitaParamParameter = idCitaParam.HasValue ?
+                new ObjectParameter("idCitaParam", idCitaParam) :
+                new ObjectParameter("idCitaParam", typeof(int));
+    
+            var flagParameter = flag != null ?
+                new ObjectParameter("flag", flag) :
+                new ObjectParameter("flag", typeof(string));
+    
+            var estadoCitaParameter = estadoCita != null ?
+                new ObjectParameter("estadoCita", estadoCita) :
+                new ObjectParameter("estadoCita", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("insertLogCita", idConversacionParameter, idCitaParamParameter, flagParameter, estadoCitaParameter);
         }
     }
 }

@@ -11,12 +11,6 @@ namespace Application
 {
     public class LocalQueriesApp
     {
-        public List<TipoDocumento> GetTiposDocumento() 
-        {
-            ILocalQueriesRepository repo = new LocalQueriesRepository();
-            LocalQueriesService serv = new LocalQueriesService();
-            return serv.GetTiposDocumentos(repo);
-        }
         public List<Contrato> GetContratos(string idConv)
         {
             ILocalQueriesRepository repo = new LocalQueriesRepository();
@@ -111,6 +105,7 @@ namespace Application
             dynamic res;
             string detalle;
             string resultadoAsig;
+            string estado;
             Dictionary<string, string> values = new Dictionary<string, string>() {
                 {"espacioCita",infoCita.numEspacioCita.ToString()},
                 {"tipoId",infoCita.tipoIdBeneficiario},
@@ -149,22 +144,27 @@ namespace Application
                 {
                     resultAgendamiento = true;
                     detalle = "Cita agendada";
+                    estado = "agendada";
                     serv.UpdateCitaBd(repo,idConv,"valorPagar",valorPagar);
+                    serv.UpdateCitaBd(repo, idConv, "idCita", numConfirm);
                 }
                 else if (!string.IsNullOrEmpty(msj))
                 {
                     resultAgendamiento = false;
+                    estado = "error_agendamiento";
                     detalle = res.Mensaje;
                 }
                 else
                 {
                     resultAgendamiento = false;
+                    estado = "error_desconocido";
                     detalle = resultadoAsig;
                 }
             }
             else
             {
                 resultAgendamiento = false;
+                estado = resultadoAsig;
                 detalle = resultadoAsig;
             }
             Dictionary<string, object> paramLog = new Dictionary<string, object>() {
@@ -177,6 +177,7 @@ namespace Application
                 {"traza" , "log"}
             };
             log.GuardarLogCitaAgendada(paramLog);
+            serv.SaveCitaNoTemp(repo,idConv, (int)infoCita.numEspacioCita,"agendamiento",estado);
         }
         public Boolean QueryDummy()
         {

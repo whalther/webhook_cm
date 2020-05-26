@@ -29,5 +29,7 @@ namespace DataAccess.ColmedicaModel
         public string result { get; set; }
         public string linkPago { get; set; }
         public string valorPagar { get; set; }
+        public Nullable<int> idCita { get; set; }
+        public Nullable<System.DateTime> fechaRegistro { get; set; }
     }
 }

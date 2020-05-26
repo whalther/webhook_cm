@@ -1,12 +1,12 @@
 ﻿using Domain.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Domain.Repositories
 {
     public interface ILocalQueriesRepository
     {
-        List<TipoDocumento> GetTiposDocumento();
         List<Contrato> GetContratos(string idConv);
         ResultBeneficiarios GetBeneficiariosContrato(string idContrato, string idConv);
         Ciudad GetCiudadBeneficiario(int idUsuario, string idConv);
@@ -26,6 +26,7 @@ namespace Domain.Repositories
         CitaBeneficiario GetInfoCitaBeneficiario(string idConv, int idCita);
         Boolean UpdateCancelacionCita(string idConv, int idCita, string resultado);
         String GetEstadoCancelacion(string idConv, int idCita);
-        
-       }
+        Task SaveCitaNoTemp(string idConv, int idCita, string flag, string estado);
+
+    }
 }

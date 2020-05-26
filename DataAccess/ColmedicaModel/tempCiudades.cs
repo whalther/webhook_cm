@@ -20,5 +20,6 @@ namespace DataAccess.ColmedicaModel
         public string ciuNombre { get; set; }
         public string idConv { get; set; }
         public Nullable<int> idUsuario { get; set; }
+        public Nullable<System.DateTime> fechaRegistro { get; set; }
     }
 }
