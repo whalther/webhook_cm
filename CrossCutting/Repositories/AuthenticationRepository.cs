@@ -22,8 +22,11 @@ namespace CrossCutting.Repositories
                     log.GuardarErrorLogPeticion("error_credenciales", JsonConvert.SerializeObject(parametros), resp.StatusDescription,"GetToken",idConv);
                     return "error_credenciales";
                 case "Forbidden":
-                    log.GuardarErrorLogPeticion("error_parametros", JsonConvert.SerializeObject(parametros), resp.StatusDescription, "GetToken", idConv);
-                    return "error_parametros";
+                    log.GuardarErrorLogPeticion("error_prohibido", JsonConvert.SerializeObject(parametros), resp.StatusDescription, "GetToken", idConv);
+                    return "error_prohibido";
+                case "NotFound":
+                    log.GuardarErrorLogPeticion("error_no_encontrado", JsonConvert.SerializeObject(parametros), resp.StatusDescription, "GetToken", idConv);
+                    return "error_no_encontrado";
                 default:
                     log.GuardarErrorLogPeticion("error_desconocido", JsonConvert.SerializeObject(parametros), resp.StatusDescription, "GetToken", idConv);
                     return "error_desconocido";

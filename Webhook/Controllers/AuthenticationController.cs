@@ -24,7 +24,7 @@ namespace Webhook.Controllers
             string resp = app.GetToken(numeroCelular, numDoc, tipoDoc , idConv);
             respuesta.IdConv = idConv;
 
-            if (resp != "error_credenciales" && resp != "error_parametros" && resp != "error_desconocido")
+            if (resp != "error_credenciales" && resp != "error_prohibido" && resp != "error_desconocido" && resp != "error_no_encontrado")
             {
                 respuesta.Status = "ok";
             }
@@ -53,7 +53,26 @@ namespace Webhook.Controllers
             Resultado res = app.ValidarOtp(token, otp, numDoc,tipoDoc, numeroCelular,idConv);
             if (res.Result.ToString() != "error_credenciales" && res.Result.ToString() != "error_parametros" && res.Result.ToString() != "error_desconocido")
             {
-                respuesta.Status = "ok";
+                if (res.Result.ToString() == "0")
+                {
+                    respuesta.Status = "invalid";
+                }
+                else if (res.Result.ToString() == "1")
+                {
+                    respuesta.Status = "ok";
+                }
+                else if (res.Result.ToString() == "2")
+                {
+                    respuesta.Status = "used";
+                }
+                else if (res.Result.ToString() == "3")
+                {
+                    respuesta.Status = "expired";
+                }
+                else 
+                {
+                    respuesta.Status = "error";
+                }
             }
             else
             {
@@ -76,7 +95,7 @@ namespace Webhook.Controllers
             dynamic res = app.GetAuthentication(idConv);
             if (res != null)
             {
-                if (res.token.ToString() != "error_credenciales" && res.token.ToString() != "error_parametros" && res.token.ToString() != "error_desconocido")
+                if (res.token.ToString() != "error_credenciales" && res.token.ToString() != "error_prohibido" && res.token.ToString() != "error_desconocido" && res.token.ToString() != "error_no_encontrado")
                 {
                     respuesta.Status = "ok";
                 }
@@ -112,13 +131,25 @@ namespace Webhook.Controllers
                 }
                 else if (res.otp.ToString() != "error_credenciales" && res.otp.ToString() != "error_parametros" && res.otp.ToString() != "error_desconocido")
                 {
-                    if (res.otp.ToString() == "1")
+                     if (res.otp.ToString() == "0")
+                    {
+                        respuesta.Status = "invalid";
+                    }
+                    else if (res.otp.ToString() == "1")
                     {
                         respuesta.Status = "ok";
                     }
+                    else if (res.otp.ToString() == "2")
+                    {
+                        respuesta.Status = "used";
+                    }
+                    else if (res.otp.ToString() == "3")
+                    {
+                        respuesta.Status = "expired";
+                    }
                     else
                     {
-                        respuesta.Status = "invalid";
+                        respuesta.Status = "error";
                     }
                 }
                 else
