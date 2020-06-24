@@ -37,10 +37,19 @@ namespace Webhook.Controllers
             string flag = request["flag"];
             string link = app.GetLinkPago(idConv, idCita, flag);
             respuesta.IdConv = idConv;
-            if (link != "error" && link != "error_bd" && !string.IsNullOrEmpty(link))
+            if (link != "error_interno_fenix" && link != "error_bd" && link != "error_valor" && !string.IsNullOrEmpty(link))
             {
-                respuesta.Status = "ok";
-                respuesta.Info.Add("data", link);
+                if (link.Substring(0, 5) == "error")
+                {
+                    respuesta.Status = "error";
+                    respuesta.Info.Add("data", link.Substring(6));
+                }
+                else 
+                {
+                    respuesta.Status = "ok";
+                    respuesta.Info.Add("data", link);
+                }
+               
             }
             else if (string.IsNullOrEmpty(link))
             {
@@ -48,7 +57,7 @@ namespace Webhook.Controllers
             }
             else
             {
-                respuesta.Status = "error";
+                respuesta.Status = link;
                 respuesta.Info.Add("data", link);
             }
 

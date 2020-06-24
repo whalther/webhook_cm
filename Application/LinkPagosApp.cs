@@ -5,7 +5,7 @@ using Domain.Services;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-
+using System.Configuration;
 
 namespace Application
 {
@@ -23,7 +23,17 @@ namespace Application
             string identificacion = info.TipoIdentificacion + info.NumeroIdentificacion;
             string token = authServ.RefreshToken(auth,info.TelefonoCelular, identificacion,idConv);
             
-            Dictionary<string, object> param = new Dictionary<string, object>()
+             if (info.ValorPagar.ToString() == "0" && ConfigurationManager.AppSettings["env"] == "prod")
+            {
+                linkServ.UpdateLinkCita(linkRepo, idConv, idCita, "error_valor", flag);
+            }
+            else
+            {
+                if (info.ValorPagar.ToString() == "0" && ConfigurationManager.AppSettings["env"] == "dev")
+                {
+                    info.ValorPagar = "100";
+                }
+                Dictionary<string, object> param = new Dictionary<string, object>()
             {
                  {"customerName",info.Nombre},
                  {"phoneNumber", info.TelefonoCelular},
@@ -38,24 +48,25 @@ namespace Application
                      {"idPaymentType",2 } } },
                  {"token", token}
             };
-          string resp =  serv.GenerarLink(repo,param, idConv);
-            if (resp != "error") 
-            {
-                dynamic respObj = JsonConvert.DeserializeObject<dynamic>(resp);
-                bool status = (bool)respObj.success;
-                if (status)
+                string resp = serv.GenerarLink(repo, param, idConv);
+                if (resp != "error_interno_fenix")
                 {
-                    string link = respObj.paymentInfo.paymentLink;
-                    linkServ.UpdateLinkCita(linkRepo, idConv, idCita, link, flag);
+                    dynamic respObj = JsonConvert.DeserializeObject<dynamic>(resp);
+                    bool status = respObj.Success;
+                    if (status)
+                    {
+                        string link = respObj.PaymentLink;
+                        linkServ.UpdateLinkCita(linkRepo, idConv, idCita, link, flag);
+                    }
+                    else
+                    {
+                        linkServ.UpdateLinkCita(linkRepo, idConv, idCita, "error|" + respObj.Message, flag);
+                    }
                 }
                 else
                 {
-                    linkServ.UpdateLinkCita(linkRepo, idConv, idCita, "error", flag);
+                    linkServ.UpdateLinkCita(linkRepo, idConv, idCita, resp, flag);
                 }
-            }
-            else
-            {
-                linkServ.UpdateLinkCita(linkRepo, idConv, idCita, resp, flag);
             }
         }
         public string GetLinkPago(string idConv, int idCita, string flag)
