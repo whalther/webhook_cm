@@ -24,7 +24,7 @@ namespace CrossCutting.Repositories
                     return resp.Content;
                 default:
                     log.GuardarErrorLogPeticion("error_link", JsonConvert.SerializeObject(parametros), resp.StatusDescription, "GenerarLink", idConv);
-                    return "error";
+                    return "error_interno_fenix";
             }
         }
     }

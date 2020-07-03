@@ -283,13 +283,14 @@ namespace Webhook.Controllers
             string[] sessionId = request["sessionId"].ToString().Split('*');
             string idConv = sessionId[0];
             dynamic res = app.GetInfoCitaAgendada(idConv);
-            string resultCita = "";
+            string resultCita;
             string status;
             string statusCita = "processing";
             dynamic resultEncode;
             if (res.estado == 0)
             {
                 status = "processing";
+                resultEncode = "";
             }
             else if (res.estado == 1)
             {
@@ -298,24 +299,32 @@ namespace Webhook.Controllers
                 if (resultCita.Substring(0, 5) == "error")
                 {
                     statusCita = resultCita;
+                    resultEncode = resultCita;
                 }
                 else
                 {
-                    statusCita = "ok";
-
+                    resultEncode = JToken.Parse(resultCita);
+                    if (resultEncode.Mensaje.ToString() == "Ha alcanzado el máximo número de citas a agendar para esta especialidad")
+                    {
+                        statusCita = "maximo_alcanzado";
+                    }
+                    else if (resultEncode.Mensaje.ToString() == "Cita No Disponible")
+                    {
+                        statusCita = "cita_no_disponible";
+                    }
+                    else if (!string.IsNullOrEmpty(resultEncode.Numconfirmacion.ToString()))
+                    {
+                        statusCita = "ok";
+                    }
+                    else
+                    {
+                        statusCita = "error_agendamiento";
+                    }
                 }
             }
-            else { status = "error"; }
+            else { status = "error"; resultEncode = ""; }
             
-            if (resultCita.Length > 10 && resultCita.Substring(0, 1) == "{")
-            {
-                resultEncode = JToken.Parse(resultCita);
-                statusCita = resultEncode.Mensaje.ToString().Length != 0 ? "error_agendamiento" : statusCita;
-            }
-            else
-            {
-                resultEncode = resultCita;
-            }
+          
             Replay respuesta = new Replay()
             {
                 IdConv = idConv,
