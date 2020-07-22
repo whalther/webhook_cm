@@ -30,13 +30,13 @@ namespace DataAccess.ColmedicaModel
         public virtual DbSet<logErrorPeticion> logErrorPeticion { get; set; }
         public virtual DbSet<LogResultadosColmedica> LogResultadosColmedica { get; set; }
         public virtual DbSet<tempAuth> tempAuth { get; set; }
-        public virtual DbSet<tempBeneficiarios> tempBeneficiarios { get; set; }
         public virtual DbSet<tempCita> tempCita { get; set; }
         public virtual DbSet<tempCitasBeneficiario> tempCitasBeneficiario { get; set; }
-        public virtual DbSet<tempCiudades> tempCiudades { get; set; }
         public virtual DbSet<tempContratos> tempContratos { get; set; }
         public virtual DbSet<tempEspecialidades> tempEspecialidades { get; set; }
         public virtual DbSet<tempInfoAgendamiento> tempInfoAgendamiento { get; set; }
+        public virtual DbSet<tempBeneficiarios> tempBeneficiarios { get; set; }
+        public virtual DbSet<tempCiudades> tempCiudades { get; set; }
     
         public virtual int updateCita(string idConversacion, string campo, string valor)
         {

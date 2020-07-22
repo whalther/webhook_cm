@@ -47,7 +47,7 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ciudadResidencia" Type="int" />
+          <Property Name="ciudadResidencia" Type="varchar" MaxLength="50" />
           <Property Name="colectivo" Type="int" />
           <Property Name="descripcionPlan" Type="varchar" MaxLength="500" />
           <Property Name="idUsuario" Type="int" />
@@ -122,7 +122,7 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="cantidad" Type="int" />
-          <Property Name="ciuCod" Type="int" />
+          <Property Name="ciuCod" Type="varchar" MaxLength="50" />
           <Property Name="ciuNombre" Type="varchar" MaxLength="150" />
           <Property Name="idConv" Type="varchar" MaxLength="500" />
           <Property Name="idUsuario" Type="int" />
@@ -240,13 +240,13 @@
             <Parameter Name="estadoCita" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="tempAuth" EntityType="ColmedicaModel.tempAuth" />
-          <EntitySet Name="tempBeneficiarios" EntityType="ColmedicaModel.tempBeneficiarios" />
           <EntitySet Name="tempCita" EntityType="ColmedicaModel.tempCita" />
           <EntitySet Name="tempCitasBeneficiario" EntityType="ColmedicaModel.tempCitasBeneficiario" />
-          <EntitySet Name="tempCiudades" EntityType="ColmedicaModel.tempCiudades" />
           <EntitySet Name="tempContratos" EntityType="ColmedicaModel.tempContratos" />
           <EntitySet Name="tempEspecialidades" EntityType="ColmedicaModel.tempEspecialidades" />
           <EntitySet Name="tempInfoAgendamiento" EntityType="ColmedicaModel.tempInfoAgendamiento" />
+          <EntitySet Name="tempBeneficiarios" EntityType="ColmedicaModel.tempBeneficiarios" />
+          <EntitySet Name="tempCiudades" EntityType="ColmedicaModel.tempCiudades" />
         </EntityContainer>
         <EntityType Name="logErrorPeticion">
           <Key>
@@ -284,27 +284,6 @@
           <Property Name="tipoDoc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="otp" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="date" Type="DateTime" Precision="0" />
-        </EntityType>
-        <EntityType Name="tempBeneficiarios">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ciudadResidencia" Type="Int32" />
-          <Property Name="colectivo" Type="Int32" />
-          <Property Name="descripcionPlan" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="idUsuario" Type="Int32" />
-          <Property Name="nombre" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="correo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="numeroContrato" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="numeroIdentificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="parentesco" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="sexo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="telefonoCelular" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="telefonoResidencia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="tipoIdentificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="fechaRegistro" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="tempCita">
           <Key>
@@ -359,18 +338,6 @@
           <Property Name="linkPago" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="fechaRegistro" Type="DateTime" Precision="0" />
         </EntityType>
-        <EntityType Name="tempCiudades">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="cantidad" Type="Int32" />
-          <Property Name="ciuCod" Type="Int32" />
-          <Property Name="ciuNombre" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-          <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="idUsuario" Type="Int32" />
-          <Property Name="fechaRegistro" Type="DateTime" Precision="0" />
-        </EntityType>
         <EntityType Name="tempContratos">
           <Key>
             <PropertyRef Name="id" />
@@ -410,6 +377,39 @@
           <Property Name="nombreEspecialidad" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="nombreMedico" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="fechaRegistro" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="tempBeneficiarios">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ciudadResidencia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="colectivo" Type="Int32" />
+          <Property Name="descripcionPlan" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="idUsuario" Type="Int32" />
+          <Property Name="nombre" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="correo" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="numeroContrato" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="numeroIdentificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="parentesco" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="sexo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="telefonoCelular" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="telefonoResidencia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tipoIdentificacion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="fechaRegistro" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="tempCiudades">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="cantidad" Type="Int32" />
+          <Property Name="ciuCod" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ciuNombre" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="idUsuario" Type="Int32" />
           <Property Name="fechaRegistro" Type="DateTime" Precision="0" />
         </EntityType>
         </Schema>
@@ -459,28 +459,6 @@
                 <ScalarProperty Name="numDoc" ColumnName="numDoc" />
                 <ScalarProperty Name="token" ColumnName="token" />
                 <ScalarProperty Name="idConv" ColumnName="idConv" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="tempBeneficiarios">
-            <EntityTypeMapping TypeName="ColmedicaModel.tempBeneficiarios">
-              <MappingFragment StoreEntitySet="tempBeneficiarios">
-                <ScalarProperty Name="fechaRegistro" ColumnName="fechaRegistro" />
-                <ScalarProperty Name="idConv" ColumnName="idConv" />
-                <ScalarProperty Name="tipoIdentificacion" ColumnName="tipoIdentificacion" />
-                <ScalarProperty Name="telefonoResidencia" ColumnName="telefonoResidencia" />
-                <ScalarProperty Name="telefonoCelular" ColumnName="telefonoCelular" />
-                <ScalarProperty Name="sexo" ColumnName="sexo" />
-                <ScalarProperty Name="parentesco" ColumnName="parentesco" />
-                <ScalarProperty Name="numeroIdentificacion" ColumnName="numeroIdentificacion" />
-                <ScalarProperty Name="numeroContrato" ColumnName="numeroContrato" />
-                <ScalarProperty Name="correo" ColumnName="correo" />
-                <ScalarProperty Name="nombre" ColumnName="nombre" />
-                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
-                <ScalarProperty Name="descripcionPlan" ColumnName="descripcionPlan" />
-                <ScalarProperty Name="colectivo" ColumnName="colectivo" />
-                <ScalarProperty Name="ciudadResidencia" ColumnName="ciudadResidencia" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -540,19 +518,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="tempCiudades">
-            <EntityTypeMapping TypeName="ColmedicaModel.tempCiudades">
-              <MappingFragment StoreEntitySet="tempCiudades">
-                <ScalarProperty Name="fechaRegistro" ColumnName="fechaRegistro" />
-                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
-                <ScalarProperty Name="idConv" ColumnName="idConv" />
-                <ScalarProperty Name="ciuNombre" ColumnName="ciuNombre" />
-                <ScalarProperty Name="ciuCod" ColumnName="ciuCod" />
-                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
-                <ScalarProperty Name="id" ColumnName="id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="tempContratos">
             <EntityTypeMapping TypeName="ColmedicaModel.tempContratos">
               <MappingFragment StoreEntitySet="tempContratos">
@@ -593,6 +558,41 @@
                 <ScalarProperty Name="fecha" ColumnName="fecha" />
                 <ScalarProperty Name="direccionCentroMedico" ColumnName="direccionCentroMedico" />
                 <ScalarProperty Name="dia" ColumnName="dia" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tempBeneficiarios">
+            <EntityTypeMapping TypeName="ColmedicaModel.tempBeneficiarios">
+              <MappingFragment StoreEntitySet="tempBeneficiarios">
+                <ScalarProperty Name="fechaRegistro" ColumnName="fechaRegistro" />
+                <ScalarProperty Name="idConv" ColumnName="idConv" />
+                <ScalarProperty Name="tipoIdentificacion" ColumnName="tipoIdentificacion" />
+                <ScalarProperty Name="telefonoResidencia" ColumnName="telefonoResidencia" />
+                <ScalarProperty Name="telefonoCelular" ColumnName="telefonoCelular" />
+                <ScalarProperty Name="sexo" ColumnName="sexo" />
+                <ScalarProperty Name="parentesco" ColumnName="parentesco" />
+                <ScalarProperty Name="numeroIdentificacion" ColumnName="numeroIdentificacion" />
+                <ScalarProperty Name="numeroContrato" ColumnName="numeroContrato" />
+                <ScalarProperty Name="correo" ColumnName="correo" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="descripcionPlan" ColumnName="descripcionPlan" />
+                <ScalarProperty Name="colectivo" ColumnName="colectivo" />
+                <ScalarProperty Name="ciudadResidencia" ColumnName="ciudadResidencia" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tempCiudades">
+            <EntityTypeMapping TypeName="ColmedicaModel.tempCiudades">
+              <MappingFragment StoreEntitySet="tempCiudades">
+                <ScalarProperty Name="fechaRegistro" ColumnName="fechaRegistro" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="idConv" ColumnName="idConv" />
+                <ScalarProperty Name="ciuNombre" ColumnName="ciuNombre" />
+                <ScalarProperty Name="ciuCod" ColumnName="ciuCod" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

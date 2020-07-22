@@ -47,7 +47,7 @@ namespace DataAccess.Repositories
                     resultado.Beneficiarios = (from tb in contexto.tempBeneficiarios
                                  where (tb.idConv == idConv && tb.numeroContrato==idContrato)
                                  select new BeneficiarioContratante() {
-                                    CodigoCiudadResidencia = (int)tb.ciudadResidencia,
+                                    CodigoCiudadResidencia = tb.ciudadResidencia,
                                     Colectivo = tb.colectivo.ToString(),
                                     Plan = tb.descripcionPlan,
                                     IdUsuario =(int) tb.idUsuario,
@@ -66,7 +66,7 @@ namespace DataAccess.Repositories
                                                where (tb.idConv == idConv && tb.parentesco=="Cotizante")
                                                select new BeneficiarioContratante()
                                                {
-                                                   CodigoCiudadResidencia = (int)tb.ciudadResidencia,
+                                                   CodigoCiudadResidencia = tb.ciudadResidencia,
                                                    Colectivo = tb.colectivo.ToString(),
                                                    Plan = tb.descripcionPlan,
                                                    IdUsuario = (int)tb.idUsuario,
@@ -104,7 +104,7 @@ namespace DataAccess.Repositories
                                  where (tb.idConv == idConv && tb.idUsuario == idUsuario)
                                  select new Ciudad()
                                  {
-                                     CiuCod = (int)cius.ciuCod,
+                                     CiuCod = cius.ciuCod,
                                      CiuNombre = cius.ciuNombre,
                                      Cantidad = cius.cantidad
                                  }
@@ -132,7 +132,7 @@ namespace DataAccess.Repositories
                                  where (tc.idConv == idConv && tc.idUsuario == idUsuario)
                                  select new Ciudad()
                                  {
-                                     CiuCod = (int)tc.ciuCod,
+                                     CiuCod = tc.ciuCod,
                                      CiuNombre = tc.ciuNombre,
                                      Cantidad = tc.cantidad
                                  }
