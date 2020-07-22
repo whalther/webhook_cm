@@ -15,7 +15,7 @@ namespace DataAccess.ColmedicaModel
     public partial class tempBeneficiarios
     {
         public int id { get; set; }
-        public Nullable<int> ciudadResidencia { get; set; }
+        public string ciudadResidencia { get; set; }
         public Nullable<int> colectivo { get; set; }
         public string descripcionPlan { get; set; }
         public Nullable<int> idUsuario { get; set; }
