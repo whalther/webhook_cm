@@ -165,7 +165,7 @@ namespace DataAccess.Repositories
                 {
                     foreach (CitaBeneficiario cita in citas)
                     {
-                        DateTime nFecha = DateTime.Parse(cita.Fecha);
+                        DateTime nFecha = DateTime.ParseExact(cita.Fecha, "dd/MM/yyyy", null);
                         tempCitasBeneficiario cit = new tempCitasBeneficiario()
                         {
                             asignoCita = cita.AsignoCita,

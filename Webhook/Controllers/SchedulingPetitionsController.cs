@@ -116,7 +116,7 @@ namespace Webhook.Controllers
         }
         [HttpPost]
         [Route("procesarCitasBeneficiario")]
-        public void ProcesarCitasBeneficiario([FromBody]dynamic request)
+        public IHttpActionResult ProcesarCitasBeneficiario([FromBody]dynamic request)
         {
             string[] sessionId = request["sessionId"].ToString().Split('*');
             string numeroCelular = utilidad.GetNumero(sessionId[1]);
@@ -127,6 +127,15 @@ namespace Webhook.Controllers
             string idUsuario = request["idUsuario"];
             SchedulingPetitionsApp app = new SchedulingPetitionsApp();
             app.ProcesarCitasBeneficiario(numDoc,tipoDoc,token,idConv,numeroCelular,idUsuario);
+            LocalQueriesApp appLq = new LocalQueriesApp();
+            List<CitaBeneficiario> citas = appLq.GetCitasBeneficiario(sessionId[0]);
+            Replay respuesta = new Replay()
+            {
+                Status = citas.Count > 0 ? "ok" : "empty",
+                Info = new Dictionary<string, object> { { "data", citas } },
+                IdConv = request["sessionId"]
+            };
+            return Json(respuesta);
         }
     }
 }

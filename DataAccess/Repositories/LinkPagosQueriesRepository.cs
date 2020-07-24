@@ -72,6 +72,7 @@ namespace DataAccess.Repositories
         public Boolean UpdateLinkCita(string idConv, int idCita, string result, string flag)
         {
             string nFlag = flag;
+            string estado="";
             using (ColmedicaContext contexto = new ColmedicaContext())
             {
                 try
@@ -90,9 +91,10 @@ namespace DataAccess.Repositories
                                   where (cit.idConv == idConv && cit.idCita == idCita)
                                   select cit).FirstOrDefault();
                         up.linkPago = result;
+                        estado = result.Substring(0, 4) == "http" ? "generado" : "error";
                     }
                     contexto.SaveChanges();
-                    SaveLinkCitaNoTemp(idConv, idCita, nFlag).ConfigureAwait(false);
+                    SaveLinkCitaNoTemp(idConv, idCita, nFlag, estado).ConfigureAwait(false);
                     return true;
                 }
                 catch (Exception E)
@@ -134,13 +136,13 @@ namespace DataAccess.Repositories
                 }
             }
         }
-        private async Task SaveLinkCitaNoTemp(string idConv, int idCita, string flag)
+        private async Task SaveLinkCitaNoTemp(string idConv, int idCita, string flag, string estado)
         {
             using (ColmedicaContext contexto = new ColmedicaContext())
             {
                 try
                 {
-                    await Task.Run(() => contexto.insertLogCita(idConv, idCita, flag,"")).ConfigureAwait(false);
+                    await Task.Run(() => contexto.insertLogCita(idConv, idCita, flag,estado)).ConfigureAwait(false);
                 }
                 catch (Exception E)
                 {

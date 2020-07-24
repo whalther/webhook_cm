@@ -29,7 +29,7 @@ namespace Application
             }
             else
             {
-                if (info.ValorPagar.ToString() == "0" && ConfigurationManager.AppSettings["env"] == "dev")
+                if (Convert.ToInt64(Math.Floor(Convert.ToDouble(info.ValorPagar))) == 0 && ConfigurationManager.AppSettings["env"] == "dev")
                 {
                     info.ValorPagar = "100";
                 }

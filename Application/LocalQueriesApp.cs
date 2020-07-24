@@ -212,6 +212,7 @@ namespace Application
             AuthenticationApp aApp = new AuthenticationApp();
             string identificacionConv = tipoDocConv + numDocConv;
             string resultadoCan = sServ.CancelarCitaBeneficiario(sRepo, token,identificacionCotizante,identificacionBeneficiario,idCita.ToString(),idConv);
+            string estadoCan;
             if (resultadoCan == "error_token")
             {
                 string nToken = aApp.RefreshToken(numeroCelular, identificacionConv,idConv);
@@ -220,17 +221,21 @@ namespace Application
 
                     string res = sServ.CancelarCitaBeneficiario(sRepo, nToken, identificacionCotizante, identificacionBeneficiario, idCita.ToString(),idConv);
                     serv.UpdateCancelacionCita(repo, idConv, idCita, res);
-
+                    estadoCan = "cancelada";
                 }
                 else
                 {
                     serv.UpdateCancelacionCita(repo, idConv, idCita, nToken);
+                    estadoCan = nToken;
                 }
             }
             else
             {
                 serv.UpdateCancelacionCita(repo, idConv, idCita, resultadoCan);
+                estadoCan = resultadoCan;
             }
+            
+            serv.SaveCitaNoTemp(repo, idConv, idCita, "cancelacion", estadoCan);
         }
         public string GetEstadoCancelacion(string idConv, int idCita)
         {
