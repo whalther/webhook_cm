@@ -221,7 +221,15 @@ namespace Application
 
                     string res = sServ.CancelarCitaBeneficiario(sRepo, nToken, identificacionCotizante, identificacionBeneficiario, idCita.ToString(),idConv);
                     serv.UpdateCancelacionCita(repo, idConv, idCita, res);
-                    estadoCan = "cancelada";
+                    dynamic resV = JToken.Parse(res);
+                    if (resV.Resultado == 1)
+                    {
+                        estadoCan = "cancelada";
+                    }
+                    else
+                    {
+                        estadoCan = "error|" + resV.Mensaje;
+                    }
                 }
                 else
                 {
@@ -231,8 +239,16 @@ namespace Application
             }
             else
             {
+                dynamic res = JToken.Parse(resultadoCan);
+                if (res.Resultado == 1)
+                {
+                    estadoCan = "cancelada";
+                }
+                else 
+                {
+                    estadoCan = "error|" + res.Mensaje;
+                }
                 serv.UpdateCancelacionCita(repo, idConv, idCita, resultadoCan);
-                estadoCan = resultadoCan;
             }
             
             serv.SaveCitaNoTemp(repo, idConv, idCita, "cancelacion", estadoCan);
