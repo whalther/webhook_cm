@@ -617,7 +617,7 @@ namespace DataAccess.Repositories
                                      Observaciones = tcb.observaciones,
                                      TelefonoContacto = tcb.telefonoContacto,
                                      TipoIdentificacion = tcb.tipoIdentificacion,
-                                     ValorPagar = Convert.ToInt64(Math.Floor(Convert.ToDouble(tcb.valorPagar))).ToString()
+                                     ValorPagar = tcb.valorPagar
                                  }
                                  ).FirstOrDefault();
                 }
