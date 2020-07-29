@@ -192,6 +192,7 @@
     </Content>
     <Content Include="Views\Home\Index.cshtml" />
     <None Include="Properties\PublishProfiles\ColmedicaProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\WebhookCMTest - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

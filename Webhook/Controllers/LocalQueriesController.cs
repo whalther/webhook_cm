@@ -366,7 +366,7 @@ namespace Webhook.Controllers
         }
         [HttpPost]
         [Route("procesarCancelacionCita")]
-        public void ProcesarCancelacionCita([FromBody]dynamic request)
+        public IHttpActionResult ProcesarCancelacionCita([FromBody]dynamic request)
         {
             LocalQueriesApp app = new LocalQueriesApp();
             Utilities utilidad = new Utilities();
@@ -380,6 +380,7 @@ namespace Webhook.Controllers
             string token = request["token"];
             int idCita = request["idCita"];
             app.CancelarCitaBeneficiario(idConv,numDocConv,tipoDocConv,identificacionBeneficiario,identificacionCotizante,idCita,numeroCelular,token);
+            return GetEstadoCancelacionCita(request);
         }
         [HttpPost]
         [Route("getEstadoCancelacionCita")]
