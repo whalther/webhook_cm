@@ -13,7 +13,7 @@ namespace CrossCuttingTests
         {
              IAuthenticationRepository authRepository = new AuthenticationRepository();
              AuthenticationService authService = new AuthenticationService();
-             string token = authService.GetToken(authRepository, "3194198375", "CC79880800","alvaroprueba");
+             string token = authService.ValidarCliente(authRepository, "3194198375", "CC79880800","alvaroprueba");
             Assert.IsNotNull(token);
         }
 
@@ -31,8 +31,8 @@ namespace CrossCuttingTests
         {
             IAuthenticationRepository authRepository = new AuthenticationRepository();
             AuthenticationService authService = new AuthenticationService();
-            string token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c3VhcmlvIjoiTkk5MDA4MDE0NTkiLCJjbGllbnRlIjoiQ0M3OTg4MDgwMCIsImV4cCI6MTU4MzM1NDY3Ni4wfQ.A870IM9HF2kxY-BGoKwheS8dtgiSvZEdHO6fP3M2Hn0";
-            string res = authService.ValidarOtp(authRepository, token, "635933","alvaroprueba");
+            
+            string res = authService.ValidarOtp(authRepository, "","", "635933","alvaroprueba");
             Assert.IsNotNull(res);
         }
     }

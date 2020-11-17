@@ -8,9 +8,9 @@ namespace Domain.Repositories
 {
    public interface IAuthenticationSaveRepository
     {
-        Task SaveAuthentication (string numDoc, string tipoDoc, string token, string idConv);
-        Task SaveValidacionOtp (string resOtp, string idConv);
-        dynamic GetAuthentication(string idConv);
+        Task SaveValidaCliente(string numDoc, string tipoDoc, string valida, string idConv);
+        Task SaveValidacionOtp (string resOtp,string otp, string idConv);
+        dynamic GetValidacion(string idConv);
         Boolean DeleteAuthentication(string idConv);
     }
 }

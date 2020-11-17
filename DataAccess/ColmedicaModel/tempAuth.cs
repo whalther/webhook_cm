@@ -21,5 +21,6 @@ namespace DataAccess.ColmedicaModel
         public string tipoDoc { get; set; }
         public string otp { get; set; }
         public Nullable<System.DateTime> date { get; set; }
+        public string resultValida { get; set; }
     }
 }

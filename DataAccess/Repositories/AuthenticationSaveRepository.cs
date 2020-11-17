@@ -11,7 +11,7 @@ namespace DataAccess.Repositories
 {
    public class AuthenticationSaveRepository: IAuthenticationSaveRepository
     {
-        public async Task SaveAuthentication(string numDoc, string tipoDoc, string token, string idConv) {
+        public async Task SaveValidaCliente(string numDoc, string tipoDoc, string valida, string idConv) {
             using (ColmedicaContext contexto = new ColmedicaContext())
             {
                 try
@@ -19,7 +19,8 @@ namespace DataAccess.Repositories
                     tempAuth auth = new tempAuth()
                     {
                         idConv = idConv,
-                        token = token,
+                        resultValida = valida,
+                        token = "",
                         numDoc = numDoc,
                         tipoDoc = tipoDoc,
                         date = DateTime.Now
@@ -35,7 +36,7 @@ namespace DataAccess.Repositories
             }
 
         }
-        public async Task SaveValidacionOtp(string resOtp, string idConv)
+        public async Task SaveValidacionOtp(string resOtp,string otp, string idConv)
         {
             using (ColmedicaContext contexto = new ColmedicaContext())
             {
@@ -45,7 +46,8 @@ namespace DataAccess.Repositories
                     var up = (from ta in contexto.tempAuth
                               where ta.idConv == idConv
                               select ta).FirstOrDefault();
-                    up.otp = resOtp; 
+                    up.otp = otp;
+                    up.token = resOtp;
                     await Task.FromResult(contexto.SaveChanges()).ConfigureAwait(false);
                 }
                 catch (Exception E)
@@ -55,7 +57,7 @@ namespace DataAccess.Repositories
                 }
             }
         }
-        public dynamic GetAuthentication(string idConv)
+        public dynamic GetValidacion(string idConv)
         {
             using (ColmedicaContext contexto = new ColmedicaContext())
             {

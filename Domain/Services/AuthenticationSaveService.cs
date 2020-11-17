@@ -9,17 +9,17 @@ namespace Domain.Services
 {
    public class AuthenticationSaveService
     {
-        public async Task SaveAuthentication(IAuthenticationSaveRepository authRepository, string numDoc, string tipoDoc, string token, string idConv)
+        public async Task SaveValidaCliente(IAuthenticationSaveRepository authRepository, string numDoc, string tipoDoc, string valida, string idConv)
         {
-            await authRepository.SaveAuthentication(numDoc, tipoDoc, token, idConv).ConfigureAwait(false);
+            await authRepository.SaveValidaCliente(numDoc, tipoDoc, valida, idConv).ConfigureAwait(false);
         }
-        public async Task SaveValidacionOtp(IAuthenticationSaveRepository authRepository, string resOtp, string idConv)
+        public async Task SaveValidacionOtp(IAuthenticationSaveRepository authRepository, string resOtp,string otp, string idConv)
         {
-            await authRepository.SaveValidacionOtp(resOtp, idConv).ConfigureAwait(false);
+            await authRepository.SaveValidacionOtp(resOtp,otp, idConv).ConfigureAwait(false);
         }
-        public dynamic GetAuthentication(IAuthenticationSaveRepository authRepository, string idConv) 
+        public dynamic GetValidacion(IAuthenticationSaveRepository authRepository, string idConv) 
         {
-            return authRepository.GetAuthentication(idConv);
+            return authRepository.GetValidacion(idConv);
         }
         public Boolean DeleteAuthentication(IAuthenticationSaveRepository authRepository, string idConv)
         {

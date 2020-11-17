@@ -66,7 +66,7 @@ namespace Webhook.Controllers
             string token = request["token"];
             string numDocChat = request["numDoc"];
             string tipoDocChat = request["tipoDoc"];
-            int ciudad = (int)request["ciudad"];
+            string ciudad = request["ciudad"];
             Replay respuesta = new Replay();
             SchedulingPetitionsApp app = new SchedulingPetitionsApp();
             Resultado res= app.ProcesarEspecialidadesCiudad(identificacion, tipoDoc, ciudad, token, idConv, numDocChat,tipoDocChat, numeroCelular);
@@ -109,7 +109,7 @@ namespace Webhook.Controllers
             string tipoDoc = request["tipoDoc"];
             string idConv = sessionId[0];
             string token = request["token"];
-            int ciudad = (int)request["ciudad"];
+            string ciudad = request["ciudad"];
             string especialidad = request["especialidad"];
             SchedulingPetitionsApp app = new SchedulingPetitionsApp();
             app.ProcesarCitas(ciudad, especialidad, token, idConv, numeroCelular, numDoc,tipoDoc);

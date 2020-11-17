@@ -39,7 +39,7 @@ namespace Application
             }
             return res;
         }
-        public Resultado ProcesarEspecialidadesCiudad(string numDoc, string tipoDoc, int ciudad, string token, string idConv,string numDocChat,string tipoDocChat, string numeroCelular)
+        public Resultado ProcesarEspecialidadesCiudad(string numDoc, string tipoDoc, string ciudad, string token, string idConv,string numDocChat,string tipoDocChat, string numeroCelular)
         {
             ISchedulingPetitionsRepository petitionsRepository = new SchedulingPetitionsRepository();
             ISchedulingSaveRepository saveRepository = new SchedulingSaveRepository();
@@ -77,7 +77,7 @@ namespace Application
             }
             return res;
         }
-        public Resultado ProcesarCitas(int ciudad, string especialidad, string token, string idConv,string numeroCelular,string numDoc, string tipoDoc) 
+        public Resultado ProcesarCitas(string ciudad, string especialidad, string token, string idConv,string numeroCelular,string numDoc, string tipoDoc) 
         {
             ISchedulingPetitionsRepository petitionsRepository = new SchedulingPetitionsRepository();
             ISchedulingSaveRepository saveRepository = new SchedulingSaveRepository();

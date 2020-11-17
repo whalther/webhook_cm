@@ -8,12 +8,13 @@ namespace Domain.Services
 {
    public class AuthenticationService
     {
-        public string GetToken(IAuthenticationRepository authRepository,string numeroCelular, string documento, string idConv)
+        public string ValidarCliente(IAuthenticationRepository authRepository,string numeroCelular, string documento, string idConv)
         {
             Cifrador cf = new Cifrador();
             string usuarioPwdToken = ConfigurationManager.AppSettings.Get("usuarioBot") +":"+ ConfigurationManager.AppSettings.Get("pwdBot");
             string ivToken = cf.GenerarIv();
             string usuarioPwdCifrado = cf.Cifrar(usuarioPwdToken, ivToken);
+            string resultadoValidar;
             Dictionary<string, string> param = new Dictionary<string, string>() {
                 {"numeroCelular",numeroCelular },
                 {"identificacion",documento}
@@ -28,8 +29,19 @@ namespace Domain.Services
                 {"mensaje",paramCifrado},
                 {"iv",ivCf}
             };
-
-            return authRepository.GetToken(hd,parametros,idConv);
+            resultadoValidar = authRepository.ValidarCliente(hd, parametros, idConv); 
+            if (resultadoValidar != "error_credenciales" && resultadoValidar != "error_desconocido" && resultadoValidar != "error_prohibido" && resultadoValidar != "error_no_encontrado")
+            {
+                string iv = resultadoValidar.Substring(0, 16);
+                string content = resultadoValidar.Substring(16);
+                string textoPlano = cf.Descifrar(content, iv);
+                return textoPlano;
+            }
+            else
+            {
+                return resultadoValidar;
+            }
+            
         }
 
         public string RefreshToken(IAuthenticationRepository authRepository, string numeroCelular, string documento, string idConv)
@@ -56,35 +68,30 @@ namespace Domain.Services
             return authRepository.RefreshToken(hd, parametros, idConv);
         }
 
-        public string ValidarOtp(IAuthenticationRepository authRepository, string token, string otp, string idConv)
+        public string ValidarOtp(IAuthenticationRepository authRepository, string numDoc,string tipoDoc, string otp, string idConv)
         {
             Cifrador cf = new Cifrador();
+            string usuarioPwdToken = ConfigurationManager.AppSettings.Get("usuarioBot") + ":" + ConfigurationManager.AppSettings.Get("pwdBot");
+            string ivOtp = cf.GenerarIv();
+            string usuarioPwdCifrado = cf.Cifrar(usuarioPwdToken, ivOtp);
+
             Dictionary<string, string> param = new Dictionary<string, string>() {
-                {"otp",otp}
+                {"otp",otp},
+                {"identificacion",tipoDoc+numDoc }
             };
             string iv2 = cf.GenerarIv();
             string paramCifrado = cf.Cifrar(JsonConvert.SerializeObject(param), iv2);
             Dictionary<string, string> hd = new Dictionary<string, string>() {
-                {"token",token}
+                {"Authorization",usuarioPwdCifrado },
+                {"iv",ivOtp}
             };
             Dictionary<string, string> parametros = new Dictionary<string, string>() {
                 {"mensaje",paramCifrado},
                 {"iv",iv2}
             };
             string resultado =  authRepository.ValidaOtp(hd, parametros, idConv);
-            if (resultado != "error_parametros" && resultado != "error_desconocido" && resultado != "error_token")
-            {
-                string iv = resultado.Substring(0, 16);
-                string content = resultado.Substring(16);
-                string textoPlano = cf.Descifrar(content, iv);
-                dynamic jsonResp = JsonConvert.DeserializeObject<dynamic>(textoPlano);
-                string estado = jsonResp.resultado;
-                return estado;
-            }
-            else {
-                return resultado;
-            }
             
+                return resultado;
         }
     }
 }

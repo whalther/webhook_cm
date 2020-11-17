@@ -81,7 +81,7 @@ namespace Domain.Services
                 return u;
             }
         }
-        public List<Especialidad> ProcesarEspecialidadesCiudad(ISchedulingPetitionsRepository petitionsRepository, ISchedulingSaveRepository saveRepository, string identificacion, string tipoId, int ciudad, string token, string idConv)
+        public List<Especialidad> ProcesarEspecialidadesCiudad(ISchedulingPetitionsRepository petitionsRepository, ISchedulingSaveRepository saveRepository, string identificacion, string tipoId, string ciudad, string token, string idConv)
         {
             Cifrador cf = new Cifrador();
             string ivEspe = cf.GenerarIv();
@@ -124,7 +124,7 @@ namespace Domain.Services
             }
 
         }
-        public string ProcesarCitas(ISchedulingPetitionsRepository petitionsRepository, ISchedulingSaveRepository saveRepository, int ciudad, string especialidad, string token, string idConv)
+        public string ProcesarCitas(ISchedulingPetitionsRepository petitionsRepository, ISchedulingSaveRepository saveRepository, string ciudad, string especialidad, string token, string idConv)
         {
             Cifrador cf = new Cifrador();
             string ivCita = cf.GenerarIv();
