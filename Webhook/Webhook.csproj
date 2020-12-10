@@ -167,6 +167,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="..\.sonarlint\chabot_colmedica_webhook\CSharp\SonarLint.xml">
+      <Link>SonarLint.xml</Link>
+    </AdditionalFiles>
     <Content Include="Global.asax" />
   </ItemGroup>
   <ItemGroup>
@@ -174,6 +177,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InvoiceController.cs" />
     <Compile Include="Controllers\LinkPagosController.cs" />
     <Compile Include="Controllers\LocalQueriesController.cs" />
     <Compile Include="Controllers\MainController.cs" />

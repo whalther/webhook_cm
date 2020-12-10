@@ -18,8 +18,9 @@ namespace Domain.DTOs
         public string Direccion { get; set; }
         public string Telefono { get; set; }
         public string Sexo { get; set; }
-        public int? Ciudad { get; set; }
+        public string Ciudad { get; set; }
         public string DireccionCasa { get; set; }
+        public string Celular { get; set; }
 
     }
 }

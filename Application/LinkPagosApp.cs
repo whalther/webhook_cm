@@ -75,5 +75,72 @@ namespace Application
             LinkPagosService linkServ = new LinkPagosService();
             return linkServ.GetLinkPago(linkRepo,idConv,idCita, flag);
         }
+        public void GenerarLinkPagoFactura(string idConv, string tipoDoc, string numDoc, string contrato, string saldo)
+        {
+            ILinkPagosRepository repo = new LinkPagosRepository();
+            LinkPagosService serv = new LinkPagosService();
+            ILinkPagosQueriesRepository linkRepo = new LinkPagosQueriesRepository();
+            LinkPagosService linkServ = new LinkPagosService();
+            dynamic info = (object)linkServ.GetInfoLinkPagoFactura(linkRepo, idConv);
+            _ = linkServ.LogPagoFactura(linkRepo, idConv,"",numDoc,tipoDoc,"insert",contrato,saldo,"");
+
+            if (saldo == "0" && ConfigurationManager.AppSettings["env"] == "prod")
+            {
+                _ = linkServ.LogPagoFactura(linkRepo, idConv, "error", numDoc, tipoDoc, "insert", contrato, saldo, "error_valor");
+            }
+            else if (info==null) 
+            {
+                _ = linkServ.LogPagoFactura(linkRepo, idConv, "error", numDoc, tipoDoc, "insert", contrato, saldo, "error_correo");
+            }
+            else
+            {
+                if (Convert.ToInt64(Math.Floor(Convert.ToDouble(saldo))) == 0 && ConfigurationManager.AppSettings["env"] == "dev")
+                {
+                    saldo = "100";
+                }
+                Dictionary<string, object> param = new Dictionary<string, object>()
+            {
+                 {"customerName",info.Nombre},
+                 {"contractNumber",contrato},
+                 {"idNum",info.NumeroIdentificacion},
+                 {"typeId",info.TipoIdentificacion},
+                 {"source","CHATBOT" },
+                 {"paymentInfo",new Dictionary<string,string>(){
+                     {"amount",Convert.ToInt64(Math.Floor(Convert.ToDouble(saldo))).ToString() },
+                     {"currency", "COP" } } },
+                 {"channel","3" },
+                 {"userCreated",info.Correo },
+                 {"paymentType",new Dictionary<string,int>(){
+                     {"idPaymentType",1 } } }
+            };
+
+                string resp = serv.GenerarLinkPagoFactura(repo, param, idConv);
+                if (resp != "error_interno_fenix")
+                {
+                    dynamic respObj = JsonConvert.DeserializeObject<dynamic>(resp);
+                    bool status = respObj.Success;
+                    if (status)
+                    {
+                        string link = respObj.PaymentLink;
+                        _ = linkServ.LogPagoFactura(linkRepo, idConv, "completado", numDoc, tipoDoc, "update", contrato, saldo, link);
+                    }
+                    else
+                    {
+                        _ = linkServ.LogPagoFactura(linkRepo, idConv, "error", numDoc, tipoDoc, "update", contrato, saldo, respObj.Message);
+                    }
+                }
+                else
+                {
+                    _ = linkServ.LogPagoFactura(linkRepo, idConv, "error", numDoc, tipoDoc, "update", contrato, saldo, resp);
+                }
+            }
+
+        }
+        public dynamic GetLinkPagoFactura(string idConv, string contrato)
+        {
+            ILinkPagosQueriesRepository linkRepo = new LinkPagosQueriesRepository();
+            LinkPagosService linkServ = new LinkPagosService();
+            return linkServ.GetLinkPagoFactura(linkRepo, idConv, contrato);
+        }
     }
 }

@@ -63,5 +63,55 @@ namespace Webhook.Controllers
 
             return Json(respuesta);
         }
+        [HttpPost]
+        [Route("generarLinkPagoFactura")]
+        public IHttpActionResult GenerarLinkPagoFactura([FromBody]dynamic request)
+        {
+            LinkPagosApp app = new LinkPagosApp();
+            string[] sessionId = request["sessionId"].ToString().Split('*');
+            string idConv = sessionId[0];
+            string contrato = request["contrato"];
+            string numDoc = request["numDoc"];
+            string tipoDoc = request["tipoDoc"];
+            string saldo = request["saldo"];
+            app.GenerarLinkPagoFactura(idConv,tipoDoc,numDoc,contrato,saldo);
+            return GetLinkPagoFactura(request);
+        }
+        [HttpPost]
+        [Route("getLinkPagoFactura")]
+        public IHttpActionResult GetLinkPagoFactura([FromBody]dynamic request)
+        {
+            LinkPagosApp app = new LinkPagosApp();
+            Replay respuesta = new Replay();
+            string[] sessionId = request["sessionId"].ToString().Split('*');
+            string idConv = sessionId[0];
+            string contrato = request["contrato"];
+            
+            dynamic link = app.GetLinkPagoFactura(idConv, contrato);
+            respuesta.IdConv = idConv;
+            if (link.ToString() == "error_bd")
+            {
+                respuesta.Status = "error";
+                respuesta.Info.Add("data", link);
+            }
+            else
+            {
+                if (link.Estado == "iniciado")
+                {
+                    respuesta.Status = "processing";
+                }
+                else if (link.Estado == "completado")
+                {
+                    respuesta.Status = "ok";
+                    respuesta.Info.Add("data", link.Link);
+                }
+                else
+                {
+                    respuesta.Status = "error";
+                    respuesta.Info.Add("data", link.Link);
+                }
+            }
+            return Json(respuesta);
+        }
     }
 }

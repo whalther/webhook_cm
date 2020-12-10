@@ -151,5 +151,83 @@ namespace DataAccess.Repositories
                 }
             }
         }
+
+        public dynamic GetInfoLinkPagoFactura(string idConv)
+        {
+            dynamic resultado;
+            try
+            {
+                using (ColmedicaContext contexto = new ColmedicaContext())
+                {
+                        resultado = (from  tt in contexto.tempTitular 
+                                     where (tt.idConv == idConv)
+                                     select new
+                                     {
+                                         NumeroIdentificacion = tt.numDoc,
+                                         TipoIdentificacion = tt.tipoDoc,
+                                         Nombre = tt.nombre,
+                                         Correo = tt.email
+                                     }
+                                ).FirstOrDefault();
+                }
+                dynamic r = new ExpandoObject();
+                r.Nombre = resultado.Nombre;
+                r.NumeroIdentificacion = resultado.NumeroIdentificacion;
+                r.TipoIdentificacion = resultado.TipoIdentificacion;
+                r.Correo = resultado.Correo;
+
+                return r;
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+                return new { };
+                throw;
+            }
+        }
+        public Boolean LogPagoFactura(string idConv, string estado, string numDoc, string tipoDoc, string flag, string numeroContrato, string saldo, string link)
+        {
+            try
+            {
+                using (ColmedicaContext contex = new ColmedicaContext())
+                {
+                    contex.InsertLogFactura(idConv, estado, numDoc, tipoDoc, flag, numeroContrato, saldo, link);
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+                return false;
+                throw;
+            }
+        }
+        public dynamic GetLinkPagoFactura(string idConv, string contrato)
+        {
+            dynamic resultado;
+            using (ColmedicaContext contexto = new ColmedicaContext())
+            {
+                try
+                {
+
+                   resultado = (from lf in contexto.LogsFacturas
+                                where (lf.idConv == idConv && lf.numeroContrato == contrato)
+                                select new { 
+                                    Estado = lf.estado,
+                                    Link = lf.link,
+                                    Id = lf.id}).OrderByDescending(u =>u.Id).FirstOrDefault();
+                    dynamic r = new ExpandoObject();
+                    r.Estado = resultado.Estado;
+                    r.Link = resultado.Link;
+                    return r;
+                }
+                catch (Exception E)
+                {
+                    Trace.WriteLine(E.Message);
+                    return "error_bd";
+                    throw;
+                }
+            }
+        }
     }
 }

@@ -4,7 +4,10 @@ using Domain.DTOs;
 using Domain.Repositories;
 using Domain.Services;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Application
 {
@@ -32,8 +35,13 @@ namespace Application
             IAuthenticationSaveRepository saveRepository = new AuthenticationSaveRepository();
             AuthenticationSaveService saveService = new AuthenticationSaveService();
             AuthenticationService serv = new AuthenticationService();
+            LocalQueriesService localServ = new LocalQueriesService();
+            ISchedulingPetitionsRepository sRepo = new SchedulingPetitionsRepository();
+            ILocalQueriesRepository localRepo = new LocalQueriesRepository();
             string resp = serv.ValidarOtp(authRepository, numDoc,tipoDoc, otp,idConv);
             saveService.SaveValidacionOtp(saveRepository, resp,otp, idConv);
+             _ = localServ.SaveTitular(idConv, saveRepository, sRepo,localRepo);
+              
             return resp;
         }
         public dynamic GetValidacion(string idConv)

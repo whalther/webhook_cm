@@ -37,6 +37,10 @@ namespace DataAccess.ColmedicaModel
         public virtual DbSet<tempInfoAgendamiento> tempInfoAgendamiento { get; set; }
         public virtual DbSet<tempBeneficiarios> tempBeneficiarios { get; set; }
         public virtual DbSet<tempCiudades> tempCiudades { get; set; }
+        public virtual DbSet<tempContratosFactura> tempContratosFactura { get; set; }
+        public virtual DbSet<LogsFacturas> LogsFacturas { get; set; }
+        public virtual DbSet<LogsEmailRetefuente> LogsEmailRetefuente { get; set; }
+        public virtual DbSet<tempTitular> tempTitular { get; set; }
     
         public virtual int updateCita(string idConversacion, string campo, string valor)
         {
@@ -130,6 +134,43 @@ namespace DataAccess.ColmedicaModel
                 new ObjectParameter("estadoCita", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("insertLogCita", idConversacionParameter, idCitaParamParameter, flagParameter, estadoCitaParameter);
+        }
+    
+        public virtual int InsertLogFactura(string idConv, string estado, string numDoc, string tipoDoc, string flag, string numeroContrato, string saldo, string link)
+        {
+            var idConvParameter = idConv != null ?
+                new ObjectParameter("idConv", idConv) :
+                new ObjectParameter("idConv", typeof(string));
+    
+            var estadoParameter = estado != null ?
+                new ObjectParameter("estado", estado) :
+                new ObjectParameter("estado", typeof(string));
+    
+            var numDocParameter = numDoc != null ?
+                new ObjectParameter("numDoc", numDoc) :
+                new ObjectParameter("numDoc", typeof(string));
+    
+            var tipoDocParameter = tipoDoc != null ?
+                new ObjectParameter("tipoDoc", tipoDoc) :
+                new ObjectParameter("tipoDoc", typeof(string));
+    
+            var flagParameter = flag != null ?
+                new ObjectParameter("flag", flag) :
+                new ObjectParameter("flag", typeof(string));
+    
+            var numeroContratoParameter = numeroContrato != null ?
+                new ObjectParameter("numeroContrato", numeroContrato) :
+                new ObjectParameter("numeroContrato", typeof(string));
+    
+            var saldoParameter = saldo != null ?
+                new ObjectParameter("saldo", saldo) :
+                new ObjectParameter("saldo", typeof(string));
+    
+            var linkParameter = link != null ?
+                new ObjectParameter("link", link) :
+                new ObjectParameter("link", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InsertLogFactura", idConvParameter, estadoParameter, numDocParameter, tipoDocParameter, flagParameter, numeroContratoParameter, saldoParameter, linkParameter);
         }
     }
 }

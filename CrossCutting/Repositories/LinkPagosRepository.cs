@@ -27,5 +27,21 @@ namespace CrossCutting.Repositories
                     return "error_interno_fenix";
             }
         }
+        public string GenerarLinkPagoFactura(Dictionary<string, string> headers, Dictionary<string, string> parametros, string idConv)
+        {
+            string url = ConfigurationManager.AppSettings["linkPagos"];
+            RestClient rc = new RestClient();
+            LogRepository log = new LogRepository();
+            var resp = rc.HacerPeticion(url, "Payment/GeneratePaymentLinkPrepaidMedicine", parametros, "POST", headers, false);
+            string status = resp.StatusCode.ToString();
+            switch (status)
+            {
+                case "OK":
+                    return resp.Content;
+                default:
+                    log.GuardarErrorLogPeticion("error_link_pago_factura", JsonConvert.SerializeObject(parametros), resp.StatusDescription, "GenerarLinkPagoFactura", idConv);
+                    return "error_interno_fenix";
+            }
+        }
     }
 }

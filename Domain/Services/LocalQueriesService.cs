@@ -1,7 +1,9 @@
 ﻿using Domain.DTOs;
 using Domain.Repositories;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Domain.Services
@@ -86,6 +88,32 @@ namespace Domain.Services
         public async Task SaveCitaNoTemp(ILocalQueriesRepository repo, string idConv, int idCita, string flag, string estado)
         {
             await repo.SaveCitaNoTemp(idConv,idCita, flag,estado).ConfigureAwait(false);
+        }
+        public async Task SaveTitular(string idConv, IAuthenticationSaveRepository saveRepository, ISchedulingPetitionsRepository sRepository, ILocalQueriesRepository localRepo)
+        {
+            AuthenticationSaveService authServ = new AuthenticationSaveService();
+            SchedulingPetitionsService sServ = new SchedulingPetitionsService();
+            dynamic auth = authServ.GetValidacion(saveRepository, idConv);
+            string identificacion = auth.tipoDoc + auth.numDoc;
+            try
+            {
+                dynamic valida = JToken.Parse(auth.resultValida);
+                if (/*valida.Titular*/ 1 == 1 && auth.token.Length>15) 
+                {
+                    Usuario us = sServ.ValidarUsuario(sRepository, identificacion, auth.token, idConv);
+                    if (us.Mensaje != "error_parametros" && us.Mensaje != "error_desconocido" && us.Mensaje != "error_token")
+                    {
+                        await Task.Run(() => localRepo.SaveTitular(us, idConv)).ConfigureAwait(false);
+                    }
+                }
+                
+            }
+            catch (Exception e)
+            {
+                Trace.WriteLine(e.Message);
+                throw;
+            }
+           
         }
     }
 }

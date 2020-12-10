@@ -690,5 +690,44 @@ namespace DataAccess.Repositories
                 }
             }
         }
+        public Boolean SaveTitular(Usuario us,string idConv)
+        {
+            using (ColmedicaContext contexto = new ColmedicaContext())
+            {
+                try
+                {
+
+                    var rem = (from tt in contexto.tempTitular
+                              where (tt.idConv == idConv)
+                              select tt).FirstOrDefault();
+                    if (rem!=null) 
+                    {
+                        contexto.tempTitular.Remove(rem);
+                    }
+                    tempTitular ttSave = new tempTitular()
+                    {
+                        nombre = us.Nombre,
+                        tipoDoc = us.TipoIdentificacion,
+                        numDoc = us.Identificacion,
+                       // email = us.Email,
+                        email = "alvaro.posada@onelinkbpo.com",
+                        celular = us.Celular,
+                        ciudad = us.Ciudad,
+                        direccion = us.Direccion,
+                        idConv = idConv,
+                        fechaRegistro = DateTime.Now
+                    };
+                    contexto.tempTitular.Add(ttSave);
+                    contexto.SaveChanges();
+                    return true;
+                }
+                catch (Exception E)
+                {
+                    Trace.WriteLine(E.Message);
+                    return false;
+                    throw;
+                }
+            }
+        }
     }
 }

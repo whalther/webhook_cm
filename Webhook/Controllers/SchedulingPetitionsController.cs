@@ -25,7 +25,7 @@ namespace Webhook.Controllers
             string token = request["token"];
 
             respuesta.IdConv = idConv;
-            Resultado res = app.ValidarUsuario(numDoc,tipoDoc,identificacionBeneficiario, numeroCelular, token, idConv);
+            Resultado res = app.ValidarUsuario(numDoc,tipoDoc, numeroCelular, identificacionBeneficiario, token, idConv);
             respuesta.Token = res.Token;
             Usuario usuario = (Usuario)res.Result;
             if (usuario.Mensaje != "error_parametros" && usuario.Mensaje != "error_desconocido")

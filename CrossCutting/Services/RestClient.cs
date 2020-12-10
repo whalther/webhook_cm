@@ -38,11 +38,13 @@ namespace CrossCutting
                 request.AddJsonBody(parametros);
             }
             else {
-                foreach (var p in parametros)
+                if (parametros != null)
                 {
-                    request.AddParameter(p.Key, p.Value);
+                    foreach (var p in parametros)
+                    {
+                        request.AddParameter(p.Key, p.Value);
+                    }
                 }
-                
             }
             
             return client.Execute(request);

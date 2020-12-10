@@ -27,6 +27,6 @@ namespace Domain.Repositories
         Boolean UpdateCancelacionCita(string idConv, int idCita, string resultado);
         String GetEstadoCancelacion(string idConv, int idCita);
         Task<int> SaveCitaNoTemp(string idConv, int idCita, string flag, string estado);
-
+        Boolean SaveTitular(Usuario us, string idConv);
     }
 }

@@ -31,7 +31,7 @@ namespace Webhook.Controllers
             {
                 respuesta.Status = "ok";
                 resultEncode = JToken.Parse(resp);
-
+                resultEncode["Titular"] = 1;
             }
             else {
                 resultEncode = resp;
@@ -97,6 +97,9 @@ namespace Webhook.Controllers
                 {
                     respuesta.Status = "ok";
                     resultEncode = JToken.Parse(res.resultValida);
+                    resultEncode["numDoc"] = res.numDoc;
+                    resultEncode["tipoDoc"] = res.tipoDoc;
+                    resultEncode["Titular"] = 1;
                 }
                 else
                 {

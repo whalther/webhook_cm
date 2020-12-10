@@ -12,16 +12,13 @@ namespace DataAccess.ColmedicaModel
     using System;
     using System.Collections.Generic;
     
-    public partial class tempCiudades
+    public partial class tempContratosFactura
     {
         public int id { get; set; }
-        public Nullable<int> cantidad { get; set; }
-        public string ciuCod { get; set; }
-        public string ciuNombre { get; set; }
+        public string contrato { get; set; }
+        public string numeroContrato { get; set; }
+        public string saldo { get; set; }
         public string idConv { get; set; }
-        public Nullable<int> idUsuario { get; set; }
         public Nullable<System.DateTime> fechaRegistro { get; set; }
-        public string tipoDoc { get; set; }
-        public string numDoc { get; set; }
     }
 }

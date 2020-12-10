@@ -9,5 +9,7 @@ namespace Domain.Repositories
    public interface ILinkPagosRepository
     {
          string GenerarLink(Dictionary<string, string> headers, Dictionary<string, string> parametros, string idConv);
+        string GenerarLinkPagoFactura(Dictionary<string, string> headers, Dictionary<string, string> parametros, string idConv);
+
     }
 }

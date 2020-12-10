@@ -30,6 +30,34 @@
           <Property Name="sessionId" Type="varchar(max)" Nullable="false" />
           <Property Name="celular" Type="varchar" MaxLength="20" />
         </EntityType>
+        <EntityType Name="LogsEmailRetefuente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="enviado" Type="int" />
+          <Property Name="mensaje" Type="varchar" MaxLength="500" />
+          <Property Name="tipoDoc" Type="varchar" MaxLength="50" />
+          <Property Name="numDoc" Type="varchar" MaxLength="50" />
+          <Property Name="correo" Type="varchar" MaxLength="50" />
+          <Property Name="idConv" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="LogsFacturas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="estado" Type="varchar" MaxLength="50" />
+          <Property Name="nombre" Type="varchar" MaxLength="100" />
+          <Property Name="tipoDoc" Type="varchar" MaxLength="10" />
+          <Property Name="numDoc" Type="varchar" MaxLength="50" />
+          <Property Name="numeroContrato" Type="varchar" MaxLength="50" />
+          <Property Name="contrato" Type="varchar" MaxLength="50" />
+          <Property Name="saldo" Type="varchar" MaxLength="50" />
+          <Property Name="link" Type="varchar" MaxLength="100" />
+          <Property Name="idConv" Type="varchar" MaxLength="50" />
+          <Property Name="fechaRegistro" Type="smalldatetime" />
+        </EntityType>
         <EntityType Name="tempAuth">
           <Key>
             <PropertyRef Name="id" />
@@ -127,6 +155,8 @@
           <Property Name="ciuNombre" Type="varchar" MaxLength="150" />
           <Property Name="idConv" Type="varchar" MaxLength="500" />
           <Property Name="idUsuario" Type="int" />
+          <Property Name="tipoDoc" Type="varchar" MaxLength="50" />
+          <Property Name="numDoc" Type="varchar" MaxLength="50" />
           <Property Name="fechaRegistro" Type="smalldatetime" />
         </EntityType>
         <EntityType Name="tempContratos">
@@ -136,6 +166,17 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="idContrato" Type="varchar" MaxLength="500" />
           <Property Name="nombre" Type="varchar" MaxLength="500" />
+          <Property Name="idConv" Type="varchar" MaxLength="500" />
+          <Property Name="fechaRegistro" Type="smalldatetime" />
+        </EntityType>
+        <EntityType Name="tempContratosFactura">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="contrato" Type="varchar" MaxLength="100" />
+          <Property Name="numeroContrato" Type="varchar" MaxLength="100" />
+          <Property Name="saldo" Type="varchar" MaxLength="50" />
           <Property Name="idConv" Type="varchar" MaxLength="500" />
           <Property Name="fechaRegistro" Type="smalldatetime" />
         </EntityType>
@@ -170,6 +211,21 @@
           <Property Name="idConv" Type="varchar" MaxLength="500" />
           <Property Name="fechaRegistro" Type="smalldatetime" />
         </EntityType>
+        <EntityType Name="tempTitular">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="100" />
+          <Property Name="tipoDoc" Type="varchar" MaxLength="50" />
+          <Property Name="numDoc" Type="varchar" MaxLength="50" />
+          <Property Name="email" Type="varchar" MaxLength="50" />
+          <Property Name="celular" Type="varchar" MaxLength="50" />
+          <Property Name="ciudad" Type="varchar" MaxLength="50" />
+          <Property Name="direccion" Type="varchar" MaxLength="500" />
+          <Property Name="idConv" Type="varchar" MaxLength="50" />
+          <Property Name="fechaRegistro" Type="smalldatetime" />
+        </EntityType>
         <Function Name="cleanTablesConversation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idConversacion" Type="varchar" Mode="In" />
         </Function>
@@ -188,6 +244,16 @@
           <Parameter Name="flag" Type="varchar" Mode="In" />
           <Parameter Name="estadoCita" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="InsertLogFactura" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idConv" Type="varchar" Mode="In" />
+          <Parameter Name="estado" Type="varchar" Mode="In" />
+          <Parameter Name="numDoc" Type="varchar" Mode="In" />
+          <Parameter Name="tipoDoc" Type="varchar" Mode="In" />
+          <Parameter Name="flag" Type="varchar" Mode="In" />
+          <Parameter Name="numeroContrato" Type="varchar" Mode="In" />
+          <Parameter Name="saldo" Type="varchar" Mode="In" />
+          <Parameter Name="link" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="updateCita" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idConversacion" Type="varchar" Mode="In" />
           <Parameter Name="campo" Type="varchar" Mode="In" />
@@ -196,14 +262,18 @@
         <EntityContainer Name="ColmedicaModelStoreContainer">
           <EntitySet Name="logErrorPeticion" EntityType="Self.logErrorPeticion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogResultadosColmedica" EntityType="Self.LogResultadosColmedica" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LogsEmailRetefuente" EntityType="Self.LogsEmailRetefuente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LogsFacturas" EntityType="Self.LogsFacturas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tempAuth" EntityType="Self.tempAuth" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tempBeneficiarios" EntityType="Self.tempBeneficiarios" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tempCita" EntityType="Self.tempCita" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tempCitasBeneficiario" EntityType="Self.tempCitasBeneficiario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tempCiudades" EntityType="Self.tempCiudades" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tempContratos" EntityType="Self.tempContratos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tempContratosFactura" EntityType="Self.tempContratosFactura" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tempEspecialidades" EntityType="Self.tempEspecialidades" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tempInfoAgendamiento" EntityType="Self.tempInfoAgendamiento" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tempTitular" EntityType="Self.tempTitular" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -248,6 +318,20 @@
           <EntitySet Name="tempInfoAgendamiento" EntityType="ColmedicaModel.tempInfoAgendamiento" />
           <EntitySet Name="tempBeneficiarios" EntityType="ColmedicaModel.tempBeneficiarios" />
           <EntitySet Name="tempCiudades" EntityType="ColmedicaModel.tempCiudades" />
+          <EntitySet Name="tempContratosFactura" EntityType="ColmedicaModel.tempContratosFactura" />
+          <FunctionImport Name="InsertLogFactura">
+            <Parameter Name="idConv" Mode="In" Type="String" />
+            <Parameter Name="estado" Mode="In" Type="String" />
+            <Parameter Name="numDoc" Mode="In" Type="String" />
+            <Parameter Name="tipoDoc" Mode="In" Type="String" />
+            <Parameter Name="flag" Mode="In" Type="String" />
+            <Parameter Name="numeroContrato" Mode="In" Type="String" />
+            <Parameter Name="saldo" Mode="In" Type="String" />
+            <Parameter Name="link" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="LogsFacturas" EntityType="ColmedicaModel.LogsFacturas" />
+          <EntitySet Name="LogsEmailRetefuente" EntityType="ColmedicaModel.LogsEmailRetefuente" />
+          <EntitySet Name="tempTitular" EntityType="ColmedicaModel.tempTitular" />
         </EntityContainer>
         <EntityType Name="logErrorPeticion">
           <Key>
@@ -412,6 +496,62 @@
           <Property Name="ciuNombre" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
           <Property Name="idUsuario" Type="Int32" />
+          <Property Name="fechaRegistro" Type="DateTime" Precision="0" />
+          <Property Name="tipoDoc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="numDoc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tempContratosFactura">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="contrato" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="numeroContrato" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="saldo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="idConv" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="fechaRegistro" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="LogsFacturas">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="estado" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="tipoDoc" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="numDoc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="numeroContrato" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="contrato" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="saldo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="link" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="idConv" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="fechaRegistro" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="LogsEmailRetefuente">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="enviado" Type="Int32" />
+          <Property Name="mensaje" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="tipoDoc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="numDoc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="correo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="idConv" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tempTitular">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="tipoDoc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="numDoc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="celular" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ciudad" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="direccion" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="idConv" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="fechaRegistro" Type="DateTime" Precision="0" />
         </EntityType>
         </Schema>
@@ -590,12 +730,73 @@
           <EntitySetMapping Name="tempCiudades">
             <EntityTypeMapping TypeName="ColmedicaModel.tempCiudades">
               <MappingFragment StoreEntitySet="tempCiudades">
+                <ScalarProperty Name="numDoc" ColumnName="numDoc" />
+                <ScalarProperty Name="tipoDoc" ColumnName="tipoDoc" />
                 <ScalarProperty Name="fechaRegistro" ColumnName="fechaRegistro" />
                 <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
                 <ScalarProperty Name="idConv" ColumnName="idConv" />
                 <ScalarProperty Name="ciuNombre" ColumnName="ciuNombre" />
                 <ScalarProperty Name="ciuCod" ColumnName="ciuCod" />
                 <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tempContratosFactura">
+            <EntityTypeMapping TypeName="ColmedicaModel.tempContratosFactura">
+              <MappingFragment StoreEntitySet="tempContratosFactura">
+                <ScalarProperty Name="fechaRegistro" ColumnName="fechaRegistro" />
+                <ScalarProperty Name="idConv" ColumnName="idConv" />
+                <ScalarProperty Name="saldo" ColumnName="saldo" />
+                <ScalarProperty Name="numeroContrato" ColumnName="numeroContrato" />
+                <ScalarProperty Name="contrato" ColumnName="contrato" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="InsertLogFactura" FunctionName="ColmedicaModel.Store.InsertLogFactura" />
+          <EntitySetMapping Name="LogsFacturas">
+            <EntityTypeMapping TypeName="ColmedicaModel.LogsFacturas">
+              <MappingFragment StoreEntitySet="LogsFacturas">
+                <ScalarProperty Name="fechaRegistro" ColumnName="fechaRegistro" />
+                <ScalarProperty Name="idConv" ColumnName="idConv" />
+                <ScalarProperty Name="link" ColumnName="link" />
+                <ScalarProperty Name="saldo" ColumnName="saldo" />
+                <ScalarProperty Name="contrato" ColumnName="contrato" />
+                <ScalarProperty Name="numeroContrato" ColumnName="numeroContrato" />
+                <ScalarProperty Name="numDoc" ColumnName="numDoc" />
+                <ScalarProperty Name="tipoDoc" ColumnName="tipoDoc" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="estado" ColumnName="estado" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LogsEmailRetefuente">
+            <EntityTypeMapping TypeName="ColmedicaModel.LogsEmailRetefuente">
+              <MappingFragment StoreEntitySet="LogsEmailRetefuente">
+                <ScalarProperty Name="idConv" ColumnName="idConv" />
+                <ScalarProperty Name="correo" ColumnName="correo" />
+                <ScalarProperty Name="numDoc" ColumnName="numDoc" />
+                <ScalarProperty Name="tipoDoc" ColumnName="tipoDoc" />
+                <ScalarProperty Name="mensaje" ColumnName="mensaje" />
+                <ScalarProperty Name="enviado" ColumnName="enviado" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tempTitular">
+            <EntityTypeMapping TypeName="ColmedicaModel.tempTitular">
+              <MappingFragment StoreEntitySet="tempTitular">
+                <ScalarProperty Name="fechaRegistro" ColumnName="fechaRegistro" />
+                <ScalarProperty Name="idConv" ColumnName="idConv" />
+                <ScalarProperty Name="direccion" ColumnName="direccion" />
+                <ScalarProperty Name="ciudad" ColumnName="ciudad" />
+                <ScalarProperty Name="celular" ColumnName="celular" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="numDoc" ColumnName="numDoc" />
+                <ScalarProperty Name="tipoDoc" ColumnName="tipoDoc" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

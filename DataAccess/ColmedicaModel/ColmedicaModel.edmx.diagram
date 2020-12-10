@@ -15,6 +15,10 @@
         <EntityTypeShape EntityType="ColmedicaModel.tempInfoAgendamiento" Width="1.5" PointX="5.75" PointY="1.875" IsExpanded="false" />
         <EntityTypeShape EntityType="ColmedicaModel.tempBeneficiarios" Width="1.5" PointX="2.25" PointY="1.125" IsExpanded="false" />
         <EntityTypeShape EntityType="ColmedicaModel.tempCiudades" Width="1.5" PointX="0.5" PointY="1.875" IsExpanded="false" />
+        <EntityTypeShape EntityType="ColmedicaModel.tempContratosFactura" Width="1.5" PointX="4" PointY="2.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="ColmedicaModel.LogsFacturas" Width="1.5" PointX="5.75" PointY="2.5" IsExpanded="false" />
+        <EntityTypeShape EntityType="ColmedicaModel.LogsEmailRetefuente" Width="1.5" PointX="0.5" PointY="3.125" IsExpanded="false" />
+        <EntityTypeShape EntityType="ColmedicaModel.tempTitular" Width="1.5" PointX="2.25" PointY="3.125" IsExpanded="false" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

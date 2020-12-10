@@ -34,5 +34,28 @@ namespace Domain.Services
         {
             return repo.GetLinkPago(idConv, idCita, flag);
         }
+        public dynamic GetInfoLinkPagoFactura(ILinkPagosQueriesRepository repo, string idConv)
+        {
+            return repo.GetInfoLinkPagoFactura(idConv);
+        }
+        public string GenerarLinkPagoFactura(ILinkPagosRepository repo, Dictionary<string, object> paramEnvio, string idConv)
+        {
+            Dictionary<string, string> hd = new Dictionary<string, string>() {
+                {"Ocp-Apim-Subscription-Key", ConfigurationManager.AppSettings["appIdLinkPagos"]}
+            };
+            Dictionary<string, string> parametros = new Dictionary<string, string>() {
+                {"clientInfo",JsonConvert.SerializeObject(paramEnvio)}
+            };
+            string resultado = repo.GenerarLinkPagoFactura(hd, parametros, idConv);
+            return resultado;
+        }
+       public Boolean LogPagoFactura(ILinkPagosQueriesRepository repo,string idConv, string estado, string numDoc, string tipoDoc, string flag, string numeroContrato, string saldo, string link)
+        {
+            return repo.LogPagoFactura(idConv, estado, numDoc, tipoDoc, flag, numeroContrato, saldo, link);
+        }
+        public dynamic GetLinkPagoFactura(ILinkPagosQueriesRepository repo, string idConv, string contrato)
+        {
+            return repo.GetLinkPagoFactura(idConv, contrato);
+        }
     }
 }
