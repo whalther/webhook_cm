@@ -30,7 +30,8 @@ namespace DataAccess.Repositories
                                          ValorPagar = tc.valorPagar,
                                          NumeroContrato = tb.numeroContrato,
                                          TelefonoCelular = tb.telefonoCelular,
-                                         Nombre = tb.nombre
+                                         Nombre = tb.nombre,
+                                         Correo = tb.correo
                                      }
                                 ).FirstOrDefault();
                     }
@@ -46,7 +47,8 @@ namespace DataAccess.Repositories
                                          ValorPagar = tcb.valorPagar,
                                          NumeroContrato = tb.numeroContrato,
                                          TelefonoCelular = tb.telefonoCelular,
-                                         Nombre = tb.nombre
+                                         Nombre = tb.nombre,
+                                         Correo = tb.correo
                                      }
                                   ).FirstOrDefault();
                     }
@@ -59,6 +61,7 @@ namespace DataAccess.Repositories
                 r.ValorPagar = resultado.ValorPagar;
                 r.NumeroContrato = resultado.NumeroContrato;
                 r.TelefonoCelular = resultado.TelefonoCelular;
+                r.Correo = resultado.Correo;
 
                 return r;
             }

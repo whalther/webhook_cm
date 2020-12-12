@@ -21,7 +21,6 @@ namespace Application
             LinkPagosService linkServ = new LinkPagosService();
             dynamic info = (object)linkServ.GetInfoLinkPagos(linkRepo, idConv, idCita, flag);
             string identificacion = info.TipoIdentificacion + info.NumeroIdentificacion;
-            string token = authServ.RefreshToken(auth,info.TelefonoCelular, identificacion,idConv);
             
              if (info.ValorPagar.ToString() == "0" && ConfigurationManager.AppSettings["env"] == "prod")
             {
@@ -46,7 +45,7 @@ namespace Application
                      {"currency", "COP" } } },
                  {"paymentType",new Dictionary<string,int>(){
                      {"idPaymentType",2 } } },
-                 {"token", token}
+                 {"email", info.Correo}
             };
                 string resp = serv.GenerarLink(repo, param, idConv);
                 if (resp != "error_interno_fenix")

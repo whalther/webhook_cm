@@ -31,7 +31,7 @@ namespace Webhook.Controllers
             {
                 respuesta.Status = "ok";
                 resultEncode = JToken.Parse(resp);
-                resultEncode["Titular"] = 1;
+                resultEncode["Titular"] = 1;//borrar a futuro cuando colmedica agregue ese valor en la respuesta
             }
             else {
                 resultEncode = resp;

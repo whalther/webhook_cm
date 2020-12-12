@@ -12,7 +12,7 @@ namespace CrossCutting.Repositories
             string url = ConfigurationManager.AppSettings["baseUrlApi"];
             RestClient rc = new RestClient();
             LogRepository log = new LogRepository();
-            var resp = rc.HacerPeticion(url, "ConsultaSaldosContrato ", null, "POST", headers, true);
+            var resp = rc.HacerPeticion(url, "ConsultaSaldosContrato ", null, "POST", headers, true); 
             string status = resp.StatusCode.ToString();
             switch (status)
             {
